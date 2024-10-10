@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 import './checkout.scss';
+import { toast } from 'react-toastify';
 
 const Checkout = ({ books, deleteBook }) => {
   const location = useLocation();
@@ -22,6 +23,7 @@ const Checkout = ({ books, deleteBook }) => {
 
   const handleSubmit = () => {
     selectedBooks.forEach((book) => deleteBook(book.id));
+    toast.success('Order submitted successfully');
     navigate('/ListBooks');
   };
 

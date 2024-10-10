@@ -37,6 +37,7 @@ const AddBookForm = ({ addBook }) => {
     }
 
     addBook(formState);
+    toast.success('Add new book successfully');
     setFormState({
       id: '',
       name: '',
