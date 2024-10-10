@@ -1,0 +1,40 @@
+.book-detail {
+  padding: 20px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 600px;
+  margin: 20px auto;
+}
+
+.back-button,
+.edit-button,
+.cancel-button {
+  background: #4caf50;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.back-button:hover,
+.edit-button:hover,
+.cancel-button:hover {
+  background: #45a049;
+}
+
+.cancel-button {
+  background: #f44336;
+}
+
+.cancel-button:hover {
+  background: #d32f2f;
+}
+
+input[type='text'] {
+  padding: 5px;
+  margin: 5px 0;
+  box-sizing: border-box;
+}

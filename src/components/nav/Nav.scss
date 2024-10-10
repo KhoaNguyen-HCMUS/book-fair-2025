@@ -1,0 +1,29 @@
+.topnav {
+  display: flex;
+  // align-items: center;
+  background-color: #424242;
+  overflow: hidden;
+
+  .logo {
+    height: 50px; /* Adjust the height as needed */
+    background-color: #f2f2f2;
+  }
+
+  a {
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+
+    &.active {
+      background-color: #ED7B7D;
+      color: white;
+    }
+
+    &:hover {
+      background-color: #ddd;
+      color: #424242;
+    }
+  }
+}
