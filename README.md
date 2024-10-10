@@ -1,6 +1,6 @@
 # Book Fair 2025
 
-This project is a web application for managing a book fair, built with React and Redux.
+This project is a web application for managing a book fair, built with React and Redux. This is a demo version of the project. All data is stored in Redux and is not connected to a server database.
 
 ## Getting Started
 
