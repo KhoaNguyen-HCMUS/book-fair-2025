@@ -1,4 +1,4 @@
-import React from 'react';
+import React , { useState, useEffect } from 'react';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -10,21 +10,59 @@ import logo from '../assets/images/logo.png';
 import ListBooks from './listBooks/listBooks.js'; // Ensure this path is correct
 import DetailBook from './detailBook/detailBook.js';
 import Checkout from './checkout/checkout.js';
+import Login from './login/login.js';
+import ProtectedRoute from './protectedRoute.js';
 
 function App() {
+  const [isAuth, setIsAuth] = useState(false);
+
+  useEffect(() => {
+    const auth = localStorage.getItem('isAuthenticated') === 'true';
+    setIsAuth(auth);
+  }, []);
+
   return (
     <Router>
       <div className='App'>
-        <Nav />
+        {isAuth && <Nav />}
         <header className='App-header'>
           <Routes>
-            <Route path='/' exacts element={<Home />} />
-            <Route path='/ListBooks' element={<ListBooks />} />
-            <Route path='/book/:id' element={<DetailBook />} />
-            <Route path='/checkout' element={<Checkout />} />
+            <Route path="/login" element={<Login setAuth={setIsAuth} />} />
+            <Route 
+              path='/' 
+              element={
+                <ProtectedRoute>
+                  <Home />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path='/ListBooks' 
+              element={
+                <ProtectedRoute>
+                  <ListBooks />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path='/book/:id' 
+              element={
+                <ProtectedRoute>
+                  <DetailBook />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path='/checkout' 
+              element={
+                <ProtectedRoute>
+                  <Checkout />
+                </ProtectedRoute>
+              } 
+            />
           </Routes>
         </header>
-        <ToastContainer
+          <ToastContainer
           position='top-right'
           autoClose={5000}
           hideProgressBar={false}
