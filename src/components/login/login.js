@@ -12,10 +12,11 @@ function Login({ setAuth }) {
     // Simple authentication check
     if (username === 'admin' && password === 'HS@123456') {
       localStorage.setItem('isAuthenticated', 'true');
+      localStorage.setItem('loginTime', new Date().getTime().toString());
       setAuth(true);
       navigate('/');
     } else {
-      toast.error('Invalid username or password. If you forgot your password, please contact your administrator.');
+      toast.error('Invalid username or password. \nIf you forgot your password, please contact your administrator.');
     }
   };
 
