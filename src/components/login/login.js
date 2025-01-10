@@ -13,6 +13,8 @@ function Login({ setAuth }) {
     if (username === 'admin' && password === 'HS@123456') {
       localStorage.setItem('isAuthenticated', 'true');
       localStorage.setItem('loginTime', new Date().getTime().toString());
+      localStorage.setItem('username', username); // Store username
+
       setAuth(true);
       navigate('/');
     } else {

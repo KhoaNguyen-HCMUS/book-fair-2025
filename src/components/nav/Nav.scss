@@ -2,6 +2,7 @@
   display: flex;
   // align-items: center;
   background-color: #424242;
+  justify-content: space-between;
   overflow: hidden;
 
   .logo {
@@ -17,13 +18,41 @@
     font-size: 17px;
 
     &.active {
-      background-color: #ED7B7D;
+      background-color: #ed7b7d;
       color: white;
     }
 
     &:hover {
       background-color: #ddd;
       color: #424242;
+    }
+  }
+
+  .nav-left {
+    display: flex;
+    align-items: center;
+  }
+  .nav-right {
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+    gap: 15px;
+
+    .username {
+      color: white;
+      font-weight: 500;
+    }
+
+    .logout-btn {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 4px;
+      background-color: #d32f2f;
+      color: white;
+      cursor: pointer;
+      &:hover {
+        background-color: #b71c1c;
+      }
     }
   }
 }
