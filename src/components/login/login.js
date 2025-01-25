@@ -16,7 +16,7 @@ function Login({ setAuth }) {
 
   const fetchMembers = async () => {
     try {
-      const response = await fetch(process.env.REACT_APP_API_URL);
+      const response = await fetch(process.env.REACT_APP_API_LOGIN);
       const result = await response.json();
       if (result.success) {
         setMembers(result.data);
