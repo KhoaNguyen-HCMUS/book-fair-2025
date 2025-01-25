@@ -23,6 +23,7 @@ function Login({ setAuth }) {
       }
     } catch (error) {
       toast.error('Error connecting to server');
+      console.log(error);
     }
   };
 
