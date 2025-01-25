@@ -19,6 +19,9 @@ class Nav extends React.Component {
 
         <div className='nav-right'>
           <span className='username'>{this.props.username}</span>
+
+          <span className='divider'>|</span>
+          <span className='role'>{this.props.userRole}</span>
           <button className='logout-btn' onClick={this.props.onLogout}>
             Logout
           </button>

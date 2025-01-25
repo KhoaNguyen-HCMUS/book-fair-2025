@@ -17,11 +17,13 @@ const SESSION_TIMEOUT = 6 * 60 * 60 * 1000; // 6 hours in milliseconds
 function App() {
   const [isAuth, setIsAuth] = useState(false);
   const [username, setUsername] = useState('');
+  const [userRole, setUserole] = useState('');
 
   useEffect(() => {
     if (isAuth) {
       const loginTime = localStorage.getItem('loginTime');
       setUsername(localStorage.getItem('username') || '');
+      setUserole(localStorage.getItem('userRole') || '');
 
       const intervalId = setInterval(() => {
         const currentTime = new Date().getTime();
@@ -75,7 +77,7 @@ function App() {
   return (
     <Router>
       <div className='App'>
-        {isAuth && <Nav username={username} onLogout={handleLogout} />}
+        {isAuth && <Nav username={username} userRole={userRole} onLogout={handleLogout} />}
         <header className='App-header'>
           <Routes>
             <Route path='/login' element={<Login setAuth={setIsAuth} />} />
