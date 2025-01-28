@@ -1,29 +1,52 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './login.scss'; // Ensure this file exists for styling
 import { toast } from 'react-toastify';
+
 function Login({ setAuth }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
-  const [members, setMembers] = useState([]);
   const navigate = useNavigate();
-  const [toggle, setToggle] = useState(false);
+  // const [toggle, setToggle] = useState(false);
 
-  useEffect(() => {
-    fetchMembers();
-  }, []);
-
-  const fetchMembers = async () => {
+  const apiRequest = async (url, method, body = null, headers = {}) => {
     try {
-      const response = await fetch(process.env.REACT_APP_API_LOGIN);
-      const result = await response.json();
-      if (result.success) {
-        setMembers(result.data);
+      const options = {
+        method: method,
+        headers: {
+          'Content-Type': 'application/json',
+          ...headers,
+        },
+      };
+      if (body) {
+        options.body = JSON.stringify(body);
       }
+
+      const response = await fetch(url, options);
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      return await response.json();
     } catch (error) {
-      toast.error('Error connecting to server');
-      console.log(error);
+      console.error('Error in apiRequest:', error.message);
+      throw error;
+    }
+  };
+
+  const checkLogin = async (username, password) => {
+    const url = process.env.REACT_APP_API_LOGIN_CHECK;
+
+    try {
+      const data = await apiRequest(url.toString(), 'POST', {
+        id_member: username,
+        password: password,
+      });
+      return data; 
+    } catch (error) {
+      console.error('Error in checkLogin:', error); 
+      throw error; 
     }
   };
 
@@ -31,22 +54,29 @@ function Login({ setAuth }) {
     e.preventDefault();
     setLoading(true);
 
-    const member = members.find((m) => m.id_member === username && m.password === password);
+    try {
+      const response = await checkLogin(username, password);
 
-    if (member) {
-      localStorage.setItem('isAuthenticated', 'true');
-      localStorage.setItem('loginTime', new Date().getTime().toString());
-      localStorage.setItem('username', username);
-      localStorage.setItem('userRole', member.role);
-      localStorage.setItem('username', member.name);
+      if (response.success) {
+        const user = response.data; 
 
-      setAuth(true);
-      setToggle(true); // Add this line to set toggle state
-      navigate('/');
-    } else {
-      toast.error('Invalid username or password.');
+        localStorage.setItem('isAuthenticated', 'true');
+        localStorage.setItem('loginTime', new Date().getTime().toString());
+        localStorage.setItem('username', user.name);
+        localStorage.setItem('userRole', user.role);
+
+        setAuth(true);
+        // setToggle(true);
+        navigate('/');
+      } else {
+        toast.error('Invalid username or password. If you forgot your password, please contact the administrator.');
+      }
+    } catch (error) {
+      toast.error('Error connecting to server');
+      console.error(error);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   return (
@@ -74,7 +104,7 @@ function Login({ setAuth }) {
                 Password:
               </label>
               <input
-                type='text'
+                type='password'
                 id='password'
                 className='form-input'
                 value={password}
@@ -83,8 +113,8 @@ function Login({ setAuth }) {
                 placeholder='Enter your password'
               />
             </div>
-            <button type='submit' className='login-button'>
-              Login
+            <button type='submit' className='login-button' disabled={loading}>
+              {loading ? 'Logging in...' : 'Login'}
             </button>
           </form>
         </div>

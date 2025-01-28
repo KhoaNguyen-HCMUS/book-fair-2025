@@ -12,7 +12,7 @@ import Checkout from './checkout/checkout.js';
 import Login from './login/login.js';
 import ProtectedRoute from './protectedRoute.js';
 
-const SESSION_TIMEOUT = 6 * 60 * 60 * 1000; // 6 hours in milliseconds
+const SESSION_TIMEOUT = 3 * 60 * 60 * 1000; // 3 hours in milliseconds
 
 function App() {
   const [isAuth, setIsAuth] = useState(false);
