@@ -24,6 +24,20 @@ function ListBooks() {
   const [filteredBooks, setFilteredBooks] = useState([]);
   const navigate = useNavigate();
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(10);
+
+  // Get current books
+  const indexOfLastBook = currentPage * itemsPerPage;
+  const indexOfFirstBook = indexOfLastBook - itemsPerPage;
+  const currentBooks = (filteredBooks.length > 0 ? filteredBooks : books).slice(indexOfFirstBook, indexOfLastBook);
+  const totalPages = Math.ceil((filteredBooks.length > 0 ? filteredBooks : books).length / itemsPerPage);
+
+  // Change page
+  const handlePaginationClick = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
   useEffect(() => {
     fetchBooks();
   }, []);
@@ -134,14 +148,12 @@ function ListBooks() {
             <th>Tên sách</th>
             <th>Thể loại</th>
             <th>Phân loại</th>
-            <th>Giá gốc</th>
-            <th>Giảm giá (%)</th>
             <th>Giá bán</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
-          {(filteredBooks.length > 0 ? filteredBooks : books).map((book) => (
+          {currentBooks.map((book) => (
             <tr key={book.id}>
               <td className='checkbox-container' onClick={(e) => e.stopPropagation()}>
                 <input
@@ -155,14 +167,41 @@ function ListBooks() {
               <td>{book.name}</td>
               <td>{book.genre}</td>
               <td>{book.classify}</td>
-              <td>{book.bc_cost.toLocaleString('vi-VN')} VNĐ</td>
-              <td>{book.discount}%</td>
               <td>{book.price.toLocaleString('vi-VN')} VNĐ</td>
               <td>{/* Action buttons */}</td>
             </tr>
           ))}
         </tbody>
       </table>
+
+      <div className='pagination-container'>
+        <button
+          className='pagination-button first-page'
+          onClick={() => handlePaginationClick(1)}
+          disabled={currentPage === 1}
+        >
+          First Page
+        </button>
+        <button
+          className='pagination-button'
+          onClick={() => handlePaginationClick(currentPage - 1)}
+          disabled={currentPage === 1}
+        >
+          Previous
+        </button>
+
+        <span className='page-info'>
+          Page {currentPage} of {totalPages}
+        </span>
+
+        <button
+          className='pagination-button'
+          onClick={() => handlePaginationClick(currentPage + 1)}
+          disabled={currentPage === totalPages}
+        >
+          Next
+        </button>
+      </div>
     </div>
   );
 }

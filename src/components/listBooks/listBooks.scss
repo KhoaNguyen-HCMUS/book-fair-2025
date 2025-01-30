@@ -48,11 +48,11 @@
   }
 
   .book-table {
-    width: 100%; // Phù hợp chiều ngang với cha
-    max-width: 100%; // Không vượt quá giới hạn container cha
-    margin-top: 20px; // Tạo khoảng cách với thanh tìm kiếm
-    box-sizing: border-box; // Đảm bảo kích thước không bị ảnh hưởng bởi padding
-    table-layout: fixed; // Đảm bảo bảng không tự thay đổi kích thước dựa trên nội dung
+    width: 100%;
+    max-width: 100%;
+    margin-top: 20px;
+    box-sizing: border-box;
+    table-layout: fixed;
 
     border-collapse: collapse;
     border: 1px solid #ddd;
@@ -60,13 +60,12 @@
     font-size: 13px;
 
     thead {
-      // position: sticky;
       top: 120px;
       background-color: #f1f1f1;
       z-index: 5;
 
       th {
-        text-align: center; // Tiêu đề căn giữa
+        text-align: center;
 
         padding: 10px;
         font-weight: bold;
@@ -93,7 +92,7 @@
         td {
           padding: 10px;
           border-bottom: 1px solid #ddd;
-          text-align: left; // Dữ liệu căn trái
+          text-align: left;
 
           &.checkbox-container {
             text-align: center;
@@ -116,7 +115,7 @@
     }
     th:nth-child(3),
     td:nth-child(3) {
-      width: 40%; // Name
+      width: 30%; // Name
     }
     th:nth-child(4),
     td:nth-child(4) {
@@ -126,14 +125,6 @@
     td:nth-child(5) {
       width: 15%; // Classification
     }
-    th:nth-child(6),
-    td:nth-child(6) {
-      width: 10%; // Original Price
-    }
-    th:nth-child(7),
-    td:nth-child(7) {
-      width: 10%; // Discount
-    }
     th:nth-child(8),
     td:nth-child(8) {
       width: 10%; // Sale Price
@@ -141,6 +132,64 @@
     th:nth-child(9),
     td:nth-child(9) {
       width: 10%; // Actions
+    }
+  }
+
+  .pagination-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    gap: 10px;
+
+    .page-info {
+      font-size: 12px;
+    }
+
+    .pagination-button {
+      padding: 8px 16px;
+      border: 1px solid #ddd;
+      background: white;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+
+      &:hover {
+        background: #f0f0f0;
+      }
+
+      &.active {
+        background: #007bff;
+        color: white;
+        border-color: #007bff;
+      }
+
+      &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+    }
+
+    .page-info {
+      margin: 0 15px;
+      color: #666;
+    }
+  }
+
+  .items-per-page {
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    select {
+      padding: 5px;
+      border-radius: 4px;
+      border: 1px solid #ddd;
+    }
+
+    label {
+      color: #666;
     }
   }
 }
