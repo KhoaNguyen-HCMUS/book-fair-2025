@@ -86,6 +86,20 @@
   box-sizing: border-box;
   height: 50px;
 
+  // Reset browser autofill styles
+  &:-webkit-autofill,
+  &:-webkit-autofill:hover,
+  &:-webkit-autofill:focus {
+    -webkit-box-shadow: 0 0 0px 1000px white inset;
+    transition: background-color 5000s ease-in-out 0s;
+  }
+
+  // Normalize padding for all inputs including password
+  &[type='text'],
+  &[type='password'] {
+    padding: 0.75rem 1rem;
+  }
+
   &:focus {
     border-color: #007bff;
     outline: none;
