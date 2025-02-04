@@ -43,10 +43,10 @@ function Login({ setAuth }) {
         id_member: username,
         password: password,
       });
-      return data; 
+      return data;
     } catch (error) {
-      console.error('Error in checkLogin:', error); 
-      throw error; 
+      console.error('Error in checkLogin:', error);
+      throw error;
     }
   };
 
@@ -58,7 +58,7 @@ function Login({ setAuth }) {
       const response = await checkLogin(username, password);
 
       if (response.success) {
-        const user = response.data; 
+        const user = response.data;
 
         localStorage.setItem('isAuthenticated', 'true');
         localStorage.setItem('loginTime', new Date().getTime().toString());
@@ -83,7 +83,7 @@ function Login({ setAuth }) {
     <div className='login-page'>
       <div className='login-container'>
         <div className='login-card'>
-          <h2 className='login-title'>Login</h2>
+          <h2 className='login-title'>Login (Test server)</h2>
           <form onSubmit={handleSubmit} className='login-form'>
             <div className='form-group'>
               <label htmlFor='username' className='form-label'>
