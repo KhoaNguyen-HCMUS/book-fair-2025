@@ -15,6 +15,9 @@ class Nav extends React.Component {
           <NavLink activeClassName='active' to='/ListBooks'>
             List Books
           </NavLink>
+          <NavLink activeClassName='active' to='/CreateObject'>
+            Create Object
+          </NavLink>
         </div>
 
         <div className='nav-right'>

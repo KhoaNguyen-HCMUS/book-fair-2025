@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import React, { useState, useEffect, useRef } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -11,6 +11,8 @@ import DetailBook from './detailBook/detailBook.js';
 import Checkout from './checkout/checkout.js';
 import Login from './login/login.js';
 import ProtectedRoute from './protectedRoute.js';
+import CreateObject from './createObject/createObject.js';
+import CreateAccount from './createAccount/createAccount.js';
 
 const SESSION_TIMEOUT = 3 * 60 * 60 * 1000; // 3 hours in milliseconds
 
@@ -18,6 +20,27 @@ function App() {
   const [isAuth, setIsAuth] = useState(false);
   const [username, setUsername] = useState('');
   const [userRole, setUserole] = useState('');
+
+  const AdminRoute = ({ children }) => {
+    const userRole = localStorage.getItem('userRole');
+    const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
+    const hasAlerted = useRef(false);
+
+    useEffect(() => {
+      if ((!isAuthenticated || userRole !== 'Admin') && !hasAlerted.current) {
+        hasAlerted.current = true;
+        setTimeout(() => {
+          alert('Access denied. Admin only.');
+        }, 100);
+      }
+    }, [isAuthenticated, userRole]);
+
+    if (!isAuthenticated || userRole !== 'Admin') {
+      return <Navigate to='/' />;
+    }
+
+    return children;
+  };
 
   useEffect(() => {
     if (isAuth) {
@@ -111,6 +134,22 @@ function App() {
                 <ProtectedRoute>
                   <Checkout />
                 </ProtectedRoute>
+              }
+            />
+            <Route
+              path='/createObject'
+              element={
+                <ProtectedRoute>
+                  <CreateObject />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path='/createAccount'
+              element={
+                <AdminRoute>
+                  <CreateAccount />
+                </AdminRoute>
               }
             />
           </Routes>
