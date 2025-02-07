@@ -1,13 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
-import { editBook, toggleSelectBook } from '../../store/reducers/bookActions.js';
-import { MdOutlineShoppingCartCheckout } from 'react-icons/md';
 import { FaSearch } from 'react-icons/fa';
 
-import DetailBook from '../detailBook/detailBook.js';
-import AddBookForm from '../addBook/addBook.js';
 
 import './listBooks.scss'; // Import the SCSS file
 
@@ -15,10 +10,6 @@ function ListBooks() {
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedBooks, setSelectedBooks] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [showForm, setShowForm] = useState(false);
-  const [editingBook, setEditingBook] = useState(null);
-  const [showNotFound, setShowNotFound] = useState(false);
 
   const [searchInput, setSearchInput] = useState('');
   const [filteredBooks, setFilteredBooks] = useState([]);
@@ -44,7 +35,7 @@ function ListBooks() {
 
   const fetchBooks = async () => {
     try {
-      const response = await fetch(process.env.REACT_APP_API_GET_LIST_BOOKS);
+      const response = await fetch(process.env.REACT_APP_DOMAIN + process.env.REACT_APP_API_GET_LIST_BOOKS);
       const result = await response.json();
       if (result.success) {
         setBooks(result.data);
@@ -63,14 +54,6 @@ function ListBooks() {
         : [...prevSelectedBooks, bookId]
     );
   };
-
-  /*   const handleDeleteSelectedBooks = () => {
-    if (window.confirm('Are you sure you want to delete the selected books?')) {
-      selectedBooks.forEach((bookId) => deleteBook(bookId));
-      setSelectedBooks([]);
-      toast.success('Selected books deleted successfully');
-    }
-  }; */
 
   const removeVietnameseTones = (str) => {
     str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, 'a');
@@ -111,15 +94,6 @@ function ListBooks() {
 
   return (
     <div className='list-books'>
-      {/*       <div className='btn-container'>
-        <button className='checkout-button' onClick={handleCheckOut}>
-          <MdOutlineShoppingCartCheckout />
-          Check Out
-        </button>
-        <button onClick={handleDeleteSelectedBooks} className='delete-selected-button'>
-          Delete Selected
-        </button>
-      </div> */}
 
       <form onSubmit={handleSearchSubmit} className='search-container'>
         <FaSearch className='search-icon' />
@@ -136,10 +110,6 @@ function ListBooks() {
           </button>
         )}
       </form>
-      {/*       <button onClick={toggleForm} className='add-book-button'>
-        {showForm ? 'Hide Form' : 'Add Book'}
-      </button>
-      {showForm && <AddBookForm book={editingBook} editBook={editBook} />} */}
       <table className='book-table'>
         <thead>
           <tr>

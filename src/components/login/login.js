@@ -36,7 +36,7 @@ function Login({ setAuth }) {
   };
 
   const checkLogin = async (username, password) => {
-    const url = process.env.REACT_APP_API_LOGIN_CHECK;
+    const url = process.env.REACT_APP_DOMAIN + process.env.REACT_APP_API_LOGIN_CHECK;
 
     try {
       const data = await apiRequest(url.toString(), 'POST', {
