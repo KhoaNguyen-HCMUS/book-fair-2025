@@ -4,11 +4,12 @@ import './login.scss'; // Ensure this file exists for styling
 import { toast } from 'react-toastify';
 
 const OFFLINE_CREDENTIALS = {
-  username: 'admin',
-  password: 'admin123',
-  name: 'Offline Admin',
-  role: 'Admin',
+  username: process.env.REACT_APP_OFFLINE_USERNAME,
+  password: process.env.REACT_APP_OFFLINE_PASSWORD,
+  name: process.env.REACT_APP_OFFLINE_NAME,
+  role: process.env.REACT_APP_OFFLINE_ROLE,
 };
+
 
 function Login({ setAuth }) {
   const [username, setUsername] = useState('');

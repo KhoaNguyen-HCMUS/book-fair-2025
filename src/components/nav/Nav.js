@@ -12,12 +12,18 @@ class Nav extends React.Component {
           <NavLink activeClassName='active' to='/'>
             Home
           </NavLink>
-          <NavLink activeClassName='active' to='/ListBooks'>
+          <NavLink activeClassName='active' to='/listBooks'>
             List Books
           </NavLink>
-          <NavLink activeClassName='active' to='/CreateObject'>
-            Create Object
+          <NavLink activeClassName='active' to='/addBook'>
+            Add Book
           </NavLink>
+
+          {this.props.userRole === 'Admin' && (
+            <NavLink activeClassName='active' to='/createAccount'>
+              Create Account
+            </NavLink>
+          )}
         </div>
 
         <div className='nav-right'>

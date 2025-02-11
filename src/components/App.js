@@ -11,7 +11,7 @@ import DetailBook from './detailBook/detailBook.js';
 import Checkout from './checkout/checkout.js';
 import Login from './login/login.js';
 import ProtectedRoute from './protectedRoute.js';
-import CreateObject from './createObject/createObject.js';
+import AddBook from './addBook/addBook.js';
 import CreateAccount from './createAccount/createAccount.js';
 
 const SESSION_TIMEOUT = 3 * 60 * 60 * 1000; // 3 hours in milliseconds
@@ -113,7 +113,7 @@ function App() {
               }
             />
             <Route
-              path='/ListBooks'
+              path='/listBooks'
               element={
                 <ProtectedRoute>
                   <ListBooks />
@@ -137,10 +137,10 @@ function App() {
               }
             />
             <Route
-              path='/createObject'
+              path='/addBook'
               element={
                 <ProtectedRoute>
-                  <CreateObject />
+                  <AddBook />
                 </ProtectedRoute>
               }
             />
