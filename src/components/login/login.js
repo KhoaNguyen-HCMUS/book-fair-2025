@@ -3,6 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import './login.scss'; // Ensure this file exists for styling
 import { toast } from 'react-toastify';
 
+const OFFLINE_CREDENTIALS = {
+  username: 'admin',
+  password: 'admin123',
+  name: 'Offline Admin',
+  role: 'Admin',
+};
+
 function Login({ setAuth }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -53,6 +60,19 @@ function Login({ setAuth }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+
+    if (username === OFFLINE_CREDENTIALS.username && password === OFFLINE_CREDENTIALS.password) {
+      localStorage.setItem('isAuthenticated', 'true');
+      localStorage.setItem('loginTime', new Date().getTime().toString());
+      localStorage.setItem('username', OFFLINE_CREDENTIALS.name);
+      localStorage.setItem('userRole', OFFLINE_CREDENTIALS.role);
+
+      setAuth(true);
+      // setToggle(true);
+      navigate('/');
+      setLoading(false);
+      return;
+    }
 
     try {
       const response = await checkLogin(username, password);

@@ -30,7 +30,7 @@ function App() {
       if ((!isAuthenticated || userRole !== 'Admin') && !hasAlerted.current) {
         hasAlerted.current = true;
         setTimeout(() => {
-          alert('Access denied. Admin only.');
+          toast.error('You do not have permission to access this page.');
         }, 100);
       }
     }, [isAuthenticated, userRole]);
