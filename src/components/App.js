@@ -140,7 +140,7 @@ function App() {
               path='/addBook'
               element={
                 <ProtectedRoute>
-                  <AddBook />
+                  <AddBook userRole={userRole} />
                 </ProtectedRoute>
               }
             />

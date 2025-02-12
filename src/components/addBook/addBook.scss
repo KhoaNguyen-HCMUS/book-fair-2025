@@ -59,7 +59,50 @@
       color: #555;
     }
 
-    input, select {
+    input:invalid,
+    select:invalid {
+      border-color: #dc3545;
+    }
+
+    input:invalid:focus,
+    select:invalid:focus {
+      border-color: #dc3545;
+      box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+    }
+
+    .input-note {
+      display: block;
+      color: #fe0000;
+      font-size: 12px;
+      margin: -5px 0 5px 0;
+      font-style: italic;
+    }
+    .input-with-reset {
+      position: relative;
+      display: flex;
+      align-items: center;
+
+      input {
+        width: 100%;
+      }
+
+      .reset-field {
+        position: absolute;
+        right: 8px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: 16px;
+        color: #666;
+        padding: 2px 6px;
+
+        &:hover {
+          color: #333;
+        }
+      }
+    }
+    input,
+    select {
       width: 100%;
       padding: 10px;
       border: 1px solid #ccc;
@@ -90,7 +133,7 @@
       transition: all 0.3s ease;
       border: none;
 
-      &[type="submit"] {
+      &[type='submit'] {
         background-color: #28a745;
         color: white;
         font-size: 1.1rem;
