@@ -1,0 +1,118 @@
+.add-book-container {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 20px;
+  background: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.form-selector {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+
+  .selector-btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    background-color: #e0e0e0;
+    font-weight: 600;
+    transition: all 0.3s ease;
+
+    &.active {
+      background-color: #007bff;
+      color: white;
+    }
+
+    &:hover {
+      background-color: #0056b3;
+      color: white;
+    }
+  }
+}
+
+.form {
+  background: white;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+
+  h2 {
+    margin-bottom: 1.5rem;
+    color: #333;
+    text-align: center;
+    font-size: 1.8rem;
+  }
+
+  .form-group {
+    margin-bottom: 1.2rem;
+    display: flex;
+    flex-direction: column;
+
+    label {
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      color: #555;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 1rem;
+      transition: border 0.3s ease;
+
+      &:focus {
+        outline: none;
+        border-color: #007bff;
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+      }
+    }
+  }
+
+  .button-group {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 1.5rem;
+
+    button {
+      width: 100%;
+      padding: 12px;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: none;
+
+      &[type="submit"] {
+        background-color: #28a745;
+        color: white;
+        font-size: 1.1rem;
+        padding: 15px;
+
+        &:hover {
+          background-color: #218838;
+          transform: translateY(-2px);
+          box-shadow: 0 4px 8px rgba(40, 167, 69, 0.2);
+        }
+      }
+
+      &.reset-button {
+        background-color: #dc3545;
+        color: white;
+        font-size: 0.9rem;
+        padding: 10px;
+
+        &:hover {
+          background-color: #c82333;
+        }
+      }
+    }
+  }
+}
