@@ -83,6 +83,8 @@ function Login({ setAuth }) {
       navigate('/');
       setLoading(false);
       return;
+    } else {
+      console.log(hashedPassword + OFFLINE_CREDENTIALS.password);
     }
 
     try {
