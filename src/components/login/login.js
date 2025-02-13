@@ -10,7 +10,6 @@ const OFFLINE_CREDENTIALS = {
   role: process.env.REACT_APP_OFFLINE_ROLE,
 };
 
-
 function Login({ setAuth }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -90,10 +89,10 @@ function Login({ setAuth }) {
         // setToggle(true);
         navigate('/');
       } else {
-        toast.error('Invalid username or password. If you forgot your password, please contact the administrator.');
+        toast.error('Sai tên đăng nhập hoặc mật khẩu. Nếu bạn quên mật khẩu, vui lòng liên hệ quản trị viên.');
       }
     } catch (error) {
-      toast.error('Error connecting to server');
+      toast.error('Lỗi kết nối đến máy chủ. Vui lòng thử lại sau.');
       console.error(error);
     } finally {
       setLoading(false);
@@ -104,11 +103,11 @@ function Login({ setAuth }) {
     <div className='login-page'>
       <div className='login-container'>
         <div className='login-card'>
-          <h2 className='login-title'>Login (Test server)</h2>
+          <h2 className='login-title'>Đăng nhập</h2>
           <form onSubmit={handleSubmit} className='login-form'>
             <div className='form-group'>
               <label htmlFor='username' className='form-label'>
-                Username:
+                Tên đăng nhập:
               </label>
               <input
                 type='text'
@@ -122,7 +121,7 @@ function Login({ setAuth }) {
             </div>
             <div className='form-group'>
               <label htmlFor='password' className='form-label'>
-                Password:
+                Mật khẩu:
               </label>
               <input
                 type='password'

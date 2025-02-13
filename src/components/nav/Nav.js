@@ -10,18 +10,18 @@ class Nav extends React.Component {
         <div className='nav-left'>
           <img src={logo} alt='Logo' className='logo' />
           <NavLink activeClassName='active' to='/'>
-            Home
+            Trang Chủ
           </NavLink>
           <NavLink activeClassName='active' to='/listBooks'>
-            List Books
+            Kho Sách
           </NavLink>
           <NavLink activeClassName='active' to='/addBook'>
-            Add Book
+            Nhập Sách
           </NavLink>
 
           {this.props.userRole === 'Admin' && (
             <NavLink activeClassName='active' to='/createAccount'>
-              Create Account
+              Tạo Tài Khoản
             </NavLink>
           )}
         </div>
@@ -32,7 +32,7 @@ class Nav extends React.Component {
           <span className='divider'>|</span>
           <span className='role'>{this.props.userRole}</span>
           <button className='logout-btn' onClick={this.props.onLogout}>
-            Logout
+            Đăng Xuất
           </button>
         </div>
       </div>
