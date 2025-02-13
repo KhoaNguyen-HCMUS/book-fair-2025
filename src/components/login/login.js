@@ -83,15 +83,13 @@ function Login({ setAuth }) {
       navigate('/');
       setLoading(false);
       return;
-    } else {
-      console.log(hashedPassword + '+' + OFFLINE_CREDENTIALS.password);
     }
 
     try {
       const response = await checkLogin(username, hashedPassword);
 
       if (response.success) {
-        const user = response.data;
+        const user = response.data[0];
 
         localStorage.setItem('isAuthenticated', 'true');
         localStorage.setItem('loginTime', new Date().getTime().toString());
