@@ -84,7 +84,7 @@ function Login({ setAuth }) {
       setLoading(false);
       return;
     } else {
-      console.log(hashedPassword + OFFLINE_CREDENTIALS.password);
+      console.log(hashedPassword + '+' + OFFLINE_CREDENTIALS.password);
     }
 
     try {
