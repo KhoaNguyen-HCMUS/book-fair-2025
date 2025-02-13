@@ -83,7 +83,7 @@ function Login({ setAuth }) {
       navigate('/');
       setLoading(false);
       return;
-    } 
+    }
 
     try {
       const response = await checkLogin(username, hashedPassword);
@@ -127,7 +127,7 @@ function Login({ setAuth }) {
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 required
-                placeholder='Enter your username'
+                placeholder='Nhập tên đăng nhập'
               />
             </div>
             <div className='form-group'>
@@ -141,11 +141,11 @@ function Login({ setAuth }) {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                placeholder='Enter your password'
+                placeholder='Nhập mật khẩu'
               />
             </div>
             <button type='submit' className='login-button' disabled={loading}>
-              {loading ? 'Logging in...' : 'Login'}
+              {loading ? 'Đang đăng nhập...' : 'Đăng nhập'}
             </button>
           </form>
         </div>
