@@ -24,10 +24,15 @@ export const FormConsignmentBook = () => {
     }
   };
 
-  const CalculateRefund = (salePrice) => {
-    const price = parseFloat(parseCurrency(salePrice));
-    if (isNaN(price)) return '';
-    return Math.round(price * 0.95);
+  const CalculateRefund = (salePrice, originalPrice) => {
+    // Parse both prices to numbers
+    const numericSalePrice = parseFloat(parseCurrency(salePrice));
+    const numericOriginalPrice = parseFloat(parseCurrency(originalPrice));
+
+    if (isNaN(numericSalePrice) || isNaN(numericOriginalPrice)) return '';
+
+    // Calculate refund: sale price minus 5% of original price
+    return Math.round(numericSalePrice - numericOriginalPrice * 0.05);
   };
 
   const timeGen = () => {
@@ -144,13 +149,17 @@ export const FormConsignmentBook = () => {
   useEffect(() => {
     if (formData.originalPrice && formData.typePrice) {
       const salePrice = CalculatePrice(formData.originalPrice, formData.typePrice);
-      const refundPrice = CalculateRefund(salePrice);
 
-      setFormData((prev) => ({
-        ...prev,
-        salePrice: salePrice.toString(),
-        refundPrice: refundPrice.toString(),
-      }));
+      // Only calculate refund if we have a valid sale price
+      if (salePrice) {
+        const refundPrice = CalculateRefund(salePrice, formData.originalPrice);
+
+        setFormData((prev) => ({
+          ...prev,
+          salePrice: salePrice.toString(),
+          refundPrice: refundPrice.toString(),
+        }));
+      }
     }
   }, [formData.typePrice, formData.originalPrice]);
 
@@ -289,7 +298,7 @@ export const FormConsignmentBook = () => {
         disabled: formData.typePrice !== 'Sách đặc biệt',
         note:
           formData.typePrice === 'Sách đặc biệt'
-            ? '* Để chỉnh sửa, xóa tất cả hoặc bấm nút Reset (↺) để xóa nhập lại.'
+            ? '* Sách đặc biệt, vui lòng nhập giá bán.'
             : '* Giá được tính tự động theo %',
         onReset:
           formData.typePrice === 'Sách đặc biệt'
@@ -307,7 +316,7 @@ export const FormConsignmentBook = () => {
         label: 'Số Tiền Giải Ngân:',
         name: 'refundPrice',
         type: 'text',
-        value: formatCurrency(CalculateRefund(parseCurrency(formData.salePrice))),
+        value: formatCurrency(CalculateRefund(parseCurrency(formData.salePrice), formData.originalPrice)),
         onChange: handleChange,
         disabled: true,
       })}

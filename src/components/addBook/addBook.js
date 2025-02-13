@@ -25,7 +25,7 @@ function AddBook() {
       case 'consignment':
         return <FormConsignmentBook />;
       case 'publisher':
-        return canAccessPublisherForm ? <FormPublisherBook /> : null;
+        return canAccessPublisherForm ? <FormPublisherBook /> : renderDontHavePermission();
       default:
         return null;
     }
@@ -51,5 +51,13 @@ function AddBook() {
     </div>
   );
 }
+
+const renderDontHavePermission = () => {
+  return (
+    <div className='dont-have-permission'>
+      <h1>Bạn không có quyền truy cập nhập sách Nhà Xuất Bản</h1>
+    </div>
+  );
+};
 
 export default AddBook;

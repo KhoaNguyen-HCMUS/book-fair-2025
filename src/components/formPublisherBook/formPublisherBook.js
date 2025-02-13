@@ -58,20 +58,25 @@ export const FormPublisherBook = () => {
     handleReset();
   };
 
-  const CalculatePrice = (originalPrice, typePrice) => {
+  const CalculateSalePrice = (originalPrice, typePrice) => {
     const numericPrice = parseCurrency(originalPrice);
 
     return numericPrice - (numericPrice * typePrice) / 100;
   };
 
-  const CalculateRefund = (salePrice) => {
-    return salePrice * 0.95;
+  const CalculateRefund = (salePrice, originalPrice) => {
+    const numericSalePrice = parseFloat(parseCurrency(salePrice));
+    const numericOriginalPrice = parseFloat(parseCurrency(originalPrice));
+
+    if (isNaN(numericSalePrice) || isNaN(numericOriginalPrice)) return '';
+
+    return Math.round(numericSalePrice - numericOriginalPrice * 0.05);
   };
 
   useEffect(() => {
     if (formData.originalPrice && formData.typePrice) {
-      const salePrice = CalculatePrice(formData.originalPrice, formData.typePrice);
-      const refundPrice = CalculateRefund(salePrice);
+      const salePrice = CalculateSalePrice(formData.originalPrice, formData.typePrice);
+      const refundPrice = CalculateRefund(salePrice, formData.originalPrice);
 
       setFormData((prev) => ({
         ...prev,
@@ -119,7 +124,6 @@ export const FormPublisherBook = () => {
         name: 'originalPrice',
         type: 'text',
         value: formatCurrency(formData.originalPrice),
-        note: 'Khi cần chỉnh sửa, xóa tất cả hoặc bấm nút Reset (↺) để xóa nhập lại',
 
         onChange: handleChange,
         onReset: () => setFormData((prev) => ({ ...prev, originalPrice: '' })),

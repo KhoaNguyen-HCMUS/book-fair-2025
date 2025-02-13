@@ -51,16 +51,14 @@ export const renderSelect = ({ label, name, value, onChange, options = [] }) => 
 );
 export const formatCurrency = (value) => {
   if (!value) return '';
-  // Convert value to string if it's a number
   const stringValue = value.toString();
   const numberValue = parseFloat(stringValue.replace(/[^0-9]/g, ''));
   if (isNaN(numberValue)) return '';
   return new Intl.NumberFormat('vi-VN', {
-    style: 'currency',
-    currency: 'VND',
-  })
-    .format(numberValue)
-    .replace('₫', 'VNĐ');
+    style: 'decimal', // Changed from 'currency' to 'decimal'
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  }).format(numberValue);
 };
 
 export const parseCurrency = (value) => {
