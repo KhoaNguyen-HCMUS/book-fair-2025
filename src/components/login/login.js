@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import './login.scss'; // Ensure this file exists for styling
 import { toast } from 'react-toastify';
 
+import { hashFunction } from '../hashFunction/hashFunction.js';
+
 const OFFLINE_CREDENTIALS = {
   username: process.env.REACT_APP_OFFLINE_USERNAME,
   password: process.env.REACT_APP_OFFLINE_PASSWORD,
@@ -16,6 +18,11 @@ function Login({ setAuth }) {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   // const [toggle, setToggle] = useState(false);
+
+  const generateHash = async (baseString) => {
+    const hash = await hashFunction(baseString);
+    return hash;
+  };
 
   const apiRequest = async (url, method, body = null, headers = {}) => {
     try {
@@ -61,21 +68,25 @@ function Login({ setAuth }) {
     e.preventDefault();
     setLoading(true);
 
-    if (username === OFFLINE_CREDENTIALS.username && password === OFFLINE_CREDENTIALS.password) {
+    const hashedPassword = await generateHash(password);
+
+    if (username === OFFLINE_CREDENTIALS.username && hashedPassword === OFFLINE_CREDENTIALS.password) {
       localStorage.setItem('isAuthenticated', 'true');
       localStorage.setItem('loginTime', new Date().getTime().toString());
       localStorage.setItem('username', OFFLINE_CREDENTIALS.name);
       localStorage.setItem('userRole', OFFLINE_CREDENTIALS.role);
+
+      console.log();
 
       setAuth(true);
       // setToggle(true);
       navigate('/');
       setLoading(false);
       return;
-    }
+    } 
 
     try {
-      const response = await checkLogin(username, password);
+      const response = await checkLogin(username, hashedPassword);
 
       if (response.success) {
         const user = response.data;
