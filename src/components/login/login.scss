@@ -137,3 +137,45 @@
     font-size: 1.5rem;
   }
 }
+
+.password-input-container {
+  position: relative;
+  margin-bottom: 1rem;
+  text-align: left;
+  label {
+    display: block;
+    font-size: 1rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    color: #333;
+  }
+  input {
+    width: 100%;
+    padding: 0.75rem;
+    padding-right: 40px; // Giữ nguyên padding để chừa chỗ cho nút
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+    line-height: 1.5; // Thêm line-height để căn giữa dọc tốt hơn
+  }
+
+  .toggle-password {
+    position: absolute;
+    right: 6px; // Giảm khoảng cách từ viền phải
+    top: 50%;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    color: #666;
+
+    &:hover {
+      color: #333;
+    }
+  }
+}

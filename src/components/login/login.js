@@ -18,6 +18,7 @@ function Login({ setAuth }) {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   // const [toggle, setToggle] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const generateHash = async (baseString) => {
     const hash = await hashFunction(baseString);
@@ -130,12 +131,12 @@ function Login({ setAuth }) {
                 placeholder='Nhập tên đăng nhập'
               />
             </div>
-            <div className='form-group'>
+            <div className='password-input-container'>
               <label htmlFor='password' className='form-label'>
                 Mật khẩu:
               </label>
               <input
-                type='password'
+                type={showPassword ? 'text' : 'password'}
                 id='password'
                 className='form-input'
                 value={password}
@@ -143,6 +144,9 @@ function Login({ setAuth }) {
                 required
                 placeholder='Nhập mật khẩu'
               />
+              <button type='button' className='toggle-password' onClick={() => setShowPassword(!showPassword)}>
+                {showPassword ? '🙈' : '👀'}
+              </button>
             </div>
             <button type='submit' className='login-button' disabled={loading}>
               {loading ? 'Đang đăng nhập...' : 'Đăng nhập'}
