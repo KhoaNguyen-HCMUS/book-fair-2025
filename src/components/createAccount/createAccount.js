@@ -1,14 +1,97 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import { renderInput, renderSelect } from '../formComponents/formComponents.js';
+import './createAccount.scss';
 
-import './createAccount.scss'; // Import the SCSS file
+function CreateAccount({ currentUserRole = 'BTC' }) {
+  const [formData, setFormData] = useState({
+    id: '',
+    password: '',
+    name: '',
+    role: '',
+  });
+  const [showPassword, setShowPassword] = useState(false);
 
-function CreateAccount() {
+  const navigate = useNavigate();
+
+  // Danh sách role cơ bản
+  const baseRoleOptions = ['CTV', 'BTC', 'ER', 'Cashier'];
+  // Nếu user hiện tại là Admin, thêm Admin vào danh sách
+  const roleOptions = currentUserRole === 'Admin' ? [...baseRoleOptions, 'Admin'] : baseRoleOptions;
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleReset = () => {
+    setFormData({
+      id: '',
+      password: '',
+      name: '',
+      role: '',
+    });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Kiểm tra validate cơ bản
+    if (!formData.id || !formData.password || !formData.name || !formData.role) {
+      toast.error('Vui lòng nhập đầy đủ thông tin!');
+      return;
+    }
+
+    // Gọi API hoặc xử lý tạo tài khoản ở đây
+    console.log('Tạo tài khoản', formData);
+    toast.success('Tạo tài khoản thành công');
+    handleReset();
+  };
+
   return (
-	<div>
-	  <h1>Create Account</h1>
-	</div>
+    <div className='create-account-page'>
+      <form className='create-account-form' onSubmit={handleSubmit}>
+        {renderInput({
+          label: 'ID Tài khoản',
+          name: 'id',
+          value: formData.id,
+          onChange: handleChange,
+        })}
+        <div className='password-input-container'>
+          {renderInput({
+            label: 'Password',
+            name: 'password',
+            value: formData.password,
+            onChange: handleChange,
+            type: showPassword ? 'text' : 'password',
+            required: true,
+          })}
+          <button type='button' className='toggle-password' onClick={() => setShowPassword(!showPassword)}>
+            {showPassword ? '🙈' : '👀'}
+          </button>
+        </div>
+
+        {renderInput({
+          label: 'Name',
+          name: 'name',
+          value: formData.name,
+          onChange: handleChange,
+        })}
+        {renderSelect({
+          label: 'Role',
+          name: 'role',
+          value: formData.role,
+          onChange: handleChange,
+          options: roleOptions,
+        })}
+        <button type='submit' className='create-account-btn'>
+          Tạo Tài Khoản
+        </button>
+      </form>
+    </div>
   );
 }
 
