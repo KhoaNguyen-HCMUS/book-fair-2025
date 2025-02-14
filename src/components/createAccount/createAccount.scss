@@ -26,16 +26,16 @@
       input {
         width: 100%;
         padding: 0.75rem;
-        padding-right: 40px; // Giữ nguyên padding để chừa chỗ cho nút
+        padding-right: 40px; 
         border: 1px solid #ddd;
         border-radius: 4px;
         font-size: 1rem;
-        line-height: 1.5; // Thêm line-height để căn giữa dọc tốt hơn
+        line-height: 1.5; 
       }
 
       .toggle-password {
         position: absolute;
-        right: 6px; // Giảm khoảng cách từ viền phải
+        right: 6px; 
         top: 50%;
         background: none;
         border: none;
@@ -50,12 +50,6 @@
 
         &:hover {
           color: #333;
-        }
-
-        svg {
-          // Nếu dùng icon SVG
-          width: 20px;
-          height: 20px;
         }
       }
     }
