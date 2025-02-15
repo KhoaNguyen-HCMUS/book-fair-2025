@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { renderInput, renderSelect } from '../formComponents/formComponents.js';
 import './createAccount.scss';
 
-function CreateAccount({ currentUserRole = 'BTC' }) {
+function CreateAccount() {
   const [formData, setFormData] = useState({
     id: '',
     password: '',
@@ -13,12 +13,9 @@ function CreateAccount({ currentUserRole = 'BTC' }) {
   });
   const [showPassword, setShowPassword] = useState(false);
 
-  const navigate = useNavigate();
 
   // Danh sách role cơ bản
-  const baseRoleOptions = ['CTV', 'BTC', 'ER', 'Cashier'];
-  // Nếu user hiện tại là Admin, thêm Admin vào danh sách
-  const roleOptions = currentUserRole === 'Admin' ? [...baseRoleOptions, 'Admin'] : baseRoleOptions;
+  const baseRoleOptions = ['CTV', 'BTC', 'ER', 'Cashier', 'Admin'];
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -39,7 +36,6 @@ function CreateAccount({ currentUserRole = 'BTC' }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Kiểm tra validate cơ bản
     if (!formData.id || !formData.password || !formData.name || !formData.role) {
       toast.error('Vui lòng nhập đầy đủ thông tin!');
       return;
@@ -70,7 +66,7 @@ function CreateAccount({ currentUserRole = 'BTC' }) {
             required: true,
           })}
           <button type='button' className='toggle-password' onClick={() => setShowPassword(!showPassword)}>
-            {showPassword ? '🙈' : '👀'}
+            {showPassword ? '🙈' : '🙉'}
           </button>
         </div>
 
@@ -85,7 +81,7 @@ function CreateAccount({ currentUserRole = 'BTC' }) {
           name: 'role',
           value: formData.role,
           onChange: handleChange,
-          options: roleOptions,
+          options: baseRoleOptions,
         })}
         <button type='submit' className='create-account-btn'>
           Tạo Tài Khoản

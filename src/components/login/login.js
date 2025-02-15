@@ -145,7 +145,7 @@ function Login({ setAuth }) {
                 placeholder='Nhập mật khẩu'
               />
               <button type='button' className='toggle-password' onClick={() => setShowPassword(!showPassword)}>
-                {showPassword ? '🙈' : '👀'}
+                {showPassword ? '🙈' : '🙉'}
               </button>
             </div>
             <button type='submit' className='login-button' disabled={loading}>
