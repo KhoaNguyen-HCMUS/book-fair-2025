@@ -3,11 +3,11 @@ import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import './addBook.scss';
 
-import { FormConsignor } from '../formConsignor/formConsignor.js';
+import { FormConsignor } from '../../components/formConsignor/formConsignor.js';
 
-import { FormConsignmentBook } from '../formConsignmentBook/formConsignmentBook.js';
+import { FormConsignmentBook } from '../../components/formConsignmentBook/formConsignmentBook.js';
 
-import { FormPublisherBook } from '../formPublisherBook/formPublisherBook.js';
+import { FormPublisherBook } from '../../components/formPublisherBook/formPublisherBook.js';
 
 function AddBook() {
   const [activeForm, setActiveForm] = useState('consignor');

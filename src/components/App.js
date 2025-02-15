@@ -4,15 +4,15 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import Nav from './nav/Nav';
-import Home from './home/home.js';
+import Home from '../pages/home/home.js';
 import './App.scss';
-import ListBooks from './listBooks/listBooks.js';
+import ListBooks from '../pages/listBooks/listBooks.js';
 import DetailBook from './detailBook/detailBook.js';
 import Checkout from './checkout/checkout.js';
-import Login from './login/login.js';
+import Login from '../pages/login/login.js';
 import ProtectedRoute from './protectedRoute.js';
-import AddBook from './addBook/addBook.js';
-import CreateAccount from './createAccount/createAccount.js';
+import AddBook from '../pages/addBook/addBook.js';
+import CreateAccount from '../pages/createAccount/createAccount.js';
 
 const SESSION_TIMEOUT = 3 * 60 * 60 * 1000; // 3 hours in milliseconds
 

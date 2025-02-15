@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import './login.scss'; // Ensure this file exists for styling
 import { toast } from 'react-toastify';
 
-import { hashFunction } from '../hashFunction/hashFunction.js';
+import { hashFunction } from '../../components/hashFunction/hashFunction.js';
 
 const OFFLINE_CREDENTIALS = {
   username: process.env.REACT_APP_OFFLINE_USERNAME,

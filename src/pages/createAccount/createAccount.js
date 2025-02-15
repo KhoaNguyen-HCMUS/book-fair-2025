@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
-import { renderInput, renderSelect } from '../formComponents/formComponents.js';
+import { renderInput, renderSelect } from '../../components/formComponents/formComponents.js';
 import './createAccount.scss';
 
 function CreateAccount() {
@@ -12,7 +12,6 @@ function CreateAccount() {
     role: '',
   });
   const [showPassword, setShowPassword] = useState(false);
-
 
   // Danh sách role cơ bản
   const baseRoleOptions = ['CTV', 'BTC', 'ER', 'Cashier', 'Admin'];
