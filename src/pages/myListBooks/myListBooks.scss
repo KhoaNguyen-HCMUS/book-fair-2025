@@ -105,33 +105,44 @@
         }
       }
     }
+
+    .validated {
+      color: green;
+      font-weight: bold;
+    }
+
+    .not-validated {
+      color: red;
+      font-weight: bold;
+    }
+
     th:nth-child(1),
     td:nth-child(1) {
-      width: 5%; // Checkbox
+      width: 10%; // ID
     }
     th:nth-child(2),
     td:nth-child(2) {
-      width: 10%; // ID
+      width: 30%; // Name
     }
     th:nth-child(3),
     td:nth-child(3) {
-      width: 30%; // Name
+      width: 15%; // Genre
     }
     th:nth-child(4),
     td:nth-child(4) {
-      width: 15%; // Genre
+      width: 15%; // Classification
     }
     th:nth-child(5),
     td:nth-child(5) {
-      width: 15%; // Classification
-    }
-    th:nth-child(8),
-    td:nth-child(8) {
       width: 10%; // Sale Price
     }
-    th:nth-child(9),
-    td:nth-child(9) {
-      width: 10%; // Actions
+    th:nth-child(6),
+    td:nth-child(6) {
+      width: 10%; // Stock
+    }
+    th:nth-child(7),
+    td:nth-child(7) {
+      width: 10%; // Validity
     }
   }
 

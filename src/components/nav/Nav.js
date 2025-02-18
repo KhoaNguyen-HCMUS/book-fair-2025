@@ -12,8 +12,8 @@ class Nav extends React.Component {
           <NavLink activeClassName='active' to='/'>
             Trang Chủ
           </NavLink>
-          <NavLink activeClassName='active' to='/listBooks'>
-            Kho Sách
+          <NavLink activeClassName='active' to='/MyListBooks'>
+            Sách đã nhập
           </NavLink>
           <NavLink activeClassName='active' to='/addBook'>
             Nhập Sách

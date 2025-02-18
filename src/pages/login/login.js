@@ -76,6 +76,7 @@ function Login({ setAuth }) {
       localStorage.setItem('loginTime', new Date().getTime().toString());
       localStorage.setItem('username', OFFLINE_CREDENTIALS.name);
       localStorage.setItem('userRole', OFFLINE_CREDENTIALS.role);
+      localStorage.setItem('userID', '0');
 
       console.log();
 
@@ -96,6 +97,7 @@ function Login({ setAuth }) {
         localStorage.setItem('loginTime', new Date().getTime().toString());
         localStorage.setItem('username', user.name);
         localStorage.setItem('userRole', user.role);
+        localStorage.setItem('userID', username);
 
         setAuth(true);
         // setToggle(true);

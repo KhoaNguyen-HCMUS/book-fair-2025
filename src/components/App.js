@@ -6,13 +6,13 @@ import 'react-toastify/dist/ReactToastify.css';
 import Nav from './nav/Nav';
 import Home from '../pages/home/home.js';
 import './App.scss';
-import ListBooks from '../pages/listBooks/listBooks.js';
-import DetailBook from './detailBook/detailBook.js';
+import MyListBooks from '../pages/myListBooks/myListBooks.js';
 import Checkout from './checkout/checkout.js';
 import Login from '../pages/login/login.js';
 import ProtectedRoute from './protectedRoute.js';
 import AddBook from '../pages/addBook/addBook.js';
 import CreateAccount from '../pages/createAccount/createAccount.js';
+import BookDetail from './BookDetail/BookDetail.js';
 
 const SESSION_TIMEOUT = 3 * 60 * 60 * 1000; // 3 hours in milliseconds
 
@@ -20,6 +20,7 @@ function App() {
   const [isAuth, setIsAuth] = useState(false);
   const [username, setUsername] = useState('');
   const [userRole, setUserole] = useState('');
+  const [userID, setUserID] = useState('');
 
   const AdminRoute = ({ children }) => {
     const userRole = localStorage.getItem('userRole');
@@ -113,18 +114,10 @@ function App() {
               }
             />
             <Route
-              path='/listBooks'
+              path='/myListBooks'
               element={
                 <ProtectedRoute>
-                  <ListBooks />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path='/book/:id'
-              element={
-                <ProtectedRoute>
-                  <DetailBook />
+                  <MyListBooks userID={userID} />
                 </ProtectedRoute>
               }
             />
@@ -150,6 +143,14 @@ function App() {
                 <AdminRoute>
                   <CreateAccount />
                 </AdminRoute>
+              }
+            />
+            <Route
+              path='/bookDetail/:id'
+              element={
+                <ProtectedRoute>
+                  <BookDetail />
+                </ProtectedRoute>
               }
             />
           </Routes>

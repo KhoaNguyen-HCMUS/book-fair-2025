@@ -3,13 +3,17 @@ import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { FaSearch } from 'react-icons/fa';
 
+import BookDetail from '../../components/BookDetail/BookDetail.js';
 
-import './listBooks.scss'; // Import the SCSS file
+import './myListBooks.scss'; // Import the SCSS file
 
-function ListBooks() {
+function MyListBooks() {
+  const userID = localStorage.getItem('userID');
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedBooks, setSelectedBooks] = useState([]);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [modalContent, setModalContent] = useState(null);
 
   const [searchInput, setSearchInput] = useState('');
   const [filteredBooks, setFilteredBooks] = useState([]);
@@ -35,7 +39,9 @@ function ListBooks() {
 
   const fetchBooks = async () => {
     try {
-      const response = await fetch(process.env.REACT_APP_DOMAIN + process.env.REACT_APP_API_GET_LIST_BOOKS);
+      const URL = `${process.env.REACT_APP_DOMAIN}${process.env.REACT_APP_API_GET_LIST_BOOKS_BY_ID}` + userID;
+      const response = await fetch(URL);
+
       const result = await response.json();
       if (result.success) {
         setBooks(result.data);
@@ -88,13 +94,8 @@ function ListBooks() {
     setFilteredBooks([]);
   };
 
-  const handleDetailClick = (bookId) => {
-    navigate(`/book/${bookId}`);
-  };
-
   return (
     <div className='list-books'>
-
       <form onSubmit={handleSearchSubmit} className='search-container'>
         <FaSearch className='search-icon' />
         <input
@@ -113,32 +114,32 @@ function ListBooks() {
       <table className='book-table'>
         <thead>
           <tr>
-            <th></th>
             <th>ID</th>
             <th>Tên sách</th>
             <th>Thể loại</th>
             <th>Phân loại</th>
             <th>Giá bán</th>
-            <th>Actions</th>
+            <th>Số lượng</th>
+            <th>Xác thực</th>
           </tr>
         </thead>
         <tbody>
           {currentBooks.map((book) => (
-            <tr key={book.id}>
-              <td className='checkbox-container' onClick={(e) => e.stopPropagation()}>
-                <input
-                  type='checkbox'
-                  className='large-checkbox'
-                  checked={selectedBooks.includes(book.id)}
-                  onChange={() => handleSelectBook(book.id)}
-                />
-              </td>
+            <tr
+              key={book.id}
+              onClick={() => navigate(`/bookDetail/${book.id_product}`, { state: { book } })}
+              style={{ cursor: 'pointer' }}
+              className='book-row'
+            >
               <td>{book.id_product}</td>
               <td>{book.name}</td>
               <td>{book.genre}</td>
               <td>{book.classify}</td>
               <td>{book.price.toLocaleString('vi-VN')} VNĐ</td>
-              <td>{/* Action buttons */}</td>
+              <td>{book.quantity - book.sold}</td>
+              <td className={book.validate === 1 ? 'validated' : 'not-validated'}>
+                {book.validate === 1 ? 'Đã xác thực' : 'Chưa xác thực'}
+              </td>
             </tr>
           ))}
         </tbody>
@@ -176,8 +177,4 @@ function ListBooks() {
   );
 }
 
-const mapStateToProps = (state) => ({
-  books: state.books,
-});
-
-export default ListBooks;
+export default MyListBooks;
