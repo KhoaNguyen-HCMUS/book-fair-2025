@@ -16,6 +16,7 @@ export const FormPublisherBook = () => {
     publisher: '',
     age: '',
     stock: 1,
+    type: 'Sách NXB',
     originalPrice: '',
     typePrice: '',
     salePrice: '',
@@ -26,12 +27,14 @@ export const FormPublisherBook = () => {
   });
 
   const handleReset = () => {
+    const tempPublisher = formData.publisher;
     setFormData({
       id: idBookGen('NXB'),
       name: '',
-      publisher: '',
+      publisher: tempPublisher,
       age: '',
       stock: 1,
+      type: 'Sách NXB',
       originalPrice: '',
       typePrice: '',
       salePrice: '',
@@ -50,13 +53,54 @@ export const FormPublisherBook = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log('Book Data:', formData);
-    // Add API call here
-    toast.success('Thêm sách thành công');
-    handleReset();
-  };
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  try {
+    const bookData = {
+      typeOb: 'product',
+      data: {
+        id_product: formData.id,
+        id_member: localStorage.getItem('userID'),
+        id_consignor: '', // Empty for publisher books
+        name: formData.name,
+        age: formData.age,
+        genre: formData.category || 'Không xác định', // Add default value
+        classify: formData.type,
+        bc_cost: parseFloat(parseCurrency(formData.originalPrice)) || 0,
+        discount: parseFloat(formData.typePrice) || 0,
+        price: parseFloat(parseCurrency(formData.salePrice)) || 0,
+        cash_back: parseFloat(parseCurrency(formData.refundPrice)) || 0,
+        quantity: parseInt(formData.stock) || 1,
+        validate: 0, // Set initial validate status
+        sold: 0, // Set initial sold count
+      },
+    };
+
+    const URL = process.env.REACT_APP_DOMAIN + process.env.REACT_APP_API_CREATE_OBJECT;
+    const response = await fetch(URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(bookData),
+    });
+    const contentType = response.headers.get('content-type');
+    if (!contentType || !contentType.includes('application/json')) {
+      throw new TypeError("Oops, we haven't got JSON!");
+    }
+    const result = await response.json();
+
+    if (result.success) {
+      toast.success('Thêm sách thành công');
+      handleReset();
+    } else {
+      toast.error('Lỗi khi thêm sách: ' + result.message);
+    }
+  } catch (error) {
+    console.error('Error:', error);
+    toast.error('Lỗi khi thêm sách');
+  }
+};
 
   const CalculateSalePrice = (originalPrice, typePrice) => {
     const numericPrice = parseCurrency(originalPrice);

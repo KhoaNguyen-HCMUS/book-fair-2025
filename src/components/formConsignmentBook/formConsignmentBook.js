@@ -66,9 +66,10 @@ export const FormConsignmentBook = () => {
   });
 
   const handleReset = () => {
+    const tempNumber = formData.idConsignor;
     setFormData({
       id: idBookGen('BK'),
-      idConsignor: '',
+      idConsignor: tempNumber,
       nameConsignor: getNameConsignor(formData.idConsignor),
       time: timeGen(),
       name: '',
@@ -138,11 +139,57 @@ export const FormConsignmentBook = () => {
     console.log(name, value);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log('Book Data:', formData);
-    // Add API call here
-    toast.success('Thêm sách thành công');
+    try {
+      const bookData = {
+        typeOb: 'product',
+        data: {
+          id_product: formData.id,
+          id_member: localStorage.getItem('userID'), // Assuming you store userID in localStorage
+          id_consignor: formData.idConsignor,
+          name: formData.name,
+          age: formData.age,
+          genre: formData.category,
+          classify: formData.type,
+          bc_cost: parseFloat(parseCurrency(formData.originalPrice)),
+          discount:
+            formData.typePrice === '45%'
+              ? 55
+              : formData.typePrice === '65%'
+              ? 35
+              : Math.round(
+                  (1 -
+                    parseFloat(parseCurrency(formData.salePrice)) / parseFloat(parseCurrency(formData.originalPrice))) *
+                    100
+                ),
+          price: parseFloat(parseCurrency(formData.salePrice)),
+          cash_back: parseFloat(parseCurrency(formData.refundPrice)),
+          quantity: 1,
+        },
+      };
+      const URL = process.env.REACT_APP_DOMAIN + process.env.REACT_APP_API_CREATE_OBJECT;
+      const response = await fetch(URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(bookData),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        toast.success('Thêm sách thành công');
+        handleReset();
+      } else {
+        toast.error('Lỗi khi thêm sách: ' + result.message);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      toast.error('Lỗi khi thêm sách');
+    }
     handleReset();
   };
 
