@@ -4,14 +4,8 @@ import { toast } from 'react-toastify';
 import { renderInput, renderSelect, formatCurrency, parseCurrency } from '../formComponents/formComponents.js';
 
 export const FormPublisherBook = () => {
-  const idBookGen = (prefix) => {
-    const timestamp = new Date().getTime();
-    const random = Math.floor(Math.random() * 1000);
-    return `${prefix}-${timestamp}-${random}`;
-  };
-
   const [formData, setFormData] = useState({
-    id: idBookGen('NXB'),
+    id: '',
     name: '',
     publisher: '',
     age: '',
@@ -29,7 +23,8 @@ export const FormPublisherBook = () => {
   const handleReset = () => {
     const tempPublisher = formData.publisher;
     setFormData({
-      id: idBookGen('NXB'),
+      id: '',
+      id_publisher: '',
       name: '',
       publisher: tempPublisher,
       age: '',
@@ -53,54 +48,58 @@ export const FormPublisherBook = () => {
     }));
   };
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  try {
-    const bookData = {
-      typeOb: 'product',
-      data: {
-        id_product: formData.id,
-        id_member: localStorage.getItem('userID'),
-        id_consignor: '', // Empty for publisher books
-        name: formData.name,
-        age: formData.age,
-        genre: formData.category || 'Không xác định', // Add default value
-        classify: formData.type,
-        bc_cost: parseFloat(parseCurrency(formData.originalPrice)) || 0,
-        discount: parseFloat(formData.typePrice) || 0,
-        price: parseFloat(parseCurrency(formData.salePrice)) || 0,
-        cash_back: parseFloat(parseCurrency(formData.refundPrice)) || 0,
-        quantity: parseInt(formData.stock) || 1,
-        validate: 0, // Set initial validate status
-        sold: 0, // Set initial sold count
-      },
-    };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const bookData = {
+        typeOb: 'product',
+        data: {
+          id_product: formData.id,
+          id_member: localStorage.getItem('userID'),
+          id_consignor: formData.id_publisher,
+          name: formData.name,
+          age: formData.age,
+          genre: formData.category || 'Không xác định', // Add default value
+          classify: formData.type,
+          bc_cost: parseFloat(parseCurrency(formData.originalPrice)) || 0,
+          discount: parseFloat(formData.typePrice) || 0,
+          price: parseFloat(parseCurrency(formData.salePrice)) || 0,
+          cash_back: parseFloat(parseCurrency(formData.refundPrice)) || 0,
+          quantity: parseInt(formData.stock) || 1,
+          validate: 0, // Set initial validate status
+          sold: 0, // Set initial sold count
+        },
+      };
 
-    const URL = process.env.REACT_APP_DOMAIN + process.env.REACT_APP_API_CREATE_OBJECT;
-    const response = await fetch(URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(bookData),
-    });
-    const contentType = response.headers.get('content-type');
-    if (!contentType || !contentType.includes('application/json')) {
-      throw new TypeError("Oops, we haven't got JSON!");
-    }
-    const result = await response.json();
+      const URL = process.env.REACT_APP_DOMAIN + process.env.REACT_APP_API_CREATE_OBJECT;
+      const response = await fetch(URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(bookData),
+      });
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        throw new TypeError("Oops, we haven't got JSON!");
+      }
+      const result = await response.json();
 
-    if (result.success) {
-      toast.success('Thêm sách thành công');
-      handleReset();
-    } else {
-      toast.error('Lỗi khi thêm sách: ' + result.message);
+      if (result.success) {
+        toast.success('Thêm sách thành công');
+        handleReset();
+      } else {
+        if (result.message === 'id_product already exists') {
+          toast.error('ID sách đã tồn tại, vui lòng kiểm tra lại hoặc đổi ID khác');
+        } else {
+          toast.error('Lỗi khi thêm sách: ' + result.message);
+        }
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      toast.error('Lỗi khi thêm sách');
     }
-  } catch (error) {
-    console.error('Error:', error);
-    toast.error('Lỗi khi thêm sách');
-  }
-};
+  };
 
   const CalculateSalePrice = (originalPrice, typePrice) => {
     const numericPrice = parseCurrency(originalPrice);
@@ -130,6 +129,46 @@ const handleSubmit = async (e) => {
     }
   }, [formData.typePrice, formData.originalPrice]);
 
+  const handleSearch = async () => {
+    if (formData.id_publisher) {
+      await getNamePublisher(formData.id_publisher);
+    }
+  };
+
+  const handleKeyPress = async (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault(); // Prevent form submission
+      await handleSearch();
+    }
+  };
+
+  const getNamePublisher = async (numberPhone) => {
+    try {
+      const URL = `${process.env.REACT_APP_DOMAIN}${process.env.REACT_APP_API_GET_CONSIGNOR_BY_ID}${numberPhone}`;
+      const response = await fetch(URL);
+      const data = await response.json();
+
+      if (data.success && data.data) {
+        setFormData((prev) => ({
+          ...prev,
+          publisher: data.data.name,
+        }));
+      } else {
+        toast.error('Không tìm thấy thông tin Nhà Xuất Bản');
+        setFormData((prev) => ({
+          ...prev,
+          publisher: '',
+        }));
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      toast.error('Lỗi khi lấy thông tin Nhà Xuất Bản');
+      setFormData((prev) => ({
+        ...prev,
+        publisher: '',
+      }));
+    }
+  };
   return (
     <form className='form' onSubmit={handleSubmit}>
       <h2>Thêm Sách Nhà Xuất Bản</h2>
@@ -137,7 +176,29 @@ const handleSubmit = async (e) => {
         label: 'ID Sách:',
         name: 'id',
         value: formData.id,
+        onChange: handleChange,
+      })}
+
+      <div className='input-group'>
+        {renderInput({
+          label: 'ID Nhà Xuất Bản:',
+          name: 'id_publisher',
+          type: 'text',
+          value: formData.id_publisher,
+          onChange: handleChange,
+          onKeyPress: handleKeyPress,
+        })}
+        <button type='button' className='search-button' onClick={handleSearch}>
+          Tìm
+        </button>
+      </div>
+      {renderInput({
+        label: 'Nhà Xuất Bản:',
+        name: 'publisher',
+        type: 'text',
+        value: formData.publisher,
         disabled: true,
+        onChange: handleChange,
       })}
       {renderInput({
         label: 'Tên Sách:',
@@ -153,14 +214,6 @@ const handleSubmit = async (e) => {
         value: formData.age,
         onChange: handleChange,
         options: ['Không giới hạn', '16+', '18+'],
-      })}
-
-      {renderInput({
-        label: 'Nhà Xuất Bản:',
-        name: 'publisher',
-        type: 'text',
-        value: formData.publisher,
-        onChange: handleChange,
       })}
 
       {renderInput({

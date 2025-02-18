@@ -4,12 +4,6 @@ import { toast } from 'react-toastify';
 import { renderInput, renderSelect, formatCurrency, parseCurrency } from '../formComponents/formComponents.js';
 
 export const FormConsignmentBook = () => {
-  const idBookGen = (prefix) => {
-    const timestamp = new Date().getTime();
-    const random = Math.floor(Math.random() * 1000);
-    return `${prefix}-${timestamp}-${random}`;
-  };
-
   const CalculatePrice = (originalPrice, typePrice) => {
     const price = parseFloat(parseCurrency(originalPrice));
     if (isNaN(price)) return '';
@@ -35,21 +29,11 @@ export const FormConsignmentBook = () => {
     return Math.round(numericSalePrice - numericOriginalPrice * 0.05);
   };
 
-  const timeGen = () => {
-    const date = new Date();
-    return date.toISOString();
-  };
-
-  const getNameConsignor = (numberPhone) => {
-    // Add API call here
-    return 'Nguyễn Văn A' + numberPhone;
-  };
 
   const [formData, setFormData] = useState({
-    id: idBookGen('BK'),
+    id: '',
     idConsignor: '',
     nameConsignor: '',
-    time: timeGen(),
     name: '',
     publisher: '',
     author: '',
@@ -68,10 +52,9 @@ export const FormConsignmentBook = () => {
   const handleReset = () => {
     const tempNumber = formData.idConsignor;
     setFormData({
-      id: idBookGen('BK'),
+      id: '',
       idConsignor: tempNumber,
       nameConsignor: getNameConsignor(formData.idConsignor),
-      time: timeGen(),
       name: '',
       publisher: '',
       author: '',
@@ -156,12 +139,11 @@ export const FormConsignmentBook = () => {
           bc_cost: parseFloat(parseCurrency(formData.originalPrice)),
           discount:
             formData.typePrice === '45%'
-              ? 55
+              ? 45
               : formData.typePrice === '65%'
-              ? 35
+              ? 65
               : Math.round(
-                  (1 -
-                    parseFloat(parseCurrency(formData.salePrice)) / parseFloat(parseCurrency(formData.originalPrice))) *
+                  (parseFloat(parseCurrency(formData.salePrice)) / parseFloat(parseCurrency(formData.originalPrice))) *
                     100
                 ),
           price: parseFloat(parseCurrency(formData.salePrice)),
@@ -184,13 +166,16 @@ export const FormConsignmentBook = () => {
         toast.success('Thêm sách thành công');
         handleReset();
       } else {
-        toast.error('Lỗi khi thêm sách: ' + result.message);
+        if (result.message === 'id_product already exists') {
+          toast.error('ID sách đã tồn tại, vui lòng kiểm tra lại hoặc đổi ID khác');
+        } else {
+          toast.error('Lỗi khi thêm sách: ' + result.message);
+        }
       }
     } catch (error) {
       console.error('Error:', error);
       toast.error('Lỗi khi thêm sách');
     }
-    handleReset();
   };
 
   useEffect(() => {
@@ -210,14 +195,47 @@ export const FormConsignmentBook = () => {
     }
   }, [formData.typePrice, formData.originalPrice]);
 
-  useEffect(() => {
+  const handleSearch = async () => {
     if (formData.idConsignor) {
+      await getNameConsignor(formData.idConsignor);
+    }
+  };
+
+  // Add handleKeyPress function
+  const handleKeyPress = async (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault(); // Prevent form submission
+      await handleSearch();
+    }
+  };
+
+  const getNameConsignor = async (numberPhone) => {
+    try {
+      const URL = `${process.env.REACT_APP_DOMAIN}${process.env.REACT_APP_API_GET_CONSIGNOR_BY_ID}${numberPhone}`;
+      const response = await fetch(URL);
+      const data = await response.json();
+
+      if (data.success && data.data) {
+        setFormData((prev) => ({
+          ...prev,
+          nameConsignor: data.data.name,
+        }));
+      } else {
+        toast.error('Không tìm thấy thông tin người ký gửi');
+        setFormData((prev) => ({
+          ...prev,
+          nameConsignor: '',
+        }));
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      toast.error('Lỗi khi lấy thông tin người ký gửi');
       setFormData((prev) => ({
         ...prev,
-        nameConsignor: getNameConsignor(formData.idConsignor),
+        nameConsignor: '',
       }));
     }
-  }, [formData.idConsignor]);
+  };
 
   return (
     <form className='form' onSubmit={handleSubmit}>
@@ -226,21 +244,27 @@ export const FormConsignmentBook = () => {
         label: 'ID Sách:',
         name: 'id',
         value: formData.id,
-        disabled: true,
-      })}
-
-      {renderInput({
-        label: 'ID Người Ký Gửi:',
-        name: 'idConsignor',
-        type: 'text',
-        value: formData.idConsignor,
         onChange: handleChange,
       })}
+
+      <div className='input-group'>
+        {renderInput({
+          label: 'ID Người Ký Gửi:',
+          name: 'idConsignor',
+          type: 'text',
+          value: formData.idConsignor,
+          onChange: handleChange,
+          onKeyPress: handleKeyPress,
+        })}
+        <button type='button' className='search-button' onClick={handleSearch}>
+          Tìm
+        </button>
+      </div>
 
       {renderInput({
         label: 'Tên Người Ký Gửi',
         name: 'nameConsignor',
-        value: formData.nameConsignor, // Changed from getNameConsignor(formData.idConsignor)
+        value: formData.nameConsignor,
         disabled: true,
         onChange: handleChange,
       })}
@@ -250,15 +274,6 @@ export const FormConsignmentBook = () => {
         name: 'name',
         type: 'text',
         value: formData.title,
-        onChange: handleChange,
-      })}
-
-      {renderInput({
-        label: 'Thời Gian:',
-        name: 'time',
-        type: 'text',
-        value: formData.time,
-        disabled: true,
         onChange: handleChange,
       })}
 
@@ -325,7 +340,6 @@ export const FormConsignmentBook = () => {
             refundPrice: '',
           }));
         },
-        note: 'Khi cần chỉnh sửa, xóa tất cả hoặc bấm nút Reset (↺) để xóa nhập lại',
       })}
 
       {renderSelect({
