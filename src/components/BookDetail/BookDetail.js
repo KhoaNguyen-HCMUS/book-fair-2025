@@ -9,6 +9,7 @@ function BookDetail() {
   const [isEditing, setIsEditing] = useState(false);
   const [editedBook, setEditedBook] = useState(state?.book || null);
   const book = state?.book;
+  const userRole = localStorage.getItem('userRole');
 
   if (!book) {
     return <div>Book not found</div>;
@@ -19,6 +20,11 @@ function BookDetail() {
   };
 
   const handleSave = async () => {
+    const isConfirmed = window.confirm('Bạn có chắc chắn muốn lưu thay đổi?');
+
+    if (!isConfirmed) {
+      return;
+    }
     try {
       const URL = process.env.REACT_APP_DOMAIN + process.env.REACT_APP_API_UPDATE_OBJECT;
       const response = await fetch(URL, {
@@ -72,6 +78,45 @@ function BookDetail() {
   const handleCancel = () => {
     setIsEditing(false);
     setEditedBook(book); // Reset to original values
+  };
+
+  const handleValidate = async () => {
+    const isConfirmed = window.confirm('Bạn có chắc chắn muốn xác thực sách này?');
+
+    if (!isConfirmed) {
+      return;
+    }
+    try {
+      const URL = process.env.REACT_APP_DOMAIN + process.env.REACT_APP_API_UPDATE_OBJECT;
+      const response = await fetch(URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          typeOb: 'product',
+          id: book.id_product,
+          data: {
+            validate: 1,
+          },
+        }),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        toast.success('Xác thực sách thành công');
+        // Update the local state
+        state.book.validate = 1;
+        // Force re-render
+        setEditedBook({ ...editedBook, validate: 1 });
+      } else {
+        toast.error('Lỗi khi xác thực: ' + result.message);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      toast.error('Lỗi khi xác thực sách');
+    }
   };
 
   return (
@@ -175,13 +220,21 @@ function BookDetail() {
 
       <div className='button-container'>
         {!isEditing ? (
-          <button
-            className={`edit-button ${book.validate === 1 ? 'disabled' : ''}`}
-            onClick={handleEdit}
-            disabled={book.validate === 1}
-          >
-            {book.validate === 1 ? 'Không thể chỉnh sửa' : 'Chỉnh sửa'}
-          </button>
+          <>
+            <button
+              className='edit-button'
+              onClick={handleEdit}
+              disabled={book.validate === 1 && userRole !== 'BTC' && userRole !== 'Admin'}
+            >
+              {book.validate === 1 && userRole !== 'BTC' && userRole !== 'Admin' ? 'Không thể chỉnh sửa' : 'Chỉnh sửa'}
+            </button>
+
+            {(userRole === 'BTC' || userRole === 'Admin') && book.validate === 0 && (
+              <button className='validate-button' onClick={handleValidate}>
+                Xác thực sách
+              </button>
+            )}
+          </>
         ) : (
           <>
             <button className='save-button' onClick={handleSave}>

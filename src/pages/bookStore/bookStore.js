@@ -50,7 +50,6 @@ function BookStore() {
   const fetchBooks = async () => {
     try {
       const URL = process.env.REACT_APP_DOMAIN + process.env.REACT_APP_API_GET_LIST_BOOKS;
-      console.log(URL);
       const response = await fetch(URL);
 
       const result = await response.json();
