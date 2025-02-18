@@ -38,12 +38,44 @@ export const FormConsignor = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log('Consignor Data:', formData);
-    // Add API call here
-    toast.success('Người ký gửi đã được thêm');
-    handleReset();
+
+    const URL = process.env.REACT_APP_DOMAIN + process.env.REACT_APP_API_CREATE_OBJECT;
+    const userID = localStorage.getItem('userID');
+
+    try {
+      const response = await fetch(URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          typeOb: 'consignor',
+          data: {
+            id_consignor: formData.phone,
+            name: formData.name,
+            id_bank: formData.account,
+            bank_name: formData.bank,
+            holder_name: formData.accountName,
+            cash_back: formData.amount,
+            id_member: userID,
+            address: formData.address,
+          },
+        }),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        toast.success('Người ký gửi đã được thêm');
+        handleReset();
+      }
+    } catch (error) {
+      toast.error('Có lỗi khi thêm người ký gửi');
+      console.error('Error:', error);
+    }
   };
 
   return (
