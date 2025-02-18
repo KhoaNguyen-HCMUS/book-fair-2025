@@ -98,6 +98,7 @@ function BookDetail() {
           id: book.id_product,
           data: {
             validate: 1,
+            id_validate: localStorage.getItem('userId'),
           },
         }),
       });
