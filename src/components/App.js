@@ -13,6 +13,7 @@ import ProtectedRoute from './protectedRoute.js';
 import AddBook from '../pages/addBook/addBook.js';
 import CreateAccount from '../pages/createAccount/createAccount.js';
 import BookDetail from './BookDetail/BookDetail.js';
+import BookStore from '../pages/bookStore/bookStore.js';
 
 const SESSION_TIMEOUT = 3 * 60 * 60 * 1000; // 3 hours in milliseconds
 
@@ -37,6 +38,27 @@ function App() {
     }, [isAuthenticated, userRole]);
 
     if (!isAuthenticated || userRole !== 'Admin') {
+      return <Navigate to='/' />;
+    }
+
+    return children;
+  };
+
+  const OrganizerRoute = ({ children }) => {
+    const userRole = localStorage.getItem('userRole');
+    const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
+    const hasAlerted = useRef(false);
+
+    useEffect(() => {
+      if ((!isAuthenticated || (userRole !== 'BTC' && userRole !== 'Admin')) && !hasAlerted.current) {
+        hasAlerted.current = true;
+        setTimeout(() => {
+          toast.error('You do not have permission to access this page.');
+        }, 100);
+      }
+    }, [isAuthenticated, userRole]);
+
+    if (!isAuthenticated || (userRole !== 'BTC' && userRole !== 'Admin')) {
       return <Navigate to='/' />;
     }
 
@@ -143,6 +165,14 @@ function App() {
                 <AdminRoute>
                   <CreateAccount />
                 </AdminRoute>
+              }
+            />
+            <Route
+              path='/bookStore'
+              element={
+                <OrganizerRoute>
+                  <BookStore />
+                </OrganizerRoute>
               }
             />
             <Route
