@@ -70,6 +70,7 @@ function App() {
       const loginTime = localStorage.getItem('loginTime');
       setUsername(localStorage.getItem('username') || '');
       setUserole(localStorage.getItem('userRole') || '');
+      setUserID(localStorage.getItem('userID') || '');
 
       const intervalId = setInterval(() => {
         const currentTime = new Date().getTime();

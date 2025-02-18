@@ -82,7 +82,7 @@ function BookDetail() {
 
   const handleValidate = async () => {
     const isConfirmed = window.confirm('Bạn có chắc chắn muốn xác thực sách này?');
-
+    const userId = localStorage.getItem('userID');
     if (!isConfirmed) {
       return;
     }
@@ -98,7 +98,7 @@ function BookDetail() {
           id: book.id_product,
           data: {
             validate: 1,
-            id_validate: localStorage.getItem('userId'),
+            id_validate: userId,
           },
         }),
       });
@@ -109,7 +109,6 @@ function BookDetail() {
         toast.success('Xác thực sách thành công');
         // Update the local state
         state.book.validate = 1;
-        // Force re-render
         setEditedBook({ ...editedBook, validate: 1 });
       } else {
         toast.error('Lỗi khi xác thực: ' + result.message);
