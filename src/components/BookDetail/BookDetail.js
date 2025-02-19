@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import './BookDetail.scss';
+import { formatCurrency } from '../../components/formComponents/formComponents.js';
 
 function BookDetail() {
   const { state } = useLocation();
@@ -19,12 +20,45 @@ function BookDetail() {
     setIsEditing(true);
   };
 
+  const calculatePrice = (originalPrice, discount, classify) => {
+    const price = parseFloat(originalPrice);
+    if (isNaN(price)) return 0;
+
+    if (classify === 'Sách NXB') {
+      // For NXB books: apply discount percentage
+      return Math.round(price * (1 - discount / 100));
+    } else {
+      // For consignment books: multiply by percentage directly
+      return Math.round(price * (discount / 100));
+    }
+  };
+
+  const calculateRefund = (salePrice, originalPrice) => {
+    const price = parseFloat(salePrice);
+    const original = parseFloat(originalPrice);
+    if (isNaN(price) || isNaN(original)) return 0;
+    return price - original * 0.05;
+  };
+
   const handleSave = async () => {
-    const isConfirmed = window.confirm('Bạn có chắc chắn muốn lưu thay đổi?');
+    const newPrice = calculatePrice(editedBook.bc_cost, editedBook.discount, editedBook.classify);
+    const newRefund = calculateRefund(newPrice, editedBook.bc_cost);
+
+    const confirmMessage = `
+    Thông tin sau khi tính toán:
+    - Giá bán mới: ${newPrice.toLocaleString('vi-VN')} VNĐ
+    - Tiền hoàn mới: ${newRefund.toLocaleString('vi-VN')} VNĐ
+    
+    Bạn có chắc chắn muốn lưu thay đổi?
+  `;
+    const isConfirmed = window.confirm(confirmMessage);
 
     if (!isConfirmed) {
       return;
     }
+    editedBook.price = newPrice;
+    editedBook.cash_back = newRefund;
+    editedBook.discount = parseInt(editedBook.discount);
     try {
       const URL = process.env.REACT_APP_DOMAIN + process.env.REACT_APP_API_UPDATE_OBJECT;
       const response = await fetch(URL, {
@@ -69,10 +103,17 @@ function BookDetail() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setEditedBook((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    if (name === 'bc_cost') {
+      setEditedBook((prev) => ({
+        ...prev,
+        [name]: value.replace(/[^0-9]/g, ''),
+      }));
+    } else {
+      setEditedBook((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+    }
   };
 
   const handleCancel = () => {
@@ -173,28 +214,45 @@ function BookDetail() {
           <span className='label'>Giá gốc:</span>
           {isEditing ? (
             <input
-              type='number'
+              type='text' // Changed from 'number' to 'text'
               name='bc_cost'
-              value={editedBook.bc_cost}
+              value={formatCurrency(editedBook.bc_cost)}
               onChange={handleChange}
               className='edit-input'
             />
           ) : (
-            <span className='value'>{book.bc_cost.toLocaleString('vi-VN')} VNĐ</span>
+            <span className='value'>{formatCurrency(book.bc_cost)} VNĐ</span>
           )}
         </div>
         <div className='detail-item'>
-          <span className='label'>Chiết khấu:</span>
+          <span className='label'>{book.classify === 'Sách NXB' ? 'Chiết khấu:' : 'Loại giá bán:'}</span>
           {isEditing ? (
-            <input
-              type='number'
-              name='discount'
-              value={editedBook.discount}
-              onChange={handleChange}
-              className='edit-input'
-            />
+            book.classify === 'Sách NXB' ? (
+              <input
+                type='number'
+                name='discount'
+                value={editedBook.discount}
+                onChange={handleChange}
+                className='edit-input'
+                min='0'
+                max='100'
+              />
+            ) : (
+              <select name='discount' value={editedBook.discount} onChange={handleChange} className='edit-input'>
+                <option value='45'>45% giá bìa</option>
+                <option value='65'>65% giá bìa</option>
+              </select>
+            )
           ) : (
-            <span className='value'>{book.discount}%</span>
+            <span className='value'>
+              {book.classify === 'Sách NXB'
+                ? `${book.discount}%`
+                : book.discount === 45
+                ? '45% giá bìa'
+                : book.discount === 65
+                ? '65% giá bìa'
+                : 'Sách đặc biệt'}
+            </span>
           )}
         </div>
         <div className='detail-item'>
@@ -203,7 +261,6 @@ function BookDetail() {
         </div>
         <div className='detail-item'>
           <span className='label'>Tiền hoàn:</span>
-
           <span className='value'>{book.cash_back.toLocaleString('vi-VN')} VNĐ</span>
         </div>
         <div className='detail-item'>

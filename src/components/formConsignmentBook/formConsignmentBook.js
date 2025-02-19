@@ -285,14 +285,6 @@ export const FormConsignmentBook = () => {
         onChange: handleChange,
       })}
 
-      {renderInput({
-        label: 'Nhà Xuất Bản:',
-        name: 'publisher',
-        type: 'text',
-        value: formData.publisher,
-        onChange: handleChange,
-      })}
-
       {renderSelect({
         label: 'Thể Loại:',
         name: 'category',
