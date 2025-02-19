@@ -142,6 +142,13 @@
   position: relative;
   margin-bottom: 1rem;
   text-align: left;
+
+  .form-input[type='password']::-ms-reveal,
+  .form-input[type='password']::-ms-clear,
+  .form-input[type='password']::-webkit-contacts-auto-fill-button,
+  .form-input[type='password']::-webkit-credentials-auto-fill-button {
+    display: none !important;
+  }
   label {
     display: block;
     font-size: 1rem;
@@ -156,12 +163,12 @@
     border: 1px solid #ddd;
     border-radius: 4px;
     font-size: 1rem;
-    line-height: 1.5; 
+    line-height: 1.5;
   }
 
   .toggle-password {
     position: absolute;
-    right: 6px; 
+    right: 6px;
     top: 50%;
     background: none;
     border: none;

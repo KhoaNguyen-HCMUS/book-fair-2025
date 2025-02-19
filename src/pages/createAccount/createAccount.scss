@@ -23,19 +23,27 @@
     .password-input-container {
       position: relative;
 
+      label {
+        display: block;
+        margin-bottom: 0.5rem;
+        color: #333;
+        font-weight: 500;
+        font-size: 25px;
+      }
+
       input {
         width: 100%;
         padding: 0.75rem;
-        padding-right: 40px; 
+        padding-right: 40px;
         border: 1px solid #ddd;
         border-radius: 4px;
         font-size: 1rem;
-        line-height: 1.5; 
+        line-height: 1.5;
       }
 
       .toggle-password {
         position: absolute;
-        right: 6px; 
+        right: 6px;
         top: 50%;
         background: none;
         border: none;
@@ -75,6 +83,12 @@
         font-size: 1rem;
         transition: border-color 0.2s;
         box-sizing: border-box;
+
+        &[type='password']::-ms-reveal,
+        &[type='password']::-ms-clear {
+          display: none;
+        }
+        
 
         &:focus {
           outline: none;
