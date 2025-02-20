@@ -55,7 +55,7 @@ function AddBook() {
 const renderDontHavePermission = () => {
   return (
     <div className='dont-have-permission'>
-      <h1>Bạn không có quyền truy cập nhập sách Nhà Xuất Bản</h1>
+      <h2>Bạn không có quyền truy cập nhập sách Nhà Xuất Bản</h2>
     </div>
   );
 };
