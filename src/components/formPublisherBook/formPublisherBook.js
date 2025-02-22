@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 
 import { renderInput, renderSelect, formatCurrency, parseCurrency } from '../formComponents/formComponents.js';
-
+import './formPublisherBook.scss';
 export const FormPublisherBook = () => {
   const [formData, setFormData] = useState({
     id: '',
@@ -42,6 +42,7 @@ export const FormPublisherBook = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+
     setFormData((prev) => ({
       ...prev,
       [name]: value,
@@ -50,6 +51,10 @@ export const FormPublisherBook = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (formData.stock < 1) {
+      toast.error('Số lượng sách phải lớn hơn 0');
+      return;
+    }
     try {
       const bookData = {
         typeOb: 'product',
@@ -172,88 +177,92 @@ export const FormPublisherBook = () => {
   return (
     <form className='form' onSubmit={handleSubmit}>
       <h2>Thêm Sách Nhà Xuất Bản</h2>
-      {renderInput({
-        label: 'ID Sách:',
-        name: 'id',
-        value: formData.id,
-        onChange: handleChange,
-      })}
-
-      <div className='input-group'>
+      <div className='form-content'>
         {renderInput({
-          label: 'ID Nhà Xuất Bản:',
-          name: 'id_publisher',
-          type: 'text',
-          value: formData.id_publisher,
+          label: 'ID Sách:',
+          name: 'id',
+          value: formData.id,
           onChange: handleChange,
-          onKeyPress: handleKeyPress,
         })}
-        <button type='button' className='search-button' onClick={handleSearch}>
-          Tìm
-        </button>
+
+        <div className='input-group'>
+          {renderInput({
+            label: 'ID Nhà Xuất Bản:',
+            name: 'id_publisher',
+            type: 'text',
+            value: formData.id_publisher,
+            onChange: handleChange,
+            onKeyPress: handleKeyPress,
+          })}
+          <button type='button' className='search-button' onClick={handleSearch}>
+            Tìm
+          </button>
+        </div>
+        {renderInput({
+          label: 'Nhà Xuất Bản:',
+          name: 'publisher',
+          type: 'text',
+          value: formData.publisher,
+          disabled: true,
+          onChange: handleChange,
+        })}
+        {renderInput({
+          label: 'Tên Sách:',
+          name: 'name',
+          type: 'text',
+          value: formData.name,
+          onChange: handleChange,
+        })}
+
+        {renderSelect({
+          label: 'Độ Tuổi:',
+          name: 'age',
+          value: formData.age,
+          onChange: handleChange,
+          options: ['Không giới hạn', '16+', '18+'],
+        })}
+
+        {renderInput({
+          label: 'Giá Gốc:',
+          name: 'originalPrice',
+          type: 'text',
+          value: formatCurrency(formData.originalPrice),
+
+          onChange: handleChange,
+        })}
+
+        {renderInput({
+          label: 'Chiết khấu (%):',
+          name: 'typePrice',
+          type: 'text',
+          value: formData.typePrice,
+          onChange: handleChange,
+        })}
+        {renderInput({
+          label: 'Giá Bán:',
+          name: 'salePrice',
+          type: 'text',
+          value: formatCurrency(formData.salePrice),
+          disabled: true,
+        })}
+        {renderInput({
+          label: 'Giá Hoàn Tiền:',
+          name: 'refundPrice',
+          type: 'text',
+          value: formatCurrency(formData.refundPrice),
+          disabled: true,
+        })}
+        {renderInput({
+          label: 'Số Lượng:',
+          name: 'stock',
+          type: 'number',
+          value: formData.stock,
+          onChange: handleChange,
+          min: '1',
+          step: '1',
+        })}
       </div>
-      {renderInput({
-        label: 'Nhà Xuất Bản:',
-        name: 'publisher',
-        type: 'text',
-        value: formData.publisher,
-        disabled: true,
-        onChange: handleChange,
-      })}
-      {renderInput({
-        label: 'Tên Sách:',
-        name: 'name',
-        type: 'text',
-        value: formData.name,
-        onChange: handleChange,
-      })}
 
-      {renderSelect({
-        label: 'Độ Tuổi:',
-        name: 'age',
-        value: formData.age,
-        onChange: handleChange,
-        options: ['Không giới hạn', '16+', '18+'],
-      })}
-
-      {renderInput({
-        label: 'Giá Gốc:',
-        name: 'originalPrice',
-        type: 'text',
-        value: formatCurrency(formData.originalPrice),
-
-        onChange: handleChange,
-        onReset: () => setFormData((prev) => ({ ...prev, originalPrice: '' })),
-      })}
-
-      {renderInput({
-        label: 'Chiết khấu (%):',
-        name: 'typePrice',
-        type: 'text',
-        value: formData.typePrice,
-        onChange: handleChange,
-      })}
-      {renderInput({
-        label: 'Giá Bán:',
-        name: 'salePrice',
-        type: 'text',
-        value: formatCurrency(formData.salePrice),
-        disabled: true,
-      })}
-      {renderInput({
-        label: 'Giá Hoàn Tiền:',
-        name: 'refundPrice',
-        type: 'text',
-        value: formatCurrency(formData.refundPrice),
-        disabled: true,
-      })}
-      {renderInput({
-        label: 'Số Lượng:',
-        name: 'stock',
-        type: 'number',
-        value: formData.stock,
-        onChange: handleChange,
-      })}
       <div className='button-group'>
         <button type='submit'>Thêm Sách</button>
         <button type='button' onClick={handleReset}>

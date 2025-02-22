@@ -11,8 +11,8 @@
   .form-content {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 2rem 6rem; // Increased horizontal gap to 6rem (96px)
-    padding: 0 2rem; // Added horizontal padding
+    gap: 2rem 6rem; 
+    padding: 0 2rem; 
 
     @media (max-width: 600px) {
       grid-template-columns: 1fr;
@@ -20,7 +20,6 @@
       padding: 0;
     }
 
-    // Remove the vertical divider
     &::after {
       display: none;
     }

@@ -49,6 +49,7 @@ export const renderSelect = ({ label, name, value, onChange, options = [] }) => 
     </select>
   </div>
 );
+
 export const formatCurrency = (value) => {
   if (!value) return '';
   const stringValue = value.toString();

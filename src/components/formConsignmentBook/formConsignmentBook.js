@@ -3,6 +3,8 @@ import { toast } from 'react-toastify';
 
 import { renderInput, renderSelect, formatCurrency, parseCurrency } from '../formComponents/formComponents.js';
 
+import './formConsignmentBook.scss';
+
 export const FormConsignmentBook = () => {
   const CalculatePrice = (originalPrice, typePrice) => {
     const price = parseFloat(parseCurrency(originalPrice));
@@ -28,7 +30,6 @@ export const FormConsignmentBook = () => {
     // Calculate refund: sale price minus 5% of original price
     return Math.round(numericSalePrice - numericOriginalPrice * 0.05);
   };
-
 
   const [formData, setFormData] = useState({
     id: '',
@@ -240,139 +241,123 @@ export const FormConsignmentBook = () => {
   return (
     <form className='form' onSubmit={handleSubmit}>
       <h2>Thêm Sách Ký Gửi</h2>
-      {renderInput({
-        label: 'ID Sách:',
-        name: 'id',
-        value: formData.id,
-        onChange: handleChange,
-      })}
+      <div className='form-content'>
+        <div className='input-group'>
+          {renderInput({
+            label: 'Số Điện Thoại Người Ký Gửi:',
+            name: 'idConsignor',
+            type: 'text',
+            value: formData.idConsignor,
+            onChange: handleChange,
+            onKeyPress: handleKeyPress,
+          })}
+          <button type='button' className='search-button' onClick={handleSearch}>
+            Tìm
+          </button>
+        </div>
 
-      <div className='input-group'>
         {renderInput({
-          label: 'ID Người Ký Gửi:',
-          name: 'idConsignor',
-          type: 'text',
-          value: formData.idConsignor,
+          label: 'Tên Người Ký Gửi',
+          name: 'nameConsignor',
+          value: formData.nameConsignor,
+          disabled: true,
           onChange: handleChange,
-          onKeyPress: handleKeyPress,
         })}
-        <button type='button' className='search-button' onClick={handleSearch}>
-          Tìm
-        </button>
+
+        {renderInput({
+          label: 'ID Sách:',
+          name: 'id',
+          value: formData.id,
+          onChange: handleChange,
+        })}
+
+        {renderInput({
+          label: 'Tên Sách:',
+          name: 'name',
+          type: 'text',
+          value: formData.title,
+          onChange: handleChange,
+        })}
+
+        {renderInput({
+          label: 'Tên Tác Giả:',
+          name: 'author',
+          type: 'text',
+          value: formData.author,
+          onChange: handleChange,
+        })}
+
+        {renderSelect({
+          label: 'Thể Loại:',
+          name: 'category',
+          value: formData.category,
+          onChange: handleChange,
+          options: [
+            'Khoa học xã hội & Nhân văn',
+            'Khoa học tự nhiên & Công nghệ',
+            'Sách giáo dục & trường học',
+            'Văn học Việt Nam',
+            'Văn học Nước ngoài ',
+            'Văn học Nước ngoài biên phiên dịch',
+            'Truyện tranh',
+            'Khác',
+          ],
+        })}
+
+        {renderSelect({
+          label: 'Độ Tuổi:',
+          name: 'age',
+          value: formData.age,
+          onChange: handleChange,
+          options: ['Không giới hạn', '16+', '18+'],
+        })}
+
+        {renderSelect({
+          label: 'Phân Loại Sách:',
+          name: 'type',
+          value: formData.type,
+          onChange: handleChange,
+          options: ['Sách Ký Gửi', 'Sách Quyên Góp'],
+        })}
+
+        {renderInput({
+          label: 'Giá Bìa:',
+          name: 'originalPrice',
+          type: 'text',
+          value: formatCurrency(formData.originalPrice),
+          onChange: handleChange,
+        })}
+
+        {renderSelect({
+          label: 'Loại Giá Bán:',
+          name: 'typePrice',
+          value: formData.typePrice,
+          onChange: handleChange,
+          options: ['45%', '65%', 'Sách đặc biệt'],
+        })}
+
+        {renderInput({
+          label: 'Giá Bán:',
+          name: 'salePrice',
+          type: 'text',
+          value: formatCurrency(formData.salePrice),
+          onChange: handleChange,
+          disabled: formData.typePrice !== 'Sách đặc biệt',
+          note:
+            formData.typePrice === 'Sách đặc biệt'
+              ? '* Sách đặc biệt, vui lòng nhập giá bán.'
+              : '* Giá được tính tự động theo %',
+        })}
+
+        {renderInput({
+          label: 'Số Tiền Giải Ngân:',
+          name: 'refundPrice',
+          type: 'text',
+          value: formatCurrency(CalculateRefund(parseCurrency(formData.salePrice), formData.originalPrice)),
+          onChange: handleChange,
+          disabled: true,
+        })}
       </div>
-
-      {renderInput({
-        label: 'Tên Người Ký Gửi',
-        name: 'nameConsignor',
-        value: formData.nameConsignor,
-        disabled: true,
-        onChange: handleChange,
-      })}
-
-      {renderInput({
-        label: 'Tên Sách:',
-        name: 'name',
-        type: 'text',
-        value: formData.title,
-        onChange: handleChange,
-      })}
-
-      {renderInput({
-        label: 'Tên Tác Giả:',
-        name: 'author',
-        type: 'text',
-        value: formData.author,
-        onChange: handleChange,
-      })}
-
-      {renderSelect({
-        label: 'Thể Loại:',
-        name: 'category',
-        value: formData.category,
-        onChange: handleChange,
-        options: [
-          'Khoa học xã hội & Nhân văn',
-          'Khoa học tự nhiên & Công nghệ',
-          'Sách giáo dục & trường học',
-          'Văn học Việt Nam',
-          'Văn học Nước ngoài ',
-          'Văn học Nước ngoài biên phiên dịch',
-          'Truyện tranh',
-          'Khác',
-        ],
-      })}
-
-      {renderSelect({
-        label: 'Độ Tuổi:',
-        name: 'age',
-        value: formData.age,
-        onChange: handleChange,
-        options: ['Không giới hạn', '16+', '18+'],
-      })}
-
-      {renderSelect({
-        label: 'Phân Loại Sách:',
-        name: 'type',
-        value: formData.type,
-        onChange: handleChange,
-        options: ['Sách Ký Gửi', 'Sách Quyên Góp'],
-      })}
-
-      {renderInput({
-        label: 'Giá Bìa:',
-        name: 'originalPrice',
-        type: 'text',
-        value: formatCurrency(formData.originalPrice),
-        onChange: handleChange,
-        onReset: () => {
-          setFormData((prev) => ({
-            ...prev,
-            originalPrice: '',
-            salePrice: '',
-            refundPrice: '',
-          }));
-        },
-      })}
-
-      {renderSelect({
-        label: 'Loại Giá Bán:',
-        name: 'typePrice',
-        value: formData.typePrice,
-        onChange: handleChange,
-        options: ['45%', '65%', 'Sách đặc biệt'],
-      })}
-
-      {renderInput({
-        label: 'Giá Bán:',
-        name: 'salePrice',
-        type: 'text',
-        value: formatCurrency(formData.salePrice),
-        onChange: handleChange,
-        disabled: formData.typePrice !== 'Sách đặc biệt',
-        note:
-          formData.typePrice === 'Sách đặc biệt'
-            ? '* Sách đặc biệt, vui lòng nhập giá bán.'
-            : '* Giá được tính tự động theo %',
-        onReset:
-          formData.typePrice === 'Sách đặc biệt'
-            ? () => {
-                setFormData((prev) => ({
-                  ...prev,
-                  salePrice: '',
-                  refundPrice: '',
-                }));
-              }
-            : undefined,
-      })}
-
-      {renderInput({
-        label: 'Số Tiền Giải Ngân:',
-        name: 'refundPrice',
-        type: 'text',
-        value: formatCurrency(CalculateRefund(parseCurrency(formData.salePrice), formData.originalPrice)),
-        onChange: handleChange,
-        disabled: true,
-      })}
 
       <div className='button-group'>
         <button type='submit'>Thêm Sách</button>
