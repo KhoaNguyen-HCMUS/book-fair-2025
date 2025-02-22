@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import './BookDetail.scss';
-import { formatCurrency } from '../../components/formComponents/formComponents.js';
+import { formatCurrency, renderSelect } from '../../components/formComponents/formComponents.js';
 
 function BookDetail() {
   const { state } = useLocation();
@@ -11,6 +11,19 @@ function BookDetail() {
   const [editedBook, setEditedBook] = useState(state?.book || null);
   const book = state?.book;
   const userRole = localStorage.getItem('userRole');
+
+  const ageOptions = ['Không giới hạn', '16+', '18+'];
+  const genreOptions = [
+    'Khoa học xã hội & Nhân văn',
+    'Khoa học tự nhiên & Công nghệ',
+    'Sách giáo dục & trường học',
+    'Văn học Việt Nam',
+    'Văn học Nước ngoài',
+    'Văn học Nước ngoài biên phiên dịch',
+    'Truyện tranh',
+    'Khác',
+  ];
+  const classifyOptions = ['Sách Ký Gửi', 'Sách NXB', 'Sách Quyên Góp'];
 
   if (!book) {
     return <div>Book not found</div>;
@@ -41,23 +54,32 @@ function BookDetail() {
   };
 
   const handleSave = async () => {
-    const newPrice = calculatePrice(editedBook.bc_cost, editedBook.discount, editedBook.classify);
-    const newRefund = calculateRefund(newPrice, editedBook.bc_cost);
+    let confirmMessage;
+    const priceChanged = editedBook.bc_cost !== book.bc_cost || editedBook.discount !== book.discount;
 
-    const confirmMessage = `
+    if (priceChanged) {
+      const newPrice = calculatePrice(editedBook.bc_cost, editedBook.discount, editedBook.classify);
+      const newRefund = calculateRefund(newPrice, editedBook.bc_cost);
+
+      confirmMessage = `
     Thông tin sau khi tính toán:
     - Giá bán mới: ${newPrice.toLocaleString('vi-VN')} VNĐ
     - Tiền hoàn mới: ${newRefund.toLocaleString('vi-VN')} VNĐ
     
     Bạn có chắc chắn muốn lưu thay đổi?
-  `;
+    `;
+
+      editedBook.price = newPrice;
+      editedBook.cash_back = newRefund;
+    } else {
+      confirmMessage = 'Bạn có chắc chắn muốn lưu thay đổi?';
+    }
+
     const isConfirmed = window.confirm(confirmMessage);
 
     if (!isConfirmed) {
       return;
     }
-    editedBook.price = newPrice;
-    editedBook.cash_back = newRefund;
     editedBook.discount = parseInt(editedBook.discount);
     try {
       const URL = process.env.REACT_APP_DOMAIN + process.env.REACT_APP_API_UPDATE_OBJECT;
@@ -81,6 +103,7 @@ function BookDetail() {
             price: editedBook.price,
             cash_back: editedBook.cash_back,
             quantity: editedBook.quantity,
+            stock: editedBook.stock,
           },
         }),
       });
@@ -162,7 +185,11 @@ function BookDetail() {
 
   return (
     <div className='book-detail'>
+      <button className='back-button' onClick={() => navigate(-1)}>
+        ← Quay lại
+      </button>
       <h2>Thông tin chi tiết sách</h2>
+
       <div className='details-grid'>
         <div className='detail-item'>
           <span className='label'>ID:</span>
@@ -183,7 +210,13 @@ function BookDetail() {
         <div className='detail-item'>
           <span className='label'>Độ tuổi:</span>
           {isEditing ? (
-            <input type='text' name='age' value={editedBook.age} onChange={handleChange} className='edit-input' />
+            <select name='age' value={editedBook.age} onChange={handleChange} className='edit-input'>
+              {ageOptions.map((option) => (
+                <option key={option} value={option}>
+                  {option}
+                </option>
+              ))}
+            </select>
           ) : (
             <span className='value'>{book.age}</span>
           )}
@@ -191,7 +224,13 @@ function BookDetail() {
         <div className='detail-item'>
           <span className='label'>Thể loại:</span>
           {isEditing ? (
-            <input type='text' name='genre' value={editedBook.genre} onChange={handleChange} className='edit-input' />
+            <select name='genre' value={editedBook.genre} onChange={handleChange} className='edit-input'>
+              {genreOptions.map((option) => (
+                <option key={option} value={option}>
+                  {option}
+                </option>
+              ))}
+            </select>
           ) : (
             <span className='value'>{book.genre}</span>
           )}
@@ -199,13 +238,13 @@ function BookDetail() {
         <div className='detail-item'>
           <span className='label'>Phân loại:</span>
           {isEditing ? (
-            <input
-              type='text'
-              name='classify'
-              value={editedBook.classify}
-              onChange={handleChange}
-              className='edit-input'
-            />
+            <select name='classify' value={editedBook.classify} onChange={handleChange} className='edit-input'>
+              {classifyOptions.map((option) => (
+                <option key={option} value={option}>
+                  {option}
+                </option>
+              ))}
+            </select>
           ) : (
             <span className='value'>{book.classify}</span>
           )}
