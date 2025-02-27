@@ -15,6 +15,8 @@ export const FormConsignmentBook = () => {
         return Math.round(price * 0.45);
       case '65%':
         return Math.round(price * 0.65);
+      case 'Sách đặc biệt':
+        return 0;
       default:
         return price;
     }
@@ -24,8 +26,7 @@ export const FormConsignmentBook = () => {
     // Parse both prices to numbers
     const numericSalePrice = parseFloat(parseCurrency(salePrice));
     const numericOriginalPrice = parseFloat(parseCurrency(originalPrice));
-
-    if (isNaN(numericSalePrice) || isNaN(numericOriginalPrice)) return '';
+    if (salePrice === '0' || isNaN(numericSalePrice) || isNaN(numericOriginalPrice)) return '0';
 
     // Calculate refund: sale price minus 5% of original price
     return Math.round(numericSalePrice - numericOriginalPrice * 0.05);
@@ -73,12 +74,12 @@ export const FormConsignmentBook = () => {
   };
 
   const handleSalePrice = (value, typePrice, originalPrice) => {
-    // For special books - allow manual input
+    // For special books - set values to 0
     if (typePrice === 'Sách đặc biệt') {
-      const numericValue = parseCurrency(value);
       return {
-        salePrice: numericValue,
-        refundPrice: CalculateRefund(numericValue).toString(),
+        salePrice: '0',
+        refundPrice: '0',
+        discount: 0,
       };
     }
 
@@ -86,7 +87,8 @@ export const FormConsignmentBook = () => {
     const calculatedPrice = CalculatePrice(originalPrice, typePrice);
     return {
       salePrice: calculatedPrice.toString(),
-      refundPrice: CalculateRefund(calculatedPrice).toString(),
+      refundPrice: CalculateRefund(calculatedPrice, originalPrice).toString(),
+      discount: typePrice === '45%' ? 45 : 65,
     };
   };
 
@@ -100,27 +102,12 @@ export const FormConsignmentBook = () => {
         typePrice: value,
         ...prices,
       }));
-    } else if (name === 'salePrice' && formData.typePrice === 'Sách đặc biệt') {
-      const prices = handleSalePrice(value, formData.typePrice, formData.originalPrice);
-      setFormData((prev) => ({
-        ...prev,
-        ...prices,
-      }));
-    } else if (name === 'originalPrice') {
-      const numericValue = parseCurrency(value);
-      const prices = handleSalePrice(value, formData.typePrice, numericValue);
-      setFormData((prev) => ({
-        ...prev,
-        originalPrice: numericValue,
-        ...prices,
-      }));
     } else {
       setFormData((prev) => ({
         ...prev,
         [name]: value,
       }));
     }
-    console.log(name, value);
   };
 
   const handleSubmit = async (e) => {
@@ -138,15 +125,7 @@ export const FormConsignmentBook = () => {
           genre: formData.category,
           classify: formData.type,
           bc_cost: parseFloat(parseCurrency(formData.originalPrice)),
-          discount:
-            formData.typePrice === '45%'
-              ? 45
-              : formData.typePrice === '65%'
-              ? 65
-              : Math.round(
-                  (parseFloat(parseCurrency(formData.salePrice)) / parseFloat(parseCurrency(formData.originalPrice))) *
-                    100
-                ),
+          discount: formData.typePrice === '45%' ? 45 : formData.typePrice === '65%' ? 65 : 0,
           price: parseFloat(parseCurrency(formData.salePrice)),
           cash_back: parseFloat(parseCurrency(formData.refundPrice)),
           quantity: 1,
@@ -279,7 +258,6 @@ export const FormConsignmentBook = () => {
           onChange: handleChange,
         })}
 
-
         {renderSelect({
           label: 'Thể Loại:',
           name: 'category',
@@ -327,10 +305,10 @@ export const FormConsignmentBook = () => {
           type: 'text',
           value: formatCurrency(formData.salePrice),
           onChange: handleChange,
-          disabled: formData.typePrice !== 'Sách đặc biệt',
+          disabled: true,
           note:
             formData.typePrice === 'Sách đặc biệt'
-              ? '* Sách đặc biệt, vui lòng nhập giá bán.'
+              ? '* Sách đặc biệt, BTC sẽ nhập giá bán sau.'
               : '* Giá được tính tự động theo %',
         })}
 

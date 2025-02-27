@@ -178,13 +178,6 @@ export const FormPublisherBook = () => {
     <form className='form' onSubmit={handleSubmit}>
       <h2>Thêm Sách Nhà Xuất Bản</h2>
       <div className='form-content'>
-        {renderInput({
-          label: 'ID Sách:',
-          name: 'id',
-          value: formData.id,
-          onChange: handleChange,
-        })}
-
         <div className='input-group'>
           {renderInput({
             label: 'ID Nhà Xuất Bản:',
@@ -206,6 +199,14 @@ export const FormPublisherBook = () => {
           disabled: true,
           onChange: handleChange,
         })}
+
+        {renderInput({
+          label: 'ID Sách:',
+          name: 'id',
+          value: formData.id,
+          onChange: handleChange,
+        })}
+
         {renderInput({
           label: 'Tên Sách:',
           name: 'name',
