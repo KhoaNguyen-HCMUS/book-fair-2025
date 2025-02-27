@@ -4,7 +4,19 @@ import './Nav.scss';
 import logo from '../../assets/images/logo.png'; // Adjust the path to your logo image
 
 class Nav extends React.Component {
+  getRoleDisplay = (role) => {
+    switch (role) {
+      case 'CTV':
+        return 'Nhập Sách';
+      case 'BTC':
+        return 'Quản Lý Sách';
+      default:
+        return role;
+    }
+  };
   render() {
+    const { userRole } = this.props;
+
     return (
       <div className='topnav'>
         <div className='nav-left'>
@@ -35,7 +47,7 @@ class Nav extends React.Component {
           <span className='username'>{this.props.username}</span>
 
           <span className='divider'>|</span>
-          <span className='role'>{this.props.userRole}</span>
+          <span className='role'>{this.getRoleDisplay(userRole)}</span>
           <button className='logout-btn' onClick={this.props.onLogout}>
             Đăng Xuất
           </button>
