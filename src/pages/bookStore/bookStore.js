@@ -18,7 +18,7 @@ function BookStore() {
   const navigate = useNavigate();
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(10);
+  const [itemsPerPage] = useState(20);
 
   // Get current books
   const indexOfLastBook = currentPage * itemsPerPage;

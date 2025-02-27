@@ -9,6 +9,8 @@ import { FormConsignmentBook } from '../../components/formConsignmentBook/formCo
 
 import { FormPublisherBook } from '../../components/formPublisherBook/formPublisherBook.js';
 
+import { FormDonationBook } from '../../components/formDonationBook/formDonationBook.js';
+
 function AddBook() {
   const [activeForm, setActiveForm] = useState('consignor');
 
@@ -24,6 +26,8 @@ function AddBook() {
         return <FormConsignor />;
       case 'consignment':
         return <FormConsignmentBook />;
+      case 'donation':
+        return <FormDonationBook />;
       case 'publisher':
         return canAccessPublisherForm ? <FormPublisherBook /> : renderDontHavePermission();
       default:
@@ -34,7 +38,7 @@ function AddBook() {
   return (
     <div className='add-book-container'>
       <div className='form-selector'>
-        {['consignor', 'consignment', 'publisher'].map((type) => (
+        {['consignor', 'consignment', 'donation', 'publisher'].map((type) => (
           <button
             key={type}
             className={`selector-btn ${activeForm === type ? 'active' : ''}`}
@@ -42,6 +46,7 @@ function AddBook() {
           >
             {type === 'consignor' && 'Thêm Người Ký Gửi'}
             {type === 'consignment' && 'Thêm Sách Ký Gửi'}
+            {type === 'donation' && 'Thêm Sách Quyên Góp'}
             {type === 'publisher' && 'Thêm Sách Nhà Xuất Bản'}
           </button>
         ))}

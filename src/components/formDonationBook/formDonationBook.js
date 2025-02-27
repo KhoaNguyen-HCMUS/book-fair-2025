@@ -3,34 +3,10 @@ import { toast } from 'react-toastify';
 
 import { renderInput, renderSelect, formatCurrency, parseCurrency } from '../formComponents/formComponents.js';
 
-import './formConsignmentBook.scss';
+import './formDonationBook.scss';
+import { format } from 'crypto-js';
 
-export const FormConsignmentBook = () => {
-  const CalculatePrice = (originalPrice, typePrice) => {
-    const price = parseFloat(parseCurrency(originalPrice));
-    if (isNaN(price)) return '';
-
-    switch (typePrice) {
-      case '45%':
-        return Math.round(price * 0.45);
-      case '65%':
-        return Math.round(price * 0.65);
-      default:
-        return price;
-    }
-  };
-
-  const CalculateRefund = (salePrice, originalPrice) => {
-    // Parse both prices to numbers
-    const numericSalePrice = parseFloat(parseCurrency(salePrice));
-    const numericOriginalPrice = parseFloat(parseCurrency(originalPrice));
-
-    if (isNaN(numericSalePrice) || isNaN(numericOriginalPrice)) return '';
-
-    // Calculate refund: sale price minus 5% of original price
-    return Math.round(numericSalePrice - numericOriginalPrice * 0.05);
-  };
-
+export const FormDonationBook = () => {
   const [formData, setFormData] = useState({
     id: '',
     idConsignor: '',
@@ -40,11 +16,11 @@ export const FormConsignmentBook = () => {
     author: 'N/A',
     age: '',
     category: '',
-    type: 'Sách Ký Gửi',
+    type: 'Sách Quyên Góp',
     originalPrice: '',
-    typePrice: '',
-    salePrice: '',
-    refundPrice: '',
+    typePrice: '0',
+    salePrice: '0',
+    refundPrice: '0',
     sold: 0,
     validate: false,
     stock: 1,
@@ -61,66 +37,24 @@ export const FormConsignmentBook = () => {
       author: 'N/A',
       age: '',
       category: '',
-      type: 'Sách Ký Gửi',
+      type: 'Sách Quyên Góp',
       originalPrice: '',
-      typePrice: '',
-      salePrice: '',
-      refundPrice: '',
+      typePrice: '0',
+      salePrice: '0',
+      refundPrice: '0',
       sold: 0,
       validate: false,
       stock: 1,
     });
   };
 
-  const handleSalePrice = (value, typePrice, originalPrice) => {
-    // For special books - allow manual input
-    if (typePrice === 'Sách đặc biệt') {
-      const numericValue = parseCurrency(value);
-      return {
-        salePrice: numericValue,
-        refundPrice: CalculateRefund(numericValue).toString(),
-      };
-    }
-
-    // For percentage-based prices (45% and 65%)
-    const calculatedPrice = CalculatePrice(originalPrice, typePrice);
-    return {
-      salePrice: calculatedPrice.toString(),
-      refundPrice: CalculateRefund(calculatedPrice).toString(),
-    };
-  };
-
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    if (name === 'typePrice') {
-      const prices = handleSalePrice(value, value, formData.originalPrice);
-      setFormData((prev) => ({
-        ...prev,
-        typePrice: value,
-        ...prices,
-      }));
-    } else if (name === 'salePrice' && formData.typePrice === 'Sách đặc biệt') {
-      const prices = handleSalePrice(value, formData.typePrice, formData.originalPrice);
-      setFormData((prev) => ({
-        ...prev,
-        ...prices,
-      }));
-    } else if (name === 'originalPrice') {
-      const numericValue = parseCurrency(value);
-      const prices = handleSalePrice(value, formData.typePrice, numericValue);
-      setFormData((prev) => ({
-        ...prev,
-        originalPrice: numericValue,
-        ...prices,
-      }));
-    } else {
-      setFormData((prev) => ({
-        ...prev,
-        [name]: value,
-      }));
-    }
-    console.log(name, value);
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
   const handleSubmit = async (e) => {
@@ -138,17 +72,9 @@ export const FormConsignmentBook = () => {
           genre: formData.category,
           classify: formData.type,
           bc_cost: parseFloat(parseCurrency(formData.originalPrice)),
-          discount:
-            formData.typePrice === '45%'
-              ? 45
-              : formData.typePrice === '65%'
-              ? 65
-              : Math.round(
-                  (parseFloat(parseCurrency(formData.salePrice)) / parseFloat(parseCurrency(formData.originalPrice))) *
-                    100
-                ),
-          price: parseFloat(parseCurrency(formData.salePrice)),
-          cash_back: parseFloat(parseCurrency(formData.refundPrice)),
+          discount: 0,
+          price: 0,
+          cash_back: 0,
           quantity: 1,
         },
       };
@@ -179,23 +105,6 @@ export const FormConsignmentBook = () => {
     }
   };
 
-  useEffect(() => {
-    if (formData.originalPrice && formData.typePrice) {
-      const salePrice = CalculatePrice(formData.originalPrice, formData.typePrice);
-
-      // Only calculate refund if we have a valid sale price
-      if (salePrice) {
-        const refundPrice = CalculateRefund(salePrice, formData.originalPrice);
-
-        setFormData((prev) => ({
-          ...prev,
-          salePrice: salePrice.toString(),
-          refundPrice: refundPrice.toString(),
-        }));
-      }
-    }
-  }, [formData.typePrice, formData.originalPrice]);
-
   const handleSearch = async () => {
     if (formData.idConsignor) {
       await getNameConsignor(formData.idConsignor);
@@ -222,7 +131,7 @@ export const FormConsignmentBook = () => {
           nameConsignor: data.data.name,
         }));
       } else {
-        toast.error('Không tìm thấy thông tin người ký gửi');
+        toast.error('Không tìm thấy thông tin người Quyên Góp');
         setFormData((prev) => ({
           ...prev,
           nameConsignor: '',
@@ -230,7 +139,7 @@ export const FormConsignmentBook = () => {
       }
     } catch (error) {
       console.error('Error:', error);
-      toast.error('Lỗi khi lấy thông tin người ký gửi');
+      toast.error('Lỗi khi lấy thông tin người Quyên Góp');
       setFormData((prev) => ({
         ...prev,
         nameConsignor: '',
@@ -240,11 +149,11 @@ export const FormConsignmentBook = () => {
 
   return (
     <form className='form' onSubmit={handleSubmit}>
-      <h2>Thêm Sách Ký Gửi</h2>
+      <h2>Thêm Sách Quyên Góp</h2>
       <div className='form-content'>
         <div className='input-group'>
           {renderInput({
-            label: 'Số Điện Thoại Người Ký Gửi:',
+            label: 'SĐT Người Quyên Góp:',
             name: 'idConsignor',
             type: 'text',
             value: formData.idConsignor,
@@ -257,7 +166,7 @@ export const FormConsignmentBook = () => {
         </div>
 
         {renderInput({
-          label: 'Tên Người Ký Gửi:',
+          label: 'Tên Người Quyên Góp:',
           name: 'nameConsignor',
           value: formData.nameConsignor,
           disabled: true,
@@ -278,7 +187,6 @@ export const FormConsignmentBook = () => {
           value: formData.title,
           onChange: handleChange,
         })}
-
 
         {renderSelect({
           label: 'Thể Loại:',
@@ -313,12 +221,12 @@ export const FormConsignmentBook = () => {
           onChange: handleChange,
         })}
 
-        {renderSelect({
-          label: 'Loại Giá Bán:',
-          name: 'typePrice',
-          value: formData.typePrice,
+        {renderInput({
+          label: 'Phân Loại Sách:',
+          name: 'type',
+          value: formData.type,
+          disabled: true,
           onChange: handleChange,
-          options: ['45%', '65%', 'Sách đặc biệt'],
         })}
 
         {renderInput({
@@ -326,20 +234,15 @@ export const FormConsignmentBook = () => {
           name: 'salePrice',
           type: 'text',
           value: formatCurrency(formData.salePrice),
-          onChange: handleChange,
-          disabled: formData.typePrice !== 'Sách đặc biệt',
-          note:
-            formData.typePrice === 'Sách đặc biệt'
-              ? '* Sách đặc biệt, vui lòng nhập giá bán.'
-              : '* Giá được tính tự động theo %',
+          disabled: true,
+          note: 'Đối với sách quyên góp, giá bán sẽ được BTC nhập sau',
         })}
 
         {renderInput({
           label: 'Số Tiền Giải Ngân:',
           name: 'refundPrice',
           type: 'text',
-          value: formatCurrency(CalculateRefund(parseCurrency(formData.salePrice), formData.originalPrice)),
-          onChange: handleChange,
+          value: formatCurrency(formData.refundPrice),
           disabled: true,
         })}
       </div>
