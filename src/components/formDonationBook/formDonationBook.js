@@ -59,7 +59,10 @@ export const FormDonationBook = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Book Data:', formData);
+    if(!formData.idConsignor || !formData.nameConsignor) {
+      toast.error('Vui lòng nhập SĐT người quyên góp và tìm kiếm trước khi thêm sách');
+      return;
+    }
     try {
       const bookData = {
         typeOb: 'product',
@@ -235,7 +238,7 @@ export const FormDonationBook = () => {
           type: 'text',
           value: formatCurrency(formData.salePrice),
           disabled: true,
-          note: 'Đối với sách quyên góp, giá bán sẽ được BTC nhập sau',
+          note: '* Đối với sách quyên góp, giá bán sẽ được BTC nhập sau',
         })}
 
         {renderInput({
@@ -244,6 +247,7 @@ export const FormDonationBook = () => {
           type: 'text',
           value: formatCurrency(formData.refundPrice),
           disabled: true,
+          note: '* Sách quyên góp nên không hoàn tiền'
         })}
       </div>
 

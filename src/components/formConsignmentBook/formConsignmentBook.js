@@ -112,7 +112,10 @@ export const FormConsignmentBook = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Book Data:', formData);
+    if (!formData.nameConsignor) {
+      toast.error('Vui lòng nhập số điện thoại người ký gửi và bấm tìm');
+      return;
+    }
     try {
       const bookData = {
         typeOb: 'product',
@@ -319,6 +322,10 @@ export const FormConsignmentBook = () => {
           value: formatCurrency(CalculateRefund(parseCurrency(formData.salePrice), formData.originalPrice)),
           onChange: handleChange,
           disabled: true,
+          note:
+            formData.typePrice === 'Sách đặc biệt'
+              ? '* Sách đặc biệt, BTC sẽ nhập giá hoàn tiền sau.'
+              : '* Giá được tính tự động theo %',
         })}
       </div>
 

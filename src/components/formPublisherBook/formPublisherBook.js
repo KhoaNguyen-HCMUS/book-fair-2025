@@ -51,6 +51,10 @@ export const FormPublisherBook = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!formData.id_publisher || !formData.publisher) {
+      toast.error('Vui lòng nhập ID Nhà Xuất Bản và bấm tìm kiếm');
+      return;
+    }
     if (formData.stock < 1) {
       toast.error('Số lượng sách phải lớn hơn 0');
       return;
