@@ -1,9 +1,8 @@
-.list-books {
+.list-consignors {
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px 20px;
-  height: calc(100vh - 64px); // Subtract nav height
-  // overflow-y: auto;
+  height: calc(100vh - 64px);
 
   .search-container {
     width: 100%;
@@ -14,6 +13,7 @@
     display: flex;
     align-items: center;
     box-sizing: border-box;
+
     .search-icon {
       font-size: 20px;
       color: #888;
@@ -47,26 +47,23 @@
     }
   }
 
-  .book-table {
+  .consignor-table {
     width: 100%;
     max-width: 100%;
     margin-top: 20px;
     box-sizing: border-box;
     table-layout: fixed;
-
     border-collapse: collapse;
     border: 1px solid #ddd;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     font-size: 13px;
 
     thead {
-      top: 120px;
       background-color: #f1f1f1;
       z-index: 5;
 
       th {
         text-align: center;
-
         padding: 10px;
         font-weight: bold;
         border-bottom: 2px solid #ddd;
@@ -93,56 +90,38 @@
           padding: 10px;
           border-bottom: 1px solid #ddd;
           text-align: left;
-
-          &.checkbox-container {
-            text-align: center;
-          }
-
-          .large-checkbox {
-            width: 18px;
-            height: 18px;
-          }
         }
       }
     }
 
-    .validated {
-      color: green;
-      font-weight: bold;
-    }
-
-    .not-validated {
-      color: red;
-      font-weight: bold;
-    }
-
+    // Column widths
     th:nth-child(1),
     td:nth-child(1) {
-      width: 10%; // ID
+      width: 15%; // ID
     }
     th:nth-child(2),
     td:nth-child(2) {
-      width: 30%; // Name
+      width: 20%; // Name
     }
     th:nth-child(3),
     td:nth-child(3) {
-      width: 15%; // Genre
+      width: 20%; // Address
     }
     th:nth-child(4),
     td:nth-child(4) {
-      width: 15%; // Classification
+      width: 15%; // Bank
     }
     th:nth-child(5),
     td:nth-child(5) {
-      width: 10%; // Sale Price
+      width: 10%; // Account Number
     }
     th:nth-child(6),
     td:nth-child(6) {
-      width: 10%; // Stock
+      width: 10%; // Account Holder
     }
     th:nth-child(7),
     td:nth-child(7) {
-      width: 10%; // Validity
+      width: 10%; // Cash Back
     }
   }
 
@@ -186,21 +165,11 @@
       color: #666;
     }
   }
+}
 
-  .items-per-page {
-    margin-bottom: 15px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-
-    select {
-      padding: 5px;
-      border-radius: 4px;
-      border: 1px solid #ddd;
-    }
-
-    label {
-      color: #666;
-    }
-  }
+.loading {
+  text-align: center;
+  padding: 2rem;
+  font-size: 1.2rem;
+  color: #666;
 }
