@@ -10,6 +10,7 @@ function BookDetail() {
   const [isEditing, setIsEditing] = useState(false);
   const [editedBook, setEditedBook] = useState(state?.book || null);
   const [memberName, setMemberName] = useState('');
+  const [validatorName, setValidatorName] = useState('');
 
   const book = state?.book;
   const userRole = localStorage.getItem('userRole');
@@ -200,7 +201,14 @@ function BookDetail() {
   };
 
   const handleValidate = async () => {
-    const isConfirmed = window.confirm('Bạn có chắc chắn muốn xác thực sách này?');
+    let confirmMessage = ' ';
+    if (book.price === 0 || book.price === '') {
+      confirmMessage = 'Giá bán đang bằng 0\n Bạn có chắc chắn muốn xác thực sách này?';
+    } else {
+      confirmMessage = 'Bạn có chắc chắn muốn xác thực sách này?';
+    }
+
+    const isConfirmed = window.confirm(confirmMessage);
     const userId = localStorage.getItem('userID');
     if (!isConfirmed) {
       return;
@@ -225,10 +233,15 @@ function BookDetail() {
       const result = await response.json();
 
       if (result.success) {
-        toast.success('Xác thực sách thành công');
-        // Update the local state
         state.book.validate = 1;
-        setEditedBook({ ...editedBook, validate: 1 });
+        state.book.id_validate = userId;
+        setEditedBook({ ...editedBook, validate: 1, id_validate: userId });
+
+        // Fetch and update validator name
+        const validatorName = await getNameMember(userId);
+        setValidatorName(validatorName);
+
+        toast.success('Xác thực sách thành công');
       } else {
         toast.error('Lỗi khi xác thực: ' + result.message);
       }
@@ -239,14 +252,19 @@ function BookDetail() {
   };
 
   useEffect(() => {
-    const fetchMemberName = async () => {
+    const fetchNames = async () => {
       if (book.id_member) {
-        const name = await getNameMember(book.id_member);
-        setMemberName(name);
+        const memberName = await getNameMember(book.id_member);
+        setMemberName(memberName);
+      }
+      if (book.validate === 1 && book.id_validate) {
+        const validatorName = await getNameMember(book.id_validate);
+        setValidatorName(validatorName);
       }
     };
-    fetchMemberName();
-  }, [book.id_member]);
+    fetchNames();
+  }, [book.id_member, book.validate, book.id_validate]);
+
   const handleEdit = () => {
     setIsEditing(true);
   };
@@ -407,9 +425,15 @@ function BookDetail() {
             {book.validate === 1 ? 'Đã xác thực' : 'Chưa xác thực'}
           </span>
         </div>
+
         <div className='detail-item'>
           <span className='label'>Người nhập:</span>
           <span className='value'>{memberName || 'Chưa có thông tin'}</span>
+        </div>
+
+        <div className='detail-item'>
+          <span className='label'>Người xác thực:</span>
+          <span className='value'>{validatorName || 'Chưa có thông tin'}</span>
         </div>
       </div>
 
