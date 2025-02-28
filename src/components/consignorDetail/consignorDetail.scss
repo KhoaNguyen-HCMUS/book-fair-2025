@@ -1,0 +1,63 @@
+.consignor-detail {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+
+  .top-button-container {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+
+    .back-button {
+      display: flex;
+      align-items: center;
+      padding: 0.5rem 1rem;
+      color: #fff;
+      background-color: #2196f3;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+
+      &:hover {
+        background-color: #1976d2;
+        transform: translateX(-2px);
+      }
+    }
+  }
+
+  h2 {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: #333;
+  }
+
+  .details-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    padding: 2rem;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+    .detail-item {
+      display: flex;
+      align-items: center;
+
+      .label {
+        min-width: 150px;
+        font-weight: 500;
+        color: #666;
+      }
+
+      .value {
+        flex: 1;
+        padding: 0.5rem;
+        color: #333;
+        background-color: #f8f9fa;
+        border-radius: 4px;
+      }
+    }
+  }
+}

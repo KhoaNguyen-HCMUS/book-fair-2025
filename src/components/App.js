@@ -16,6 +16,7 @@ import BookDetail from './BookDetail/BookDetail.js';
 import BookStore from '../pages/bookStore/bookStore.js';
 import MyConsignor from '../pages/myConsignor/myConsignor.js';
 import ListConsignors from '../pages/listConsignors/listConsignors.js';
+import ConsignorDetail from './consignorDetail/consignorDetail.js';
 
 const SESSION_TIMEOUT = 3 * 60 * 60 * 1000; // 3 hours in milliseconds
 
@@ -199,6 +200,15 @@ function App() {
               element={
                 <ProtectedRoute>
                   <BookDetail />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path='/consignorDetail/:id'
+              element={
+                <ProtectedRoute>
+                  <ConsignorDetail />
                 </ProtectedRoute>
               }
             />

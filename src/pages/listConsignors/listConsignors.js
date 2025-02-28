@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom'; // Add this import
+
 import { FaSearch } from 'react-icons/fa';
 import './listConsignors.scss';
 
@@ -10,8 +12,8 @@ function ListConsignors() {
   const [filteredConsignors, setFilteredConsignors] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(20);
+  const navigate = useNavigate();
 
-  // Get current consignors
   const indexOfLastConsignor = currentPage * itemsPerPage;
   const indexOfFirstConsignor = indexOfLastConsignor - itemsPerPage;
   const currentConsignors = (filteredConsignors.length > 0 ? filteredConsignors : consignors).slice(
@@ -23,6 +25,12 @@ function ListConsignors() {
   useEffect(() => {
     fetchConsignors();
   }, []);
+
+  const handleRowClick = (consignor) => {
+    navigate(`/consignorDetail/${consignor.id_consignor}`, {
+      state: { consignor },
+    });
+  };
 
   const fetchConsignors = async () => {
     try {
@@ -102,7 +110,12 @@ function ListConsignors() {
         </thead>
         <tbody>
           {currentConsignors.map((consignor) => (
-            <tr key={consignor.id_consignor} className='consignor-row'>
+            <tr
+              key={consignor.id_consignor}
+              onClick={() => handleRowClick(consignor)}
+              style={{ cursor: 'pointer' }}
+              className='consignor-row'
+            >
               <td>{consignor.id_consignor}</td>
               <td>{consignor.name}</td>
               <td>{consignor.address}</td>
