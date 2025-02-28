@@ -54,14 +54,29 @@ function BookDetail() {
   };
 
   const handleSave = async () => {
-    let confirmMessage;
-    const priceChanged = editedBook.bc_cost !== book.bc_cost || editedBook.discount !== book.discount;
+    let confirmMessage = '';
+    const priceChanged =
+      editedBook.bc_cost !== book.bc_cost ||
+      editedBook.discount !== book.discount ||
+      (book.classify === 'Sách Quyên Góp' && editedBook.price !== book.price);
 
-    if (priceChanged) {
-      const newPrice = calculatePrice(editedBook.bc_cost, editedBook.discount, editedBook.classify);
-      const newRefund = calculateRefund(newPrice, editedBook.bc_cost);
+    if (editedBook.price === 0 || editedBook.price === '') {
+      confirmMessage = 'Giá bán đang bằng 0\n';
+    } else if (priceChanged) {
+      if (book.classify === 'Sách Quyên Góp') {
+        // For donated books, use the manually entered price
+        confirmMessage = `
+    Thông tin sau khi thay đổi:
+    - Giá bán mới: ${parseInt(editedBook.price).toLocaleString('vi-VN')} VNĐ
+    
+    Bạn có chắc chắn muốn lưu thay đổi?
+    `;
+      } else {
+        // Existing price calculation logic for other book types
+        const newPrice = calculatePrice(editedBook.bc_cost, editedBook.discount, editedBook.classify);
+        const newRefund = calculateRefund(newPrice, editedBook.bc_cost);
 
-      confirmMessage = `
+        confirmMessage = `
     Thông tin sau khi tính toán:
     - Giá bán mới: ${newPrice.toLocaleString('vi-VN')} VNĐ
     - Tiền hoàn mới: ${newRefund.toLocaleString('vi-VN')} VNĐ
@@ -69,10 +84,11 @@ function BookDetail() {
     Bạn có chắc chắn muốn lưu thay đổi?
     `;
 
-      editedBook.price = newPrice;
-      editedBook.cash_back = newRefund;
+        editedBook.price = newPrice;
+        editedBook.cash_back = newRefund;
+      }
     } else {
-      confirmMessage = 'Bạn có chắc chắn muốn lưu thay đổi?';
+      confirmMessage += 'Bạn có chắc chắn muốn lưu thay đổi?';
     }
 
     const isConfirmed = window.confirm(confirmMessage);
@@ -80,7 +96,9 @@ function BookDetail() {
     if (!isConfirmed) {
       return;
     }
-    editedBook.discount = parseInt(editedBook.discount);
+
+    // Set discount to 100 for donated books
+    editedBook.discount = book.classify === 'Sách Quyên Góp' ? 100 : parseInt(editedBook.discount);
     try {
       const URL = process.env.REACT_APP_DOMAIN + process.env.REACT_APP_API_UPDATE_OBJECT;
       const response = await fetch(URL, {
@@ -126,7 +144,7 @@ function BookDetail() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    if (name === 'bc_cost') {
+    if (name === 'bc_cost' || name === 'price') {
       setEditedBook((prev) => ({
         ...prev,
         [name]: value.replace(/[^0-9]/g, ''),
@@ -142,6 +160,38 @@ function BookDetail() {
   const handleCancel = () => {
     setIsEditing(false);
     setEditedBook(book); // Reset to original values
+  };
+
+  const handleDelete = async () => {
+    if (book.validate === 1 && userRole !== 'BTC' && userRole !== 'Admin') {
+      toast.error('Không thể xóa sách đã xác thực');
+      return;
+    }
+
+    const isConfirmed = window.confirm('Bạn có chắc chắn muốn xóa sách này?');
+    if (!isConfirmed) return;
+
+    try {
+      const URL = `${process.env.REACT_APP_DOMAIN}${process.env.REACT_APP_API_DELETE_BOOK}${book.id_product}`;
+      const response = await fetch(URL, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        toast.success('Xóa sách thành công');
+        navigate(-1);
+      } else {
+        toast.error('Lỗi khi xóa sách: ' + result.message);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      toast.error('Lỗi khi xóa sách');
+    }
   };
 
   const handleValidate = async () => {
@@ -185,15 +235,38 @@ function BookDetail() {
 
   return (
     <div className='book-detail'>
-      <button className='back-button' onClick={() => navigate(-1)}>
-        ← Quay lại
-      </button>
-      <h2>Thông tin chi tiết sách</h2>
+      <div className='top-button-container'>
+        <button className='back-button' onClick={() => navigate(-1)}>
+          ← Quay lại
+        </button>
+        <button
+          className='delete-button'
+          onClick={handleDelete}
+          disabled={book.validate === 1 && userRole !== 'BTC' && userRole !== 'Admin'}
+        >
+          Xóa sách
+        </button>
+      </div>
 
+      <h2>Thông tin chi tiết sách</h2>
+      <div className='notes-container'>
+        <span className='note warning'>
+          <i className='fas fa-exclamation-circle'></i>
+          *Khi nhập sai ID sách hoặc Phân loại sách, vui lòng xóa sách nhập lại
+        </span>
+        <span className='note info'>
+          <i className='fas fa-info-circle'></i>
+          *Đối với Sách Ký Gửi, Giá bán và tiền hoàn sẽ được tính tự động khi chỉnh sửa thông tin
+        </span>
+      </div>
       <div className='details-grid'>
         <div className='detail-item'>
-          <span className='label'>ID:</span>
+          <span className='label'>ID Sách:</span>
           <span className='value'>{book.id_product}</span>
+        </div>
+        <div className='detail-item'>
+          <span className='label'>Phân loại:</span>
+          <span className='value'>{book.classify}</span>
         </div>
         <div className='detail-item'>
           <span className='label'>ID Người ký gửi:</span>
@@ -235,20 +308,7 @@ function BookDetail() {
             <span className='value'>{book.genre}</span>
           )}
         </div>
-        <div className='detail-item'>
-          <span className='label'>Phân loại:</span>
-          {isEditing ? (
-            <select name='classify' value={editedBook.classify} onChange={handleChange} className='edit-input'>
-              {classifyOptions.map((option) => (
-                <option key={option} value={option}>
-                  {option}
-                </option>
-              ))}
-            </select>
-          ) : (
-            <span className='value'>{book.classify}</span>
-          )}
-        </div>
+
         <div className='detail-item'>
           <span className='label'>Giá gốc:</span>
           {isEditing ? (
@@ -276,6 +336,8 @@ function BookDetail() {
                 min='0'
                 max='100'
               />
+            ) : book.classify === 'Sách Quyên Góp' ? (
+              <span className='value'>Sách Đồng Giá</span>
             ) : (
               <select name='discount' value={editedBook.discount} onChange={handleChange} className='edit-input'>
                 <option value='45'>45% giá bìa</option>
@@ -290,13 +352,25 @@ function BookDetail() {
                 ? '45% giá bìa'
                 : book.discount === 65
                 ? '65% giá bìa'
-                : 'Sách đặc biệt'}
+                : book.classify === 'Sách Quyên Góp'
+                ? 'Sách Đồng Giá'
+                : 'Sách Đặc Biệt'}
             </span>
           )}
         </div>
         <div className='detail-item'>
           <span className='label'>Giá bán:</span>
-          <span className='value'>{book.price.toLocaleString('vi-VN')} VNĐ</span>
+          {isEditing && book.classify === 'Sách Quyên Góp' && (userRole === 'BTC' || userRole === 'Admin') ? (
+            <input
+              type='text'
+              name='price'
+              value={formatCurrency(editedBook.price)}
+              onChange={handleChange}
+              className='edit-input'
+            />
+          ) : (
+            <span className='value'>{book.price.toLocaleString('vi-VN')} VNĐ</span>
+          )}
         </div>
         <div className='detail-item'>
           <span className='label'>Tiền hoàn:</span>
