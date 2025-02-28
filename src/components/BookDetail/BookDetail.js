@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import './BookDetail.scss';
@@ -9,6 +9,8 @@ function BookDetail() {
   const navigate = useNavigate();
   const [isEditing, setIsEditing] = useState(false);
   const [editedBook, setEditedBook] = useState(state?.book || null);
+  const [memberName, setMemberName] = useState('');
+
   const book = state?.book;
   const userRole = localStorage.getItem('userRole');
 
@@ -23,14 +25,17 @@ function BookDetail() {
     'Truyện tranh',
     'Khác',
   ];
-  const classifyOptions = ['Sách Ký Gửi', 'Sách NXB', 'Sách Quyên Góp'];
 
-  if (!book) {
-    return <div>Book not found</div>;
-  }
-
-  const handleEdit = () => {
-    setIsEditing(true);
+  const getNameMember = async (id) => {
+    try {
+      const URL = `${process.env.REACT_APP_DOMAIN}${process.env.REACT_APP_API_GET_MEMBER_BY_ID}${id}`;
+      const response = await fetch(URL);
+      const result = await response.json();
+      return result.data.name;
+    } catch (error) {
+      console.error('Error:', error);
+      return 'Error';
+    }
   };
 
   const calculatePrice = (originalPrice, discount, classify) => {
@@ -233,6 +238,22 @@ function BookDetail() {
     }
   };
 
+  useEffect(() => {
+    const fetchMemberName = async () => {
+      if (book.id_member) {
+        const name = await getNameMember(book.id_member);
+        setMemberName(name);
+      }
+    };
+    fetchMemberName();
+  }, [book.id_member]);
+  const handleEdit = () => {
+    setIsEditing(true);
+  };
+
+  if (!book) {
+    return <div>Book not found</div>;
+  }
   return (
     <div className='book-detail'>
       <div className='top-button-container'>
@@ -385,6 +406,10 @@ function BookDetail() {
           <span className={`value ${book.validate === 1 ? 'validated' : 'not-validated'}`}>
             {book.validate === 1 ? 'Đã xác thực' : 'Chưa xác thực'}
           </span>
+        </div>
+        <div className='detail-item'>
+          <span className='label'>Người nhập:</span>
+          <span className='value'>{memberName || 'Chưa có thông tin'}</span>
         </div>
       </div>
 
