@@ -13,7 +13,6 @@ export const FormConsignor = () => {
     bank: '',
     account: '',
     accountName: '',
-    relationship: '',
     amount: 0,
   });
 
@@ -26,7 +25,6 @@ export const FormConsignor = () => {
       bank: '',
       account: '',
       accountName: '',
-      relationship: '',
       amount: 0,
     });
   };
@@ -131,16 +129,6 @@ export const FormConsignor = () => {
           value: formData.accountName,
           onChange: handleChange,
         })}
-        <div className='form-group full-width'>
-          {renderInput({
-            label: 'Mối quan hệ của Chủ tài khoản với người nhận ký gửi:',
-            name: 'relationship',
-            type: 'text',
-            placeholder: 'Cha, mẹ, chính chủ,...',
-            value: formData.relationship,
-            onChange: handleChange,
-          })}
-        </div>
       </div>
 
       <div className='button-group'>
