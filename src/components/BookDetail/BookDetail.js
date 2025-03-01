@@ -27,6 +27,12 @@ function BookDetail() {
     'Khác',
   ];
 
+  const canEdit =
+    userRole === 'BTC' ||
+    userRole === 'Admin' ||
+    userRole === 'CTV' ||
+    book?.id_member === localStorage.getItem('userID');
+
   const getNameMember = async (id) => {
     try {
       const URL = `${process.env.REACT_APP_DOMAIN}${process.env.REACT_APP_API_GET_MEMBER_BY_ID}${id}`;
@@ -281,9 +287,13 @@ function BookDetail() {
         <button
           className='delete-button'
           onClick={handleDelete}
-          disabled={book.validate === 1 && userRole !== 'BTC' && userRole !== 'Admin'}
+          disabled={(book.validate === 1 && userRole !== 'BTC' && userRole !== 'Admin') || !canEdit}
         >
-          Xóa sách
+          {!canEdit
+            ? 'Không có quyền xóa'
+            : book.validate === 1 && userRole !== 'BTC' && userRole !== 'Admin'
+            ? 'Không thể xóa'
+            : 'Xóa sách'}
         </button>
       </div>
 
@@ -443,9 +453,13 @@ function BookDetail() {
             <button
               className='edit-button'
               onClick={handleEdit}
-              disabled={book.validate === 1 && userRole !== 'BTC' && userRole !== 'Admin'}
+              disabled={(book.validate === 1 && userRole !== 'BTC' && userRole !== 'Admin') || !canEdit}
             >
-              {book.validate === 1 && userRole !== 'BTC' && userRole !== 'Admin' ? 'Không thể chỉnh sửa' : 'Chỉnh sửa'}
+              {!canEdit
+                ? 'Không có quyền chỉnh sửa'
+                : book.validate === 1 && userRole !== 'BTC' && userRole !== 'Admin'
+                ? 'Không thể chỉnh sửa'
+                : 'Chỉnh sửa'}
             </button>
 
             {(userRole === 'BTC' || userRole === 'Admin') && book.validate === 0 && (
