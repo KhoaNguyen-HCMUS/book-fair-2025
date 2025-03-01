@@ -1,24 +1,27 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import './consignorDetail.scss';
+import { toast } from 'react-toastify';
 
 function ConsignorDetail() {
   const { state } = useLocation();
   const navigate = useNavigate();
   const [memberName, setMemberName] = useState('');
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedConsignor, setEditedConsignor] = useState(state?.consignor || null);
 
   const consignor = state?.consignor;
+  const userID = localStorage.getItem('userID');
+  const userRole = localStorage.getItem('userRole');
+  const canEdit = consignor?.id_member === userID || userRole === 'BTC' || userRole === 'Admin';
 
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('vi-VN', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-    });
+  const removeVietnameseDiacritics = (str) => {
+    return str
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/[đĐ]/g, (x) => (x === 'đ' ? 'd' : 'D'));
   };
+
   const getNameMember = async (id) => {
     try {
       const URL = `${process.env.REACT_APP_DOMAIN}${process.env.REACT_APP_API_GET_MEMBER_BY_ID}${id}`;
@@ -39,6 +42,68 @@ function ConsignorDetail() {
     fetchName();
   }, [consignor.id_member]);
 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    if (name === 'holder_name') {
+      const formattedValue = removeVietnameseDiacritics(value.toUpperCase());
+      setEditedConsignor((prev) => ({
+        ...prev,
+        [name]: formattedValue,
+      }));
+    } else {
+      setEditedConsignor((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+    }
+  };
+
+  const handleEdit = () => {
+    setIsEditing(true);
+  };
+
+  const handleCancel = () => {
+    setIsEditing(false);
+    setEditedConsignor(consignor);
+  };
+
+  const handleSave = async () => {
+    try {
+      const URL = `${process.env.REACT_APP_DOMAIN}${process.env.REACT_APP_API_UPDATE_OBJECT}`;
+      const response = await fetch(URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          typeOb: 'consignor',
+          id: consignor.id_consignor,
+          data: {
+            name: editedConsignor.name,
+            address: editedConsignor.address,
+            bank_name: editedConsignor.bank_name,
+            id_bank: editedConsignor.id_bank,
+            holder_name: editedConsignor.holder_name,
+          },
+        }),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        toast.success('Cập nhật thông tin thành công');
+        setIsEditing(false);
+        state.consignor = editedConsignor;
+      } else {
+        toast.error('Lỗi khi cập nhật: ' + result.message);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      toast.error('Lỗi khi cập nhật thông tin');
+    }
+  };
+
   if (!consignor) {
     return <div>Không tìm thấy thông tin người ký gửi</div>;
   }
@@ -49,6 +114,11 @@ function ConsignorDetail() {
         <button className='back-button' onClick={() => navigate(-1)}>
           ← Quay lại
         </button>
+        {canEdit && !isEditing && (
+          <button className='edit-button' onClick={handleEdit}>
+            Chỉnh sửa
+          </button>
+        )}
       </div>
 
       <h2>Thông tin chi tiết người ký gửi</h2>
@@ -61,27 +131,77 @@ function ConsignorDetail() {
 
         <div className='detail-item'>
           <span className='label'>Tên:</span>
-          <span className='value'>{consignor.name}</span>
+          {isEditing ? (
+            <input
+              type='text'
+              name='name'
+              value={editedConsignor.name}
+              onChange={handleChange}
+              className='edit-input'
+            />
+          ) : (
+            <span className='value'>{consignor.name}</span>
+          )}
         </div>
 
         <div className='detail-item'>
           <span className='label'>Địa chỉ:</span>
-          <span className='value'>{consignor.address}</span>
+          {isEditing ? (
+            <input
+              type='text'
+              name='address'
+              value={editedConsignor.address}
+              onChange={handleChange}
+              className='edit-input'
+            />
+          ) : (
+            <span className='value'>{consignor.address}</span>
+          )}
         </div>
 
         <div className='detail-item'>
           <span className='label'>Ngân hàng:</span>
-          <span className='value'>{consignor.bank_name}</span>
+          {isEditing ? (
+            <input
+              type='text'
+              name='bank_name'
+              value={editedConsignor.bank_name}
+              onChange={handleChange}
+              className='edit-input'
+            />
+          ) : (
+            <span className='value'>{consignor.bank_name}</span>
+          )}
         </div>
 
         <div className='detail-item'>
           <span className='label'>Số tài khoản:</span>
-          <span className='value'>{consignor.id_bank}</span>
+          {isEditing ? (
+            <input
+              type='text'
+              name='id_bank'
+              value={editedConsignor.id_bank}
+              onChange={handleChange}
+              className='edit-input'
+            />
+          ) : (
+            <span className='value'>{consignor.id_bank}</span>
+          )}
         </div>
 
         <div className='detail-item'>
           <span className='label'>Chủ tài khoản:</span>
-          <span className='value'>{consignor.holder_name}</span>
+          {isEditing ? (
+            <input
+              type='text'
+              name='holder_name'
+              value={editedConsignor.holder_name}
+              onChange={handleChange}
+              className='edit-input'
+            />
+          ) : (
+            <span className='value'>{consignor.holder_name}</span>
+          )}
         </div>
 
         <div className='detail-item'>
@@ -93,6 +213,16 @@ function ConsignorDetail() {
           <span className='label'>Người nhập:</span>
           <span className='value'>{memberName || 'Chưa có thông tin'} </span>
         </div>
+        {isEditing && (
+          <div className='bottom-button-container'>
+            <button className='save-button' onClick={handleSave}>
+              Lưu
+            </button>
+            <button className='cancel-button' onClick={handleCancel}>
+              Hủy
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
