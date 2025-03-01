@@ -3,7 +3,7 @@ import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { FaSearch } from 'react-icons/fa';
 
-import './bookStore.scss'; // Import the SCSS file
+import './bookStore.scss';
 
 function BookStore() {
   const userID = localStorage.getItem('userID');
@@ -20,7 +20,6 @@ function BookStore() {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(20);
 
-  // Get current books
   const indexOfLastBook = currentPage * itemsPerPage;
   const indexOfFirstBook = indexOfLastBook - itemsPerPage;
   const currentBooks = (filteredBooks.length > 0 ? filteredBooks : books).slice(indexOfFirstBook, indexOfLastBook);
@@ -36,9 +35,8 @@ function BookStore() {
 
   const handleToggleUnvalidated = () => {
     setShowUnvalidatedOnly(!showUnvalidatedOnly);
-    setCurrentPage(1); // Reset to first page when toggling filter
+    setCurrentPage(1);
   };
-  // Change page
   const handlePaginationClick = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
@@ -95,7 +93,7 @@ function BookStore() {
 
     setFilteredBooks(filtered);
     if (filtered.length === 0) {
-      toast.error('No books found');
+      toast.error('Không tìm thấy sách');
     }
   };
 
@@ -111,7 +109,7 @@ function BookStore() {
           <FaSearch className='search-icon' />
           <input
             type='text'
-            placeholder='Search books by name, ID or genre... (Press Enter to search)'
+            placeholder='Tìm kiếm theo tên sách, ID sách hoặc thể loại sách... (Nhấn Enter để tìm)'
             value={searchInput}
             onChange={(e) => setSearchInput(e.target.value)}
             className='search-input'
@@ -166,18 +164,18 @@ function BookStore() {
           onClick={() => handlePaginationClick(1)}
           disabled={currentPage === 1}
         >
-          First Page
+          Trang đầu
         </button>
         <button
           className='pagination-button'
           onClick={() => handlePaginationClick(currentPage - 1)}
           disabled={currentPage === 1}
         >
-          Previous
+          Trước
         </button>
 
         <span className='page-info'>
-          Page {currentPage} of {totalPages}
+          Trang {currentPage}/{totalPages}
         </span>
 
         <button
@@ -185,7 +183,7 @@ function BookStore() {
           onClick={() => handlePaginationClick(currentPage + 1)}
           disabled={currentPage === totalPages}
         >
-          Next
+          Sau
         </button>
       </div>
     </div>

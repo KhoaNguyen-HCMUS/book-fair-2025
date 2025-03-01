@@ -3,7 +3,6 @@ import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { FaSearch } from 'react-icons/fa';
 
-import BookDetail from '../../components/BookDetail/BookDetail.js';
 
 import './myListBooks.scss'; // Import the SCSS file
 
@@ -12,8 +11,6 @@ function MyListBooks() {
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedBooks, setSelectedBooks] = useState([]);
-  const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [modalContent, setModalContent] = useState(null);
 
   const [searchInput, setSearchInput] = useState('');
   const [filteredBooks, setFilteredBooks] = useState([]);
@@ -22,13 +19,11 @@ function MyListBooks() {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(20);
 
-  // Get current books
   const indexOfLastBook = currentPage * itemsPerPage;
   const indexOfFirstBook = indexOfLastBook - itemsPerPage;
   const currentBooks = (filteredBooks.length > 0 ? filteredBooks : books).slice(indexOfFirstBook, indexOfLastBook);
   const totalPages = Math.ceil((filteredBooks.length > 0 ? filteredBooks : books).length / itemsPerPage);
 
-  // Change page
   const handlePaginationClick = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
@@ -85,7 +80,7 @@ function MyListBooks() {
 
     setFilteredBooks(filtered);
     if (filtered.length === 0) {
-      toast.error('No books found');
+      toast.error('Không tìm thấy sách');
     }
   };
 
@@ -100,7 +95,7 @@ function MyListBooks() {
         <FaSearch className='search-icon' />
         <input
           type='text'
-          placeholder='Search books by name, ID or genre... (Press Enter to search)'
+          placeholder='Tìm kiếm theo tên sách, ID sách hoặc thể loại... (Nhấn Enter để tìm)'
           value={searchInput}
           onChange={(e) => setSearchInput(e.target.value)}
           className='search-input'
@@ -151,18 +146,18 @@ function MyListBooks() {
           onClick={() => handlePaginationClick(1)}
           disabled={currentPage === 1}
         >
-          First Page
+          Trang đầu
         </button>
         <button
           className='pagination-button'
           onClick={() => handlePaginationClick(currentPage - 1)}
           disabled={currentPage === 1}
         >
-          Previous
+          Trước
         </button>
 
         <span className='page-info'>
-          Page {currentPage} of {totalPages}
+          Trang {currentPage}/{totalPages}
         </span>
 
         <button
@@ -170,7 +165,7 @@ function MyListBooks() {
           onClick={() => handlePaginationClick(currentPage + 1)}
           disabled={currentPage === totalPages}
         >
-          Next
+          Sau
         </button>
       </div>
     </div>
