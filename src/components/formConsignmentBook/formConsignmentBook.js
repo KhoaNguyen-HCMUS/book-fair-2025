@@ -128,7 +128,7 @@ export const FormConsignmentBook = () => {
           genre: formData.category,
           classify: formData.type,
           bc_cost: parseFloat(parseCurrency(formData.originalPrice)),
-          discount: formData.typePrice === '45%' ? 45 : formData.typePrice === '65%' ? 65 : 0,
+          discount: formData.typePrice === '45%' ? 55 : formData.typePrice === '65%' ? 35 : 0,
           price: parseFloat(parseCurrency(formData.salePrice)),
           cash_back: parseFloat(parseCurrency(formData.refundPrice)),
           quantity: 1,

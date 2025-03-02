@@ -54,7 +54,7 @@ function BookDetail() {
       return Math.round(price * (1 - discount / 100));
     } else {
       // For consignment books: multiply by percentage directly
-      return Math.round(price * (discount / 100));
+      return Math.round(price * (1 - discount / 100));
     }
   };
 
@@ -396,17 +396,17 @@ function BookDetail() {
               <span className='value'>Sách Đồng Giá</span>
             ) : (
               <select name='discount' value={editedBook.discount} onChange={handleChange} className='edit-input'>
-                <option value='45'>45% giá bìa</option>
-                <option value='65'>65% giá bìa</option>
+                <option value='55'>45% giá bìa</option>
+                <option value='35'>65% giá bìa</option>
               </select>
             )
           ) : (
             <span className='value'>
               {book.classify === 'Sách NXB'
                 ? `${book.discount + 5}%`
-                : book.discount === 45
+                : book.discount === 55
                 ? '45% giá bìa'
-                : book.discount === 65
+                : book.discount === 35
                 ? '65% giá bìa'
                 : book.classify === 'Sách Quyên Góp'
                 ? 'Sách Đồng Giá'
