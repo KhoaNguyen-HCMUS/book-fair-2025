@@ -4,7 +4,6 @@ import { toast } from 'react-toastify';
 import { renderInput, renderSelect, formatCurrency, parseCurrency } from '../formComponents/formComponents.js';
 
 import './formDonationBook.scss';
-import { format } from 'crypto-js';
 
 export const FormDonationBook = () => {
   const [formData, setFormData] = useState({
@@ -18,7 +17,7 @@ export const FormDonationBook = () => {
     category: '',
     type: 'Sách Quyên Góp',
     originalPrice: '',
-    typePrice: '0',
+    typePrice: '100',
     salePrice: '0',
     refundPrice: '0',
     sold: 0,
@@ -39,7 +38,7 @@ export const FormDonationBook = () => {
       category: '',
       type: 'Sách Quyên Góp',
       originalPrice: '',
-      typePrice: '0',
+      typePrice: '100',
       salePrice: '0',
       refundPrice: '0',
       sold: 0,
@@ -59,7 +58,7 @@ export const FormDonationBook = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if(!formData.idConsignor || !formData.nameConsignor) {
+    if (!formData.idConsignor || !formData.nameConsignor) {
       toast.error('Vui lòng nhập SĐT người quyên góp và tìm kiếm trước khi thêm sách');
       return;
     }
@@ -247,7 +246,7 @@ export const FormDonationBook = () => {
           type: 'text',
           value: formatCurrency(formData.refundPrice),
           disabled: true,
-          note: '* Sách quyên góp nên không hoàn tiền'
+          note: '* Sách quyên góp nên không hoàn tiền',
         })}
       </div>
 

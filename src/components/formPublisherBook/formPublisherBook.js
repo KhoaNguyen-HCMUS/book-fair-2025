@@ -71,7 +71,7 @@ export const FormPublisherBook = () => {
           genre: formData.category || 'Không xác định', // Add default value
           classify: formData.type,
           bc_cost: parseFloat(parseCurrency(formData.originalPrice)) || 0,
-          discount: parseFloat(formData.typePrice) || 0,
+          discount: parseFloat(formData.typePrice) - 5 || 0,
           price: parseFloat(parseCurrency(formData.salePrice)) || 0,
           cash_back: parseFloat(parseCurrency(formData.refundPrice)) || 0,
           quantity: parseInt(formData.stock) || 1,
@@ -112,8 +112,10 @@ export const FormPublisherBook = () => {
 
   const CalculateSalePrice = (originalPrice, typePrice) => {
     const numericPrice = parseCurrency(originalPrice);
+    const numericTypePrice = parseFloat(typePrice);
 
-    return numericPrice - (numericPrice * typePrice) / 100;
+    const salePrice = numericPrice * (1 - numericTypePrice / 100) + 0.05 * numericPrice;
+    return salePrice;
   };
 
   const CalculateRefund = (salePrice, originalPrice) => {

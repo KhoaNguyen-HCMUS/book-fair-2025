@@ -379,10 +379,17 @@ function BookDetail() {
               <input
                 type='number'
                 name='discount'
-                value={editedBook.discount}
-                onChange={handleChange}
+                value={editedBook.discount + 5} // Add +5 here
+                onChange={(e) => {
+                  // Subtract 5 when saving to state
+                  const newValue = parseInt(e.target.value) - 5;
+                  setEditedBook((prev) => ({
+                    ...prev,
+                    discount: newValue,
+                  }));
+                }}
                 className='edit-input'
-                min='0'
+                min='5' // Update min to ensure discount+5 is never negative
                 max='100'
               />
             ) : book.classify === 'Sách Quyên Góp' ? (
@@ -396,7 +403,7 @@ function BookDetail() {
           ) : (
             <span className='value'>
               {book.classify === 'Sách NXB'
-                ? `${book.discount}%`
+                ? `${book.discount + 5}%`
                 : book.discount === 45
                 ? '45% giá bìa'
                 : book.discount === 65
