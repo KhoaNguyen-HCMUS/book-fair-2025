@@ -123,6 +123,10 @@ function ConsignorDetail() {
 
       <h2>Thông tin chi tiết người ký gửi</h2>
 
+      <div className='notes-container'>
+        <span className='note warning'>*Khi nhập sai ID hoặc SĐT, vui lòng xóa người ký gửi và nhập lại</span>
+      </div>
+
       <div className='details-grid'>
         <div className='detail-item'>
           <span className='label'>ID/SĐT:</span>

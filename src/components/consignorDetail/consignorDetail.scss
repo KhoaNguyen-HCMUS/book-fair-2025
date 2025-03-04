@@ -42,6 +42,25 @@
     }
   }
 
+  .notes-container {
+    text-align: center;
+    margin: 1rem 0;
+
+    .note {
+      display: block;
+      color: #dc3545;
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+
+      i {
+        margin-right: 5px;
+      }
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
   h2 {
     text-align: center;
     color: #333;
