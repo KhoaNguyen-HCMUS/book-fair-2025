@@ -21,12 +21,12 @@ export const FormPublisherBook = () => {
   });
 
   const handleReset = () => {
-    const tempPublisher = formData.publisher;
+    const tempIdPublisher = formData.id_publisher;
     setFormData({
       id: '',
-      id_publisher: '',
+      id_publisher: tempIdPublisher,
       name: '',
-      publisher: tempPublisher,
+      publisher: '',
       age: '',
       stock: 1,
       type: 'Sách NXB',
