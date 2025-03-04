@@ -70,6 +70,12 @@ export const FormConsignor = () => {
       if (result.success) {
         toast.success('Người ký gửi đã được thêm');
         handleReset();
+      } else {
+        if (result.message === 'id_consignor already exists') {
+          toast.error('Số điện thoại đã tồn tại');
+        } else {
+          toast.error('Có lỗi khi thêm người ký gửi');
+        }
       }
     } catch (error) {
       toast.error('Có lỗi khi thêm người ký gửi');
