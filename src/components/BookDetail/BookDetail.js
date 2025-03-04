@@ -359,10 +359,10 @@ function BookDetail() {
         </div>
 
         <div className='detail-item'>
-          <span className='label'>Giá gốc:</span>
+          <span className='label'>Giá bìa:</span>
           {isEditing ? (
             <input
-              type='text' // Changed from 'number' to 'text'
+              type='text'
               name='bc_cost'
               value={formatCurrency(editedBook.bc_cost)}
               onChange={handleChange}
@@ -425,12 +425,12 @@ function BookDetail() {
               className='edit-input'
             />
           ) : (
-            <span className='value'>{book.price.toLocaleString('vi-VN')} VNĐ</span>
+            <span className='value'>{formatCurrency(book.price)} VNĐ</span>
           )}
         </div>
         <div className='detail-item'>
           <span className='label'>Tiền hoàn:</span>
-          <span className='value'>{book.cash_back.toLocaleString('vi-VN')} VNĐ</span>
+          <span className='value'>{formatCurrency(book.cash_back) || 0}  VNĐ</span>
         </div>
         <div className='detail-item'>
           <span className='label'>Số lượng tồn kho:</span>
