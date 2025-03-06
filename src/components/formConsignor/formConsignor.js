@@ -101,6 +101,7 @@ export const FormConsignor = () => {
           type: 'tel',
           value: formData.phone,
           onChange: handleChange,
+          removeSpace: true,
         })}
 
         {renderInput({
@@ -125,6 +126,7 @@ export const FormConsignor = () => {
           type: 'text',
           value: formData.account,
           onChange: handleChange,
+          removeSpaces: true,
         })}
 
         {renderInput({

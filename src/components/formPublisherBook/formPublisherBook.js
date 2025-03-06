@@ -192,6 +192,7 @@ export const FormPublisherBook = () => {
             value: formData.id_publisher,
             onChange: handleChange,
             onKeyPress: handleKeyPress,
+            removeSpace: true,
           })}
           <button type='button' className='search-button' onClick={handleSearch}>
             Tìm
@@ -211,6 +212,7 @@ export const FormPublisherBook = () => {
           name: 'id',
           value: formData.id,
           onChange: handleChange,
+          removeSpace: true,
         })}
 
         {renderInput({

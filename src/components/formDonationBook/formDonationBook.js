@@ -161,6 +161,7 @@ export const FormDonationBook = () => {
             value: formData.idConsignor,
             onChange: handleChange,
             onKeyPress: handleKeyPress,
+            removeSpace: true,
           })}
           <button type='button' className='search-button' onClick={handleSearch}>
             Tìm
@@ -180,6 +181,7 @@ export const FormDonationBook = () => {
           name: 'id',
           value: formData.id,
           onChange: handleChange,
+          removeSpace: true,
         })}
 
         {renderInput({

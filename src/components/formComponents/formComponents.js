@@ -10,6 +10,7 @@ export const renderInput = ({
   onReset,
   note,
   required = true,
+  removeSpace = false, // Add this prop
 }) => (
   <div className='form-group'>
     <label>{label}</label>
@@ -18,7 +19,7 @@ export const renderInput = ({
       <input
         type={type}
         name={name}
-        value={format ? format(value) : value}
+        value={removeSpace ? removeSpaces(value) : format ? format(value) : value}
         onChange={onChange}
         placeholder={placeholder}
         disabled={disabled}
@@ -67,4 +68,9 @@ export const parseCurrency = (value) => {
   // Convert value to string if it's a number
   const stringValue = value.toString();
   return stringValue.replace(/[^0-9]/g, '');
+};
+
+export const removeSpaces = (value) => {
+  if (!value) return '';
+  return value.toString().replace(/\s+/g, '');
 };
