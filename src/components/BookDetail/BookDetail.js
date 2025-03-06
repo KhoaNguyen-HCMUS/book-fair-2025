@@ -134,6 +134,7 @@ function BookDetail() {
             cash_back: editedBook.cash_back,
             quantity: editedBook.quantity,
             stock: editedBook.stock,
+            quantity: editedBook.stock,
           },
         }),
       });
@@ -430,11 +431,22 @@ function BookDetail() {
         </div>
         <div className='detail-item'>
           <span className='label'>Tiền hoàn:</span>
-          <span className='value'>{formatCurrency(book.cash_back) || 0}  VNĐ</span>
+          <span className='value'>{formatCurrency(book.cash_back) || 0} VNĐ</span>
         </div>
         <div className='detail-item'>
           <span className='label'>Số lượng tồn kho:</span>
-          <span className='value'>{(book.quantity - book.sold).toLocaleString('vi-VN')}</span>
+          {isEditing ? (
+            <input
+              type='number'
+              name='stock'
+              value={editedBook.stock}
+              onChange={handleChange}
+              className='edit-input'
+              min='1'
+            />
+          ) : (
+            <span className='value'>{book.stock.toLocaleString('vi-VN')}</span>
+          )}
         </div>
         <div className='detail-item'>
           <span className='label'>Xác thực:</span>
