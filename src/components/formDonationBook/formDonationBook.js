@@ -188,7 +188,7 @@ export const FormDonationBook = () => {
           label: 'Tên Sách:',
           name: 'name',
           type: 'text',
-          value: formData.title,
+          value: formData.name,
           onChange: handleChange,
         })}
 

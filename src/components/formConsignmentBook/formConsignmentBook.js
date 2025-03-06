@@ -57,7 +57,7 @@ export const FormConsignmentBook = () => {
       id: '',
       idConsignor: tempNumber,
       nameConsignor: getNameConsignor(formData.idConsignor),
-      name: '',
+      name: ' ',
       publisher: '',
       author: 'N/A',
       age: '',
@@ -259,7 +259,7 @@ export const FormConsignmentBook = () => {
           label: 'Tên Sách:',
           name: 'name',
           type: 'text',
-          value: formData.title,
+          value: formData.name,
           onChange: handleChange,
         })}
 
