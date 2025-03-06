@@ -391,7 +391,7 @@ function BookDetail() {
                 }}
                 className='edit-input'
                 min='5' // Update min to ensure discount+5 is never negative
-                max='100'
+                max='99'
               />
             ) : book.classify === 'Sách Quyên Góp' ? (
               <span className='value'>Sách Đồng Giá</span>

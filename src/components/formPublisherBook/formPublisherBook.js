@@ -43,10 +43,29 @@ export const FormPublisherBook = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    if (name === 'typePrice') {
+      // Convert to number and validate range
+      const numValue = parseInt(value);
+      if (!isNaN(numValue)) {
+        const clampedValue = Math.min(Math.max(numValue, 1), 99);
+        setFormData((prev) => ({
+          ...prev,
+          [name]: clampedValue.toString(),
+        }));
+      } else if (value === '') {
+        // Allow empty input for better UX
+        setFormData((prev) => ({
+          ...prev,
+          [name]: '',
+        }));
+      }
+    } else {
+      // Handle other fields normally
+      setFormData((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -114,17 +133,48 @@ export const FormPublisherBook = () => {
     const numericPrice = parseCurrency(originalPrice);
     const numericTypePrice = parseFloat(typePrice);
 
-    const salePrice = numericPrice * (1 - numericTypePrice / 100) + 0.05 * numericPrice;
-    return salePrice;
+    if (isNaN(numericPrice) || isNaN(numericTypePrice) || numericPrice <= 0 || numericTypePrice <= 0) {
+      return 0;
+    }
+
+    try {
+      // Calculate base price with discount
+      const discountAmount = numericPrice * (numericTypePrice / 100);
+      const basePrice = numericPrice - discountAmount;
+
+      // Add 5% markup
+      const markupAmount = numericPrice * 0.05;
+      const finalPrice = basePrice + markupAmount;
+
+      // Round to nearest 1000 VND
+      return Math.round(finalPrice);
+    } catch (error) {
+      console.error('Error calculating sale price:', error);
+      return 0;
+    }
   };
 
   const CalculateRefund = (salePrice, originalPrice) => {
-    const numericSalePrice = parseFloat(parseCurrency(salePrice));
-    const numericOriginalPrice = parseFloat(parseCurrency(originalPrice));
+    const numericSalePrice = parseCurrency(salePrice);
+    const numericOriginalPrice = parseCurrency(originalPrice);
 
-    if (isNaN(numericSalePrice) || isNaN(numericOriginalPrice)) return '';
+    if (isNaN(numericSalePrice) || isNaN(numericOriginalPrice) || numericSalePrice <= 0 || numericOriginalPrice <= 0) {
+      return 0;
+    }
 
-    return Math.round(numericSalePrice - numericOriginalPrice * 0.05);
+    try {
+      // Calculate publisher's share (5% of original price)
+      const publisherShare = numericOriginalPrice * 0.05;
+
+      // Refund is sale price minus publisher's share
+      const refundAmount = numericSalePrice - publisherShare;
+
+      // Round to nearest 1000 VND
+      return Math.round(refundAmount);
+    } catch (error) {
+      console.error('Error calculating refund:', error);
+      return 0;
+    }
   };
 
   useEffect(() => {
@@ -243,7 +293,10 @@ export const FormPublisherBook = () => {
         {renderInput({
           label: 'Chiết khấu (%):',
           name: 'typePrice',
-          type: 'text',
+          type: 'number',
+          min: '5',
+          max: '100',
+          step: '1',
           value: formData.typePrice,
           onChange: handleChange,
         })}
