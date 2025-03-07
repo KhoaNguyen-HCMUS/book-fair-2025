@@ -295,7 +295,7 @@ export const FormPublisherBook = () => {
           name: 'typePrice',
           type: 'number',
           min: '5',
-          max: '100',
+          max: '95',
           step: '1',
           value: formData.typePrice,
           onChange: handleChange,
