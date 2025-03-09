@@ -73,6 +73,10 @@ function BookDetail() {
   };
 
   const handleSave = async () => {
+    if (editedBook.discount > 100) {
+      toast.error('Chiết khấu không được lớn hơn 100%');
+      return;
+    }
     let confirmMessage = '';
     const priceChanged =
       editedBook.bc_cost !== book.bc_cost ||
