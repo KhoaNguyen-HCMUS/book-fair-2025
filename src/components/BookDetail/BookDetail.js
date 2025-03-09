@@ -45,9 +45,14 @@ function BookDetail() {
     }
   };
 
-  const calculatePrice = (originalPrice, discount, classify) => {
+  const calculatePrice = (originalPrice, discount, classify, salePrice) => {
     const price = parseFloat(originalPrice);
+
     if (isNaN(price)) return 0;
+
+    if (classify === 'Sách Ký Gửi' && (discount === '0' || discount === '100')) {
+      return parseInt(salePrice);
+    }
 
     if (classify === 'Sách NXB') {
       // For NXB books: apply discount percentage
@@ -61,7 +66,9 @@ function BookDetail() {
   const calculateRefund = (salePrice, originalPrice) => {
     const price = parseFloat(salePrice);
     const original = parseFloat(originalPrice);
+
     if (isNaN(price) || isNaN(original)) return 0;
+    if (originalPrice === 0) return salePrice * 0.9;
     return price - original * 0.05;
   };
 
@@ -85,7 +92,8 @@ function BookDetail() {
     `;
       } else {
         // Existing price calculation logic for other book types
-        const newPrice = calculatePrice(editedBook.bc_cost, editedBook.discount, editedBook.classify);
+
+        const newPrice = calculatePrice(editedBook.bc_cost, editedBook.discount, editedBook.classify, editedBook.price);
         const newRefund = calculateRefund(newPrice, editedBook.bc_cost);
 
         confirmMessage = `
@@ -274,6 +282,12 @@ function BookDetail() {
 
   const handleEdit = () => {
     setIsEditing(true);
+    setEditedBook({
+      ...book,
+      discount: book.discount === 100 ? '100' : book.discount.toString(),
+      price: book.price,
+      bc_cost: book.bc_cost,
+    });
   };
 
   if (!book) {
@@ -361,7 +375,8 @@ function BookDetail() {
 
         <div className='detail-item'>
           <span className='label'>Giá bìa:</span>
-          {isEditing ? (
+          {isEditing &&
+          !(editedBook.classify === 'Sách Ký Gửi' && (editedBook.discount === '100' || editedBook.discount === '0')) ? (
             <input
               type='text'
               name='bc_cost'
@@ -370,9 +385,10 @@ function BookDetail() {
               className='edit-input'
             />
           ) : (
-            <span className='value'>{formatCurrency(book.bc_cost)} VNĐ</span>
+            <span className='value'>{formatCurrency(book.bc_cost) || 0} VNĐ</span>
           )}
         </div>
+
         <div className='detail-item'>
           <span className='label'>{book.classify === 'Sách NXB' ? 'Chiết khấu:' : 'Loại giá bán:'}</span>
           {isEditing ? (
@@ -380,9 +396,8 @@ function BookDetail() {
               <input
                 type='number'
                 name='discount'
-                value={editedBook.discount + 5} // Add +5 here
+                value={editedBook.discount + 5}
                 onChange={(e) => {
-                  // Subtract 5 when saving to state
                   const newValue = parseInt(e.target.value) - 5;
                   setEditedBook((prev) => ({
                     ...prev,
@@ -390,34 +405,44 @@ function BookDetail() {
                   }));
                 }}
                 className='edit-input'
-                min='5' // Update min to ensure discount+5 is never negative
+                min='5'
                 max='99'
               />
             ) : book.classify === 'Sách Quyên Góp' ? (
+              // For donated books - show fixed text
               <span className='value'>Sách Đồng Giá</span>
             ) : (
+              // For consignment books - show dropdown
               <select name='discount' value={editedBook.discount} onChange={handleChange} className='edit-input'>
+                <option value='100'>Sách Đặc Biệt</option>
                 <option value='55'>45% giá bìa</option>
                 <option value='35'>65% giá bìa</option>
               </select>
             )
           ) : (
+            // Display mode
             <span className='value'>
               {book.classify === 'Sách NXB'
                 ? `${book.discount + 5}%`
+                : book.classify === 'Sách Quyên Góp'
+                ? 'Sách Đồng Giá'
+                : book.discount === 100
+                ? 'Sách Đặc Biệt'
                 : book.discount === 55
                 ? '45% giá bìa'
                 : book.discount === 35
                 ? '65% giá bìa'
-                : book.classify === 'Sách Quyên Góp'
-                ? 'Sách Đồng Giá'
                 : 'Sách Đặc Biệt'}
             </span>
           )}
         </div>
+
         <div className='detail-item'>
           <span className='label'>Giá bán:</span>
-          {isEditing && book.classify === 'Sách Quyên Góp' && (userRole === 'BTC' || userRole === 'Admin') ? (
+          {isEditing &&
+          (userRole === 'BTC' || userRole === 'Admin') &&
+          (book.classify === 'Sách Quyên Góp' ||
+            (book.classify === 'Sách Ký Gửi' && (editedBook.discount === '0' || editedBook.discount === '100'))) ? (
             <input
               type='text'
               name='price'
@@ -426,9 +451,10 @@ function BookDetail() {
               className='edit-input'
             />
           ) : (
-            <span className='value'>{formatCurrency(book.price)} VNĐ</span>
+            <span className='value'>{formatCurrency(book.price) || 0} VNĐ</span>
           )}
         </div>
+
         <div className='detail-item'>
           <span className='label'>Tiền hoàn:</span>
           <span className='value'>{formatCurrency(book.cash_back) || 0} VNĐ</span>

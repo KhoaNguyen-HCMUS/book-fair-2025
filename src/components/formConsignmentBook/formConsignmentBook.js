@@ -77,9 +77,10 @@ export const FormConsignmentBook = () => {
     // For special books - set values to 0
     if (typePrice === 'Sách đặc biệt') {
       return {
+        originalPrice: '0',
         salePrice: '0',
         refundPrice: '0',
-        discount: 0,
+        discount: 100,
       };
     }
 
@@ -88,7 +89,7 @@ export const FormConsignmentBook = () => {
     return {
       salePrice: calculatedPrice.toString(),
       refundPrice: CalculateRefund(calculatedPrice, originalPrice).toString(),
-      discount: typePrice === '45%' ? 45 : 65,
+      discount: typePrice === '45%' ? 55 : 35,
     };
   };
 
@@ -101,7 +102,10 @@ export const FormConsignmentBook = () => {
         ...prev,
         typePrice: value,
         ...prices,
+        originalPrice: value === 'Sách đặc biệt' ? '0' : prev.originalPrice,
       }));
+    } else if (name === 'originalPrice' && formData.typePrice === 'Sách đặc biệt') {
+      return;
     } else {
       setFormData((prev) => ({
         ...prev,
@@ -128,7 +132,14 @@ export const FormConsignmentBook = () => {
           genre: formData.category,
           classify: formData.type,
           bc_cost: parseFloat(parseCurrency(formData.originalPrice)),
-          discount: formData.typePrice === '45%' ? 55 : formData.typePrice === '65%' ? 35 : 0,
+          discount:
+            formData.typePrice === '45%'
+              ? 55
+              : formData.typePrice === '65%'
+              ? 35
+              : formData.typePrice === 'Sách đặc biệt'
+              ? 100
+              : 0,
           price: parseFloat(parseCurrency(formData.salePrice)),
           cash_back: parseFloat(parseCurrency(formData.refundPrice)),
           quantity: 1,
@@ -294,6 +305,8 @@ export const FormConsignmentBook = () => {
           type: 'text',
           value: formatCurrency(formData.originalPrice),
           onChange: handleChange,
+          disabled: formData.typePrice === 'Sách đặc biệt',
+          note: formData.typePrice === 'Sách đặc biệt' ? '* Sách đặc biệt không cần nhập giá bìa' : undefined,
         })}
 
         {renderSelect({
