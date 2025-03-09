@@ -63,29 +63,34 @@ function BookDetail() {
     }
   };
 
-  const calculateRefund = (salePrice, originalPrice) => {
+  const calculateRefund = (salePrice, originalPrice, classify, discount) => {
     const price = parseFloat(salePrice);
     const original = parseFloat(originalPrice);
 
     if (isNaN(price) || isNaN(original)) return 0;
-    if (originalPrice === 0) return salePrice * 0.9;
+
+    if (classify === 'Sách Ký Gửi' && (discount === '0' || discount === '100')) {
+      return price * 0.9;
+    }
     return price - original * 0.05;
   };
 
   const handleSave = async () => {
+    console.log(editedBook);
+    console.log('-----------');
+    console.log(book);
     if (editedBook.discount > 100) {
       toast.error('Chiết khấu không được lớn hơn 100%');
       return;
     }
+
     let confirmMessage = '';
     const priceChanged =
       editedBook.bc_cost !== book.bc_cost ||
       editedBook.discount !== book.discount ||
       (book.classify === 'Sách Quyên Góp' && editedBook.price !== book.price);
 
-    if (editedBook.price === 0 || editedBook.price === '') {
-      confirmMessage = 'Giá bán đang bằng 0\n';
-    } else if (priceChanged) {
+    if (priceChanged) {
       if (book.classify === 'Sách Quyên Góp') {
         // For donated books, use the manually entered price
         confirmMessage = `
@@ -98,7 +103,7 @@ function BookDetail() {
         // Existing price calculation logic for other book types
 
         const newPrice = calculatePrice(editedBook.bc_cost, editedBook.discount, editedBook.classify, editedBook.price);
-        const newRefund = calculateRefund(newPrice, editedBook.bc_cost);
+        const newRefund = calculateRefund(newPrice, editedBook.bc_cost, editedBook.classify, editedBook.discount);
 
         confirmMessage = `
     Thông tin sau khi tính toán:
@@ -111,6 +116,8 @@ function BookDetail() {
         editedBook.price = newPrice;
         editedBook.cash_back = newRefund;
       }
+    } else if (editedBook.price === 0 || editedBook.price === '') {
+      confirmMessage += 'Giá bán đang bằng 0\n Bạn có chắc chắn muốn lưu thay đổi?';
     } else {
       confirmMessage += 'Bạn có chắc chắn muốn lưu thay đổi?';
     }
@@ -169,6 +176,23 @@ function BookDetail() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    if (name === 'discount' && editedBook.classify === 'Sách Ký Gửi') {
+      // Switching between pricing types for consignment books
+      if (editedBook.discount === '100' && (value === '55' || value === '35')) {
+        // Switching from special to percentage pricing
+        setEditedBook((prev) => {
+          const newPrice = calculatePrice(prev.bc_cost, value, prev.classify);
+          const newRefund = calculateRefund(newPrice, prev.bc_cost);
+          return {
+            ...prev,
+            discount: parseInt(value),
+            price: newPrice,
+            cash_back: newRefund,
+          };
+        });
+        return;
+      }
+    }
     if (name === 'bc_cost' || name === 'price') {
       setEditedBook((prev) => ({
         ...prev,
