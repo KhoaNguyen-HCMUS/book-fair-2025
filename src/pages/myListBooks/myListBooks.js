@@ -3,7 +3,6 @@ import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { FaSearch } from 'react-icons/fa';
 
-
 import './myListBooks.scss'; // Import the SCSS file
 
 function MyListBooks() {

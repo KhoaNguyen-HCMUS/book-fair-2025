@@ -9,6 +9,7 @@ function BookStore() {
   const userID = localStorage.getItem('userID');
   const [books, setBooks] = useState([]);
   const [showUnvalidatedOnly, setShowUnvalidatedOnly] = useState(false);
+  const [showSpecialOnly, setShowSpecialOnly] = useState(false);
 
   const [loading, setLoading] = useState(true);
   const [selectedBooks, setSelectedBooks] = useState([]);
@@ -30,12 +31,22 @@ function BookStore() {
     if (showUnvalidatedOnly) {
       booksToShow = booksToShow.filter((book) => book.validate === 0);
     }
+
+    if (showSpecialOnly) {
+      booksToShow = booksToShow.filter((book) => book.classify === 'Sách Ký Gửi' && book.discount === 100);
+    }
+
     return booksToShow.slice(indexOfFirstBook, indexOfLastBook);
   };
 
   const handleToggleUnvalidated = () => {
     setShowUnvalidatedOnly(!showUnvalidatedOnly);
     setCurrentPage(1);
+  };
+
+  const handleToggleSpecial = () => {
+    setShowSpecialOnly(!showSpecialOnly);
+    setCurrentPage(1); // Reset to first page
   };
   const handlePaginationClick = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -88,7 +99,10 @@ function BookStore() {
       (book) =>
         removeVietnameseTones(book.name.toLowerCase()).includes(searchTermNormalized) ||
         removeVietnameseTones(book.id_product.toLowerCase()).includes(searchTermNormalized) ||
-        removeVietnameseTones(book.genre.toLowerCase()).includes(searchTermNormalized)
+        removeVietnameseTones(book.genre.toLowerCase()).includes(searchTermNormalized) ||
+        removeVietnameseTones(book.classify.toLowerCase()).includes(searchTermNormalized) ||
+        removeVietnameseTones(book.id_consignor.toLowerCase()).includes(searchTermNormalized) ||
+        removeVietnameseTones(book.age.toLowerCase()).includes(searchTermNormalized)
     );
 
     setFilteredBooks(filtered);
@@ -120,9 +134,14 @@ function BookStore() {
             </button>
           )}
         </form>
-        <button className={`filter-button ${showUnvalidatedOnly ? 'active' : ''}`} onClick={handleToggleUnvalidated}>
-          {showUnvalidatedOnly ? 'Hiển thị tất cả' : 'Chỉ hiện sách chưa xác thực'}
-        </button>
+        <div className='filter-buttons'>
+          <button className={`filter-button ${showUnvalidatedOnly ? 'active' : ''}`} onClick={handleToggleUnvalidated}>
+            {showUnvalidatedOnly ? 'Tất cả' : 'Sách chưa xác thực'}
+          </button>
+          <button className={`filter-button ${showSpecialOnly ? 'active' : ''}`} onClick={handleToggleSpecial}>
+            {showSpecialOnly ? 'Tất cả' : 'Sách đặc biệt'}
+          </button>
+        </div>
       </div>
       <table className='book-table'>
         <thead>
