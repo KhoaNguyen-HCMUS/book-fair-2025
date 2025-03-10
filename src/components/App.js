@@ -17,6 +17,7 @@ import BookStore from '../pages/bookStore/bookStore.js';
 import MyConsignor from '../pages/myConsignor/myConsignor.js';
 import ListConsignors from '../pages/listConsignors/listConsignors.js';
 import ConsignorDetail from './consignorDetail/consignorDetail.js';
+import ListMembers from '../pages/listMembers/listMembers.js';
 
 const SESSION_TIMEOUT = 3 * 60 * 60 * 1000; // 3 hours in milliseconds
 
@@ -192,6 +193,15 @@ function App() {
               element={
                 <OrganizerRoute>
                   <ListConsignors />
+                </OrganizerRoute>
+              }
+            />
+
+            <Route
+              path='/listMembers'
+              element={
+                <OrganizerRoute>
+                  <ListMembers />
                 </OrganizerRoute>
               }
             />

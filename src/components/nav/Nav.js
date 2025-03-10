@@ -38,14 +38,19 @@ class Nav extends React.Component {
               Kho Sách
             </NavLink>
           )}
-          {this.props.userRole === 'Admin' && (
+          {(this.props.userRole === 'Admin' || this.props.userRole === 'BTC') && (
             <NavLink activeClassName='active' to='/listConsignors'>
-              Danh Sách Người Ký Gửi
+              DS Người Ký Gửi
             </NavLink>
           )}
           {this.props.userRole === 'Admin' && (
             <NavLink activeClassName='active' to='/createAccount'>
               Tạo Tài Khoản
+            </NavLink>
+          )}
+          {(this.props.userRole === 'Admin' || this.props.userRole === 'BTC') && (
+            <NavLink activeClassName='active' to='/listMembers'>
+              DS Thành Viên
             </NavLink>
           )}
         </div>
