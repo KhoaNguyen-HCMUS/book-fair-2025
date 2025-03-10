@@ -21,43 +21,51 @@ class Nav extends React.Component {
       <div className='topnav'>
         <div className='nav-left'>
           <img src={logo} alt='Logo' className='logo' />
-          <NavLink activeClassName='active' to='/'>
+          <NavLink to='/' end>
             Trang Chủ
           </NavLink>
-          <NavLink activeClassName='active' to='/addBook'>
-            Nhập Sách
-          </NavLink>
-          <NavLink activeClassName='active' to='/MyListBooks'>
-            Sách đã nhập
-          </NavLink>
-          <NavLink activeClassName='active' to='/myConsignor'>
-            Người Ký Gửi Đã Nhập
-          </NavLink>
-          {(this.props.userRole === 'Admin' || this.props.userRole === 'BTC') && (
-            <NavLink activeClassName='active' to='/bookStore'>
-              Kho Sách
-            </NavLink>
+
+          <div className='dropdown'>
+            <button className='dropbtn'>
+              Nhập Liệu
+              <i className='fa fa-caret-down'></i>
+            </button>
+            <div className='dropdown-content'>
+              <NavLink to='/addBook'>Nhập Sách</NavLink>
+              <NavLink to='/MyListBooks'>Sách đã nhập</NavLink>
+              <NavLink to='/myConsignor'>Người Ký Gửi Đã Nhập</NavLink>
+            </div>
+          </div>
+
+          {(userRole === 'Admin' || userRole === 'BTC') && (
+            <div className='dropdown'>
+              <button className='dropbtn'>
+                Quản Lý
+                <i className='fa fa-caret-down'></i>
+              </button>
+              <div className='dropdown-content'>
+                <NavLink to='/bookStore'>Kho Sách</NavLink>
+                <NavLink to='/listConsignors'>DS Người Ký Gửi</NavLink>
+                <NavLink to='/listMembers'>DS Thành Viên</NavLink>
+              </div>
+            </div>
           )}
-          {(this.props.userRole === 'Admin' || this.props.userRole === 'BTC') && (
-            <NavLink activeClassName='active' to='/listConsignors'>
-              DS Người Ký Gửi
-            </NavLink>
-          )}
-          {this.props.userRole === 'Admin' && (
-            <NavLink activeClassName='active' to='/createAccount'>
-              Tạo Tài Khoản
-            </NavLink>
-          )}
-          {(this.props.userRole === 'Admin' || this.props.userRole === 'BTC') && (
-            <NavLink activeClassName='active' to='/listMembers'>
-              DS Thành Viên
-            </NavLink>
+
+          {userRole === 'Admin' && (
+            <div className='dropdown'>
+              <button className='dropbtn'>
+                Hệ Thống
+                <i className='fa fa-caret-down'></i>
+              </button>
+              <div className='dropdown-content'>
+                <NavLink to='/createAccount'>Tạo Tài Khoản</NavLink>
+              </div>
+            </div>
           )}
         </div>
 
         <div className='nav-right'>
           <span className='username'>{this.props.username}</span>
-
           <span className='divider'>|</span>
           <span className='role'>{this.getRoleDisplay(userRole)}</span>
           <button className='logout-btn' onClick={this.props.onLogout}>
