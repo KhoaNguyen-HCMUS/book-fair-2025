@@ -108,6 +108,7 @@ function MyListBooks() {
       <table className='book-table'>
         <thead>
           <tr>
+            <th>STT</th>
             <th>ID</th>
             <th>Tên sách</th>
             <th>Thể loại</th>
@@ -118,13 +119,14 @@ function MyListBooks() {
           </tr>
         </thead>
         <tbody>
-          {currentBooks.map((book) => (
+          {currentBooks.map((book, index) => (
             <tr
               key={book.id}
               onClick={() => navigate(`/bookDetail/${book.id_product}`, { state: { book } })}
               style={{ cursor: 'pointer' }}
               className='book-row'
             >
+              <td>{index + 1}</td>
               <td>{book.id_product}</td>
               <td>{book.name}</td>
               <td>{book.genre}</td>
