@@ -21,9 +21,11 @@ class Nav extends React.Component {
       <div className='topnav'>
         <div className='nav-left'>
           <img src={logo} alt='Logo' className='logo' />
-          <NavLink to='/' end>
-            Trang Chủ
-          </NavLink>
+          <div className='home-btn'>
+            <NavLink to='/' end>
+              Trang Chủ
+            </NavLink>
+          </div>
 
           <div className='dropdown'>
             <button className='dropbtn'>
