@@ -114,11 +114,6 @@ function ConsignorDetail() {
         <button className='back-button' onClick={() => navigate(-1)}>
           ← Quay lại
         </button>
-        {canEdit && !isEditing && (
-          <button className='edit-button' onClick={handleEdit}>
-            Chỉnh sửa
-          </button>
-        )}
       </div>
 
       <h2>Thông tin chi tiết người ký gửi</h2>
@@ -217,15 +212,23 @@ function ConsignorDetail() {
           <span className='label'>Người nhập:</span>
           <span className='value'>{memberName || 'Chưa có thông tin'} </span>
         </div>
-        {isEditing && (
-          <div className='bottom-button-container'>
+      </div>
+      <div className='button-container'>
+        {!isEditing ? (
+          canEdit && (
+            <button className='edit-button' onClick={handleEdit}>
+              Chỉnh sửa
+            </button>
+          )
+        ) : (
+          <>
             <button className='save-button' onClick={handleSave}>
               Lưu
             </button>
             <button className='cancel-button' onClick={handleCancel}>
               Hủy
             </button>
-          </div>
+          </>
         )}
       </div>
     </div>
