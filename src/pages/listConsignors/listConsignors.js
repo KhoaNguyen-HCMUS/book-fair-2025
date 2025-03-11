@@ -99,6 +99,7 @@ function ListConsignors() {
       <table className='consignor-table'>
         <thead>
           <tr>
+            <th>STT</th>
             <th>SĐT/ID</th>
             <th>Tên</th>
             <th>Địa chỉ</th>
@@ -109,13 +110,14 @@ function ListConsignors() {
           </tr>
         </thead>
         <tbody>
-          {currentConsignors.map((consignor) => (
+          {currentConsignors.map((consignor, index) => (
             <tr
               key={consignor.id_consignor}
               onClick={() => handleRowClick(consignor)}
               style={{ cursor: 'pointer' }}
               className='consignor-row'
             >
+              <td>{index + 1}</td>
               <td>{consignor.id_consignor}</td>
               <td>{consignor.name}</td>
               <td>{consignor.address}</td>
