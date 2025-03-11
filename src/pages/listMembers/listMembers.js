@@ -101,19 +101,20 @@ function ListMembers() {
         <thead>
           <tr>
             <th>STT</th>
-
             <th>ID</th>
-            <th>Name</th>
-            <th>Role</th>
+            <th>Họ tên</th>
+            <th>Vai trò</th>
+            <th>Số sách</th>
           </tr>
         </thead>
         <tbody>
           {currentMembers.map((member, index) => (
-            <tr key={member.id_member} onClick={() => handleRowClick(member)}>
+            <tr className='member-row' key={member.id_member} onClick={() => handleRowClick(member)}>
               <td>{indexOfFirstMember + index + 1}</td>
               <td>{member.id_member}</td>
               <td>{member.name}</td>
               <td>{member.role}</td>
+              <td> {member.count || 0}</td>
             </tr>
           ))}
         </tbody>
