@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
+import { hashFunction } from '../../components/hashFunction/hashFunction.js';
+
 import './memberDetail.scss';
 
 function MemberDetail() {
@@ -10,6 +12,9 @@ function MemberDetail() {
 
   const [isEditing, setIsEditing] = useState(false);
   const [editedMember, setEditedMember] = useState(state?.member);
+
+  const [showPasswordUpdate, setShowPasswordUpdate] = useState(false);
+  const [newPassword, setNewPassword] = useState('');
 
   const currentUserRole = localStorage.getItem('userRole');
   const member = state?.member;
@@ -69,11 +74,42 @@ function MemberDetail() {
     }
   };
 
-  const removeVietnameseDiacritics = (str) => {
-    return str
-      .normalize('NFD')
-      .replace(/[\u0300-\u036f]/g, '')
-      .replace(/[đĐ]/g, (x) => (x === 'đ' ? 'd' : 'D'));
+  const handlePasswordUpdate = async () => {
+    if (!newPassword) {
+      toast.error('Vui lòng nhập mật khẩu mới');
+      return;
+    }
+
+    const hashedPassword = await hashFunction(newPassword);
+
+    try {
+      const URL = `${process.env.REACT_APP_DOMAIN}${process.env.REACT_APP_API_UPDATE_OBJECT}`;
+      const response = await fetch(URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          typeOb: 'member',
+          id: member.id_member,
+          data: {
+            password: hashedPassword,
+          },
+        }),
+      });
+
+      const result = await response.json();
+      if (result.success) {
+        toast.success('Cập nhật mật khẩu thành công');
+        setShowPasswordUpdate(false);
+        setNewPassword('');
+      } else {
+        toast.error('Lỗi khi cập nhật mật khẩu: ' + result.message);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      toast.error('Lỗi khi cập nhật mật khẩu');
+    }
   };
 
   if (!member) {
@@ -128,10 +164,37 @@ function MemberDetail() {
 
       {currentUserRole === 'Admin' && (
         <div className='button-container'>
-          {!isEditing ? (
-            <button className='edit-button' onClick={() => setIsEditing(true)}>
-              Chỉnh sửa
-            </button>
+          {!isEditing && !showPasswordUpdate ? (
+            <>
+              <button className='edit-button' onClick={() => setIsEditing(true)}>
+                Chỉnh sửa
+              </button>
+              <button className='password-button' onClick={() => setShowPasswordUpdate(true)}>
+                Cập nhật mật khẩu
+              </button>
+            </>
+          ) : showPasswordUpdate ? (
+            <div className='password-update-container'>
+              <input
+                type='password'
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                placeholder='Nhập mật khẩu mới'
+                className='edit-input'
+              />
+              <button className='save-button' onClick={handlePasswordUpdate}>
+                Cập nhật
+              </button>
+              <button
+                className='cancel-button'
+                onClick={() => {
+                  setShowPasswordUpdate(false);
+                  setNewPassword('');
+                }}
+              >
+                Hủy
+              </button>
+            </div>
           ) : (
             <>
               <button className='save-button' onClick={handleSave}>

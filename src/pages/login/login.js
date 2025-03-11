@@ -87,6 +87,8 @@ function Login({ setAuth }) {
       return;
     }
 
+    console.log('password:', hashedPassword);
+
     try {
       const response = await checkLogin(username, hashedPassword);
 
