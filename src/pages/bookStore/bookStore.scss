@@ -1,242 +1,180 @@
-.list-books {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px 20px;
-  height: calc(100vh - 64px); // Subtract nav height
-  // overflow-y: auto;
+.book-store {
+  display: flex;
+  gap: 20px;
+  padding: 20px;
 
-  .controls-container {
+  .content-container {
+    flex: 1;
     display: flex;
-    gap: 20px;
-    align-items: center;
-    margin-bottom: 20px;
+    flex-direction: column;
+  }
+
+  .filter-container {
+    width: 250px; // Độ rộng cố định cho bộ lọc
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    overflow-y: auto; // Cho phép cuộn nếu bộ lọc dài
+    height: 100vh;
+
+    .filter-group {
+      margin-bottom: 15px;
+
+      .filter-title {
+        font-weight: bold;
+        margin-bottom: 10px;
+      }
+
+      .filter-options {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+
+        .filter-button {
+          background: #ffffff;
+          border: 1px solid #ddd;
+          padding: 6px 12px;
+          border-radius: 5px;
+          cursor: pointer;
+          transition: 0.3s;
+
+          &:hover {
+            background: #007bff;
+            color: white;
+          }
+
+          &.active {
+            background: #007bff;
+            color: white;
+            border-color: #0056b3;
+          }
+        }
+      }
+    }
+  }
+
+  .main-content {
+    flex: 3;
+    display: flex;
+    flex-direction: column;
 
     .search-container {
-      flex: 1;
+      display: flex;
+      align-items: center;
+      background: #fff;
+      padding: 10px 15px;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      margin-bottom: 20px;
+      position: relative;
+
+      .search-icon {
+        color: #555;
+        margin-right: 10px;
+      }
+
+      .search-input {
+        flex: 1;
+        border: none;
+        outline: none;
+        font-size: 16px;
+        padding: 5px;
+      }
+
+      .clear-button {
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: 18px;
+        color: #d9534f;
+        position: absolute;
+        right: 15px;
+
+        &:hover {
+          color: #c9302c;
+        }
+      }
     }
 
-    .filter-buttons {
-      display: flex;
-      gap: 10px;
-      margin-left: 10px;
+    .table-container {
+      background: #fff;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      overflow-x: auto;
 
-      .filter-button {
-        padding: 8px 16px;
-        border-radius: 4px;
+      .book-table {
+        width: 100%;
+        border-collapse: collapse;
+
+        th,
+        td {
+          padding: 12px;
+          text-align: left;
+          border-bottom: 1px solid #ddd;
+        }
+
+        th {
+          background: #f4f4f4;
+          font-weight: bold;
+        }
+
+        .book-row {
+          cursor: pointer;
+          transition: background 0.2s;
+
+          &:hover {
+            background: #f1f1f1;
+          }
+        }
+
+        .validated {
+          color: green;
+          font-weight: bold;
+        }
+
+        .not-validated {
+          color: red;
+          font-weight: bold;
+        }
+      }
+    }
+
+    .pagination-container {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+
+      .pagination-button {
+        padding: 8px 15px;
+        margin: 0 5px;
         border: 1px solid #ddd;
         background: white;
         cursor: pointer;
-        transition: all 0.3s ease;
+        transition: 0.3s;
+        border-radius: 5px;
 
         &:hover {
-          background: #f0f0f0;
-        }
-
-        &.active {
-          background: #4a90e2;
+          background: #007bff;
           color: white;
-          border-color: #4a90e2;
+        }
+
+        &:disabled {
+          cursor: not-allowed;
+          opacity: 0.5;
+        }
+
+        &.first-page {
+          font-weight: bold;
         }
       }
-    }
-  }
 
-  .search-container {
-    width: 100%;
-    max-width: 100%;
-    background: white;
-    padding: 10px 20px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    display: flex;
-    align-items: center;
-    box-sizing: border-box;
-    .search-icon {
-      font-size: 20px;
-      color: #888;
-      margin-right: 10px;
-    }
-
-    .search-input {
-      flex: 1;
-      padding: 8px 12px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      font-size: 14px;
-      &:focus {
-        border-color: #007bff;
-        outline: none;
-      }
-    }
-
-    .clear-button {
-      background-color: #f1f1f1;
-      border: none;
-      border-radius: 5px;
-      padding: 8px 12px;
-      margin-left: 10px;
-      cursor: pointer;
-      font-size: 14px;
-      color: #333;
-      &:hover {
-        background-color: #e1e1e1;
-      }
-    }
-  }
-
-  .book-table {
-    width: 100%;
-    max-width: 100%;
-    margin-top: 20px;
-    box-sizing: border-box;
-    table-layout: fixed;
-
-    border-collapse: collapse;
-    border: 1px solid #ddd;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    font-size: 13px;
-
-    thead {
-      top: 120px;
-      background-color: #f1f1f1;
-      z-index: 5;
-
-      th {
-        text-align: center;
-
-        padding: 10px;
+      .page-info {
+        font-size: 16px;
         font-weight: bold;
-        border-bottom: 2px solid #ddd;
+        margin: 0 10px;
       }
-    }
-
-    th,
-    td {
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    tbody {
-      tr {
-        &:nth-child(even) {
-          background-color: #fafafa;
-        }
-        &:hover {
-          background-color: #f0f0f0;
-        }
-
-        td {
-          padding: 10px;
-          border-bottom: 1px solid #ddd;
-          text-align: left;
-
-          &.checkbox-container {
-            text-align: center;
-          }
-
-          .large-checkbox {
-            width: 18px;
-            height: 18px;
-          }
-        }
-      }
-    }
-
-    .validated {
-      color: green;
-      font-weight: bold;
-    }
-
-    .not-validated {
-      color: red;
-      font-weight: bold;
-    }
-
-    th:nth-child(1),
-    td:nth-child(1) {
-      width: 5%;
-    }
-    th:nth-child(2),
-    td:nth-child(2) {
-      width: 10%;
-    }
-    th:nth-child(3),
-    td:nth-child(3) {
-      width: 15%;
-    }
-    th:nth-child(4),
-    td:nth-child(4) {
-      width: 20%;
-    }
-    th:nth-child(5),
-    td:nth-child(5) {
-      width: 10%;
-    }
-    th:nth-child(6),
-    td:nth-child(6) {
-      width: 10%;
-    }
-    th:nth-child(7),
-    td:nth-child(7) {
-      width: 7%;
-    }
-  }
-
-  .pagination-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 20px;
-    gap: 10px;
-
-    .page-info {
-      font-size: 12px;
-    }
-
-    .pagination-button {
-      padding: 8px 16px;
-      border: 1px solid #ddd;
-      background: white;
-      border-radius: 4px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-
-      &:hover {
-        background: #f0f0f0;
-      }
-
-      &.active {
-        background: #007bff;
-        color: white;
-        border-color: #007bff;
-      }
-
-      &:disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
-      }
-    }
-
-    .page-info {
-      margin: 0 15px;
-      color: #666;
-    }
-  }
-
-  .items-per-page {
-    margin-bottom: 15px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-
-    select {
-      padding: 5px;
-      border-radius: 4px;
-      border: 1px solid #ddd;
-    }
-
-    label {
-      color: #666;
     }
   }
 }
