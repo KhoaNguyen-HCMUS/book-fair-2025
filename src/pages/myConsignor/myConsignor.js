@@ -4,7 +4,8 @@ import { FaSearch } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import './myConsignor.scss';
 
-function MyConsignor() {
+function MyConsignor({ userId }) {
+  const userID = userId;
   const navigate = useNavigate();
   const [consignors, setConsignors] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -33,7 +34,6 @@ function MyConsignor() {
 
   const fetchConsignors = async () => {
     try {
-      const userId = localStorage.getItem('userID');
       const URL = `${process.env.REACT_APP_DOMAIN}${process.env.REACT_APP_API_GET_LIST_CONSIGNORS_BY_ID}${userId}`;
       const response = await fetch(URL);
       const result = await response.json();

@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import { hashFunction } from '../../components/hashFunction/hashFunction.js';
-
+import MyConsignor from '../../pages/myConsignor/myConsignor.js';
 import './memberDetail.scss';
 
 function MemberDetail() {
@@ -213,6 +213,8 @@ function MemberDetail() {
           )}
         </div>
       )}
+      <h2>Danh sách người ký gửi của thành viên</h2>
+      <MyConsignor userId={member.id_member} />
     </div>
   );
 }

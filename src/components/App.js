@@ -73,9 +73,6 @@ function App() {
   useEffect(() => {
     if (isAuth) {
       const loginTime = localStorage.getItem('loginTime');
-      setUsername(localStorage.getItem('username') || '');
-      setUserole(localStorage.getItem('userRole') || '');
-      setUserID(localStorage.getItem('userID') || '');
 
       const intervalId = setInterval(() => {
         const currentTime = new Date().getTime();
@@ -122,6 +119,10 @@ function App() {
       if (!localStorage.getItem('loginTime')) {
         localStorage.setItem('loginTime', new Date().getTime().toString());
       }
+      // Set all user data when checking authentication
+      setUsername(localStorage.getItem('username') || '');
+      setUserole(localStorage.getItem('userRole') || '');
+      setUserID(localStorage.getItem('userID') || '');
     }
     setIsAuth(auth);
   }, []);
@@ -145,7 +146,7 @@ function App() {
               path='/myListBooks'
               element={
                 <ProtectedRoute>
-                  <MyListBooks userID={userID} />
+                  <MyListBooks userId={userID} />
                 </ProtectedRoute>
               }
             />
@@ -185,7 +186,7 @@ function App() {
               path='/myConsignor'
               element={
                 <ProtectedRoute>
-                  <MyConsignor userID={userID} />
+                  <MyConsignor userId={userID} />
                 </ProtectedRoute>
               }
             />

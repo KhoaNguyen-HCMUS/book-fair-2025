@@ -78,16 +78,12 @@ function Login({ setAuth }) {
       localStorage.setItem('userRole', OFFLINE_CREDENTIALS.role);
       localStorage.setItem('userID', '0');
 
-      console.log();
-
       setAuth(true);
       // setToggle(true);
       navigate('/');
       setLoading(false);
       return;
     }
-
-    console.log('password:', hashedPassword);
 
     try {
       const response = await checkLogin(username, hashedPassword);

@@ -5,8 +5,11 @@ import { FaSearch } from 'react-icons/fa';
 
 import './myListBooks.scss'; // Import the SCSS file
 
-function MyListBooks() {
-  const userID = localStorage.getItem('userID');
+function MyListBooks({ userId }) {
+  // const userID = localStorage.getItem('userID');
+
+  const userID = userId;
+  console.log('userID', userID);
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedBooks, setSelectedBooks] = useState([]);
