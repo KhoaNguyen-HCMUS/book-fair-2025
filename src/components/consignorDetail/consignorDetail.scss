@@ -9,6 +9,7 @@
   min-height: calc(100vh - 40px);
   display: flex;
   flex-direction: column;
+  gap: 20px;
 
   .top-button-container {
     display: flex;
@@ -172,7 +173,7 @@
   }
 
   .button-container {
-    margin-top: auto;
+    margin-top: 20px;
     padding: 20px;
     display: flex;
     gap: 10px;
