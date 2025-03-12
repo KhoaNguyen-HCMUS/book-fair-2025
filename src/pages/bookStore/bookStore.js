@@ -6,7 +6,7 @@ import { FaSearch } from 'react-icons/fa';
 import './bookStore.scss';
 
 const categories = {
-  'Phân loại': ['Sách Ký Gửi', 'Sách NXB', 'Sách Quyên Góp'],
+  'Phân loại': ['Sách Ký Gửi', 'Sách NXB', 'Sách Quyên Góp', 'Sách Đặc Biệt'],
   'Thể loại': [
     'Khoa học xã hội & Nhân văn',
     'Khoa học tự nhiên & Công nghệ',
@@ -83,6 +83,9 @@ function BookStore() {
 
           switch (category) {
             case 'Phân loại':
+              if (selectedItems.includes('Sách Đặc Biệt')) {
+                return book.classify === 'Sách Ký Gửi' && book.discount === 100;
+              }
               return selectedItems.includes(book.classify);
             case 'Thể loại':
               return selectedItems.includes(book.genre);

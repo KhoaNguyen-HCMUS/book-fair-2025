@@ -90,6 +90,15 @@
           padding: 10px;
           border-bottom: 1px solid #ddd;
           text-align: left;
+            &.validated {
+                color: #28a745; // Green color for validated
+                font-weight: 750;
+              }
+
+              &.not-validated {
+                color: #dc3545; // Red color for not validated
+                font-weight: 750;
+              }
         }
       }
     }
