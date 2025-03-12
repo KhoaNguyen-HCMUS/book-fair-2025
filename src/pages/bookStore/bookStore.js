@@ -43,8 +43,8 @@ function BookStore() {
 
   const indexOfLastBook = currentPage * itemsPerPage;
   const indexOfFirstBook = indexOfLastBook - itemsPerPage;
-  const currentBooks = (filteredBooks.length > 0 ? filteredBooks : books).slice(indexOfFirstBook, indexOfLastBook);
-  const totalPages = Math.ceil((filteredBooks.length > 0 ? filteredBooks : books).length / itemsPerPage);
+  const currentBooks = filteredResults.slice(indexOfFirstBook, indexOfLastBook);
+  const totalPages = Math.ceil(filteredResults.length / itemsPerPage);
 
   const toggleFilter = (category, item) => {
     setSelectedFilters((prev) => {
