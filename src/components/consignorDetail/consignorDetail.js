@@ -105,6 +105,37 @@ function ConsignorDetail() {
     }
   };
 
+  const handleDelete = async () => {
+    // Show confirmation dialog
+    if (!window.confirm('Bạn có chắc chắn muốn xóa người ký gửi này và toàn bộ sách của người ký gửi này?')) {
+      return;
+    }
+
+    try {
+      const URL =
+        `${process.env.REACT_APP_DOMAIN}${process.env.REACT_APP_API_DELETE_CONSIGNOR}` + consignor.id_consignor;
+      console.log(URL);
+      const response = await fetch(URL, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        toast.success('Xóa người ký gửi thành công');
+        navigate(-1); // Go back to previous page
+      } else {
+        toast.error('Lỗi khi xóa: ' + result.message);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      toast.error('Lỗi khi xóa người ký gửi');
+    }
+  };
+
   if (!consignor) {
     return <div>Không tìm thấy thông tin người ký gửi</div>;
   }
@@ -115,6 +146,11 @@ function ConsignorDetail() {
         <button className='back-button' onClick={() => navigate(-1)}>
           ← Quay lại
         </button>
+        {(userRole === 'BTC' || userRole === 'Admin') && (
+          <button className='delete-button' onClick={handleDelete}>
+            Xóa
+          </button>
+        )}
       </div>
 
       <h2>Thông tin chi tiết người ký gửi</h2>
