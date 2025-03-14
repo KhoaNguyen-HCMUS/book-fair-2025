@@ -18,6 +18,7 @@ function MemberDetail() {
 
   const currentUserRole = localStorage.getItem('userRole');
   const member = state?.member;
+  const userRole = localStorage.getItem('userRole');
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -112,6 +113,35 @@ function MemberDetail() {
     }
   };
 
+  const handleDelete = async () => {
+    // Show confirmation dialog
+    if (!window.confirm('Bạn có chắc chắn muốn xóa thành viên này? Tất cả dữ liệu liên quan sẽ bị mất.')) {
+      return;
+    }
+
+    try {
+      const URL = `${process.env.REACT_APP_DOMAIN}${process.env.REACT_APP_API_DELETE_MEMBER}` + member.id_member;
+      console.log(URL);
+      const response = await fetch(URL, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      const result = await response.json();
+      if (result.success) {
+        toast.success('Xóa thành viên thành công');
+        navigate('/listMembers');
+      } else {
+        toast.error('Lỗi khi xóa thành viên: ' + result.message);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      toast.error('Lỗi khi xóa thành viên');
+    }
+  };
+
   if (!member) {
     return <div>Không tìm thấy thông tin thành viên</div>;
   }
@@ -122,6 +152,11 @@ function MemberDetail() {
         <button className='back-button' onClick={() => navigate(-1)}>
           Quay lại
         </button>
+        {userRole === 'Admin' && (
+          <button className='delete-button' onClick={handleDelete}>
+            Xóa
+          </button>
+        )}
       </div>
 
       <h2>Thông tin chi tiết thành viên</h2>
