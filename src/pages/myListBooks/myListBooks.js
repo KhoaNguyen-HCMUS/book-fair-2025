@@ -9,7 +9,6 @@ function MyListBooks({ userId, typeUser }) {
   // const userID = localStorage.getItem('userID');
 
   const userID = userId;
-  console.log('userID', userID);
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedBooks, setSelectedBooks] = useState([]);
