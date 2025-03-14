@@ -34,7 +34,10 @@ function MyConsignor({ userId }) {
 
   const fetchConsignors = async () => {
     try {
-      const URL = `${process.env.REACT_APP_DOMAIN}${process.env.REACT_APP_API_GET_LIST_CONSIGNORS_BY_ID}${userId}`;
+      const params = `consignor&&id=${userID}&&typeUser=member`;
+      const URL = `${process.env.REACT_APP_DOMAIN}${process.env.REACT_APP_API_GET_OBJECT_LIST_BY_ID}` + params;
+      console.log('URL', URL);
+
       const response = await fetch(URL);
       const result = await response.json();
 

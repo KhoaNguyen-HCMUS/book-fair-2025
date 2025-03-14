@@ -5,7 +5,7 @@ import { FaSearch } from 'react-icons/fa';
 
 import './myListBooks.scss'; // Import the SCSS file
 
-function MyListBooks({ userId }) {
+function MyListBooks({ userId, typeUser }) {
   // const userID = localStorage.getItem('userID');
 
   const userID = userId;
@@ -36,7 +36,9 @@ function MyListBooks({ userId }) {
 
   const fetchBooks = async () => {
     try {
-      const URL = `${process.env.REACT_APP_DOMAIN}${process.env.REACT_APP_API_GET_LIST_BOOKS_BY_ID}` + userID;
+      const params = 'product&&id=' + userID + '&&typeUser=' + typeUser;
+      const URL = `${process.env.REACT_APP_DOMAIN}${process.env.REACT_APP_API_GET_OBJECT_LIST_BY_ID}` + params;
+      console.log('URL', URL);
       const response = await fetch(URL);
 
       const result = await response.json();

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import './consignorDetail.scss';
 import { toast } from 'react-toastify';
+import MyListBooks from '../../pages/myListBooks/myListBooks';
 
 function ConsignorDetail() {
   const { state } = useLocation();
@@ -231,6 +232,8 @@ function ConsignorDetail() {
           </>
         )}
       </div>
+      <h2>Danh sách sách đã ký gửi</h2>
+      <MyListBooks userId={consignor.id_consignor} typeUser={'consignor'} />
     </div>
   );
 }

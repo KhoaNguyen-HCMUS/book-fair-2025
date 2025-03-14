@@ -146,7 +146,7 @@ function App() {
               path='/myListBooks'
               element={
                 <ProtectedRoute>
-                  <MyListBooks userId={userID} />
+                  <MyListBooks userId={userID} typeUser={'member'} />
                 </ProtectedRoute>
               }
             />
