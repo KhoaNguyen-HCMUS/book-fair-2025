@@ -77,7 +77,7 @@ function MyListBooks({ userId, typeUser }) {
       (book) =>
         removeVietnameseTones(book.name.toLowerCase()).includes(searchTermNormalized) ||
         removeVietnameseTones(book.id_product.toLowerCase()).includes(searchTermNormalized) ||
-        removeVietnameseTones(book.genre.toLowerCase()).includes(searchTermNormalized)
+        removeVietnameseTones(book.genre.toLowerCase()).includes(searchTermNormalized) 
     );
 
     setFilteredBooks(filtered);
