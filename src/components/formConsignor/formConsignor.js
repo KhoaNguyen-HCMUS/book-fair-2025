@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 
-import { renderInput } from '../formComponents/formComponents.js';
+import { renderInput, renderSelect } from '../formComponents/formComponents.js';
 import './formConsignor.scss';
 
 export const FormConsignor = () => {
@@ -104,12 +104,12 @@ export const FormConsignor = () => {
           removeSpace: true,
         })}
 
-        {renderInput({
+        {renderSelect({
           label: 'Địa chỉ:',
           name: 'address',
-          type: 'text',
           value: formData.address,
           onChange: handleChange,
+          options: ['Bến Tre', 'TP.HCM'],
         })}
 
         {renderInput({
