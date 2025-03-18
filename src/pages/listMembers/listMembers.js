@@ -114,7 +114,7 @@ function ListMembers() {
               <td>{member.id_member}</td>
               <td>{member.name}</td>
               <td>{member.role}</td>
-              <td> {member.count || 0}</td>
+              <td> {member.count_books || 0}</td>
             </tr>
           ))}
         </tbody>

@@ -3,11 +3,9 @@ import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { FaSearch } from 'react-icons/fa';
 
-import './myListBooks.scss'; // Import the SCSS file
+import './myListBooks.scss';
 
 function MyListBooks({ userId, typeUser }) {
-  // const userID = localStorage.getItem('userID');
-
   const userID = userId;
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -35,7 +33,7 @@ function MyListBooks({ userId, typeUser }) {
 
   const fetchBooks = async () => {
     try {
-      const params = 'product&&id=' + userID + '&&typeUser=' + typeUser;
+      const params = 'product&&id=' + userID + '&typeUser=' + typeUser;
       const URL = `${process.env.REACT_APP_DOMAIN}${process.env.REACT_APP_API_GET_OBJECT_LIST_BY_ID}` + params;
       const response = await fetch(URL);
 
@@ -77,7 +75,7 @@ function MyListBooks({ userId, typeUser }) {
       (book) =>
         removeVietnameseTones(book.name.toLowerCase()).includes(searchTermNormalized) ||
         removeVietnameseTones(book.id_product.toLowerCase()).includes(searchTermNormalized) ||
-        removeVietnameseTones(book.genre.toLowerCase()).includes(searchTermNormalized) 
+        removeVietnameseTones(book.genre.toLowerCase()).includes(searchTermNormalized)
     );
 
     setFilteredBooks(filtered);

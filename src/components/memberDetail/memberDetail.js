@@ -193,7 +193,7 @@ function MemberDetail() {
 
         <div className='detail-item'>
           <span className='label'>Số sách:</span>
-          <span className='value'>{member.count}</span>
+          <span className='value'>{member.count_books || 0}</span>
         </div>
       </div>
 
