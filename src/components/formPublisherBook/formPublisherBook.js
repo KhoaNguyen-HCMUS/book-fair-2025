@@ -6,6 +6,7 @@ import './formPublisherBook.scss';
 export const FormPublisherBook = () => {
   const [formData, setFormData] = useState({
     id: '',
+    id_publisher: '',
     name: '',
     publisher: '',
     age: '',
@@ -26,7 +27,6 @@ export const FormPublisherBook = () => {
       id: '',
       id_publisher: tempIdPublisher,
       name: '',
-      publisher: '',
       age: '',
       stock: 1,
       type: 'Sách NXB',
@@ -214,13 +214,13 @@ export const FormPublisherBook = () => {
           toast.error('Người ký gửi không thuộc quyền sở hữu của bạn');
           setFormData((prev) => ({
             ...prev,
-            nameConsignor: '',
-            idConsignor: '',
+            publisher: '',
+            id_publisher: '',
           }));
         } else {
           setFormData((prev) => ({
             ...prev,
-            nameConsignor: data.data.name,
+            publisher: data.data.name,
           }));
         }
       } else {

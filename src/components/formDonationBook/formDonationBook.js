@@ -129,7 +129,7 @@ export const FormDonationBook = () => {
 
       if (data.success && data.data) {
         if (data.data.id_member !== localStorage.getItem('userID')) {
-          toast.error('Người ký gửi không thuộc quyền sở hữu của bạn');
+          toast.error('Người quyên góp không thuộc quyền sở hữu của bạn');
           setFormData((prev) => ({
             ...prev,
             nameConsignor: '',
