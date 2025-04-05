@@ -64,6 +64,20 @@ class Nav extends React.Component {
               </div>
             </div>
           )}
+
+          {(userRole === 'Admin' || userRole === 'Cashier' || userRole === 'BTC') && (
+            <div className='dropdown'>
+              <button className='dropbtn'>
+                Thu Ngân
+                <i className='fa fa-caret-down'></i>
+              </button>
+              <div className='dropdown-content'>
+                <NavLink to='/addOrder'>Tạo Đơn Hàng</NavLink>
+
+                <NavLink to='/historyOrders'>Lịch Sử Đơn Hàng</NavLink>
+              </div>
+            </div>
+          )}
         </div>
 
         <div className='nav-right'>

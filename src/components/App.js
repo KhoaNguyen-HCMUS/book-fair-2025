@@ -19,6 +19,8 @@ import ListConsignors from '../pages/listConsignors/listConsignors.js';
 import ConsignorDetail from './consignorDetail/consignorDetail.js';
 import ListMembers from '../pages/listMembers/listMembers.js';
 import MemberDetail from './memberDetail/memberDetail.js';
+import AddOrder from '../pages/addOrder/addOrder.js';
+import HistoryOrders from '../pages/historyOrders/historyOrders.js';
 
 const SESSION_TIMEOUT = 3 * 60 * 60 * 1000; // 3 hours in milliseconds
 
@@ -70,6 +72,29 @@ function App() {
     return children;
   };
 
+  const CashierRoute = ({ children }) => {
+    const userRole = localStorage.getItem('userRole');
+    const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
+    const hasAlerted = useRef(false);
+
+    useEffect(() => {
+      if (
+        (!isAuthenticated || (userRole !== 'BTC' && userRole !== 'Admin' && userRole !== 'Cashier')) &&
+        !hasAlerted.current
+      ) {
+        hasAlerted.current = true;
+        setTimeout(() => {
+          toast.error('You do not have permission to access this page.');
+        }, 100);
+      }
+    }, [isAuthenticated, userRole]);
+
+    if (!isAuthenticated || (userRole !== 'BTC' && userRole !== 'Admin' && userRole !== 'Cashier')) {
+      return <Navigate to='/' />;
+    }
+
+    return children;
+  };
   useEffect(() => {
     if (isAuth) {
       const loginTime = localStorage.getItem('loginTime');
@@ -231,6 +256,23 @@ function App() {
                 <ProtectedRoute>
                   <ConsignorDetail />
                 </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path='/addOrder'
+              element={
+                <CashierRoute>
+                  <AddOrder />
+                </CashierRoute>
+              }
+            />
+            <Route
+              path='/historyOrders'
+              element={
+                <CashierRoute>
+                  <HistoryOrders />
+                </CashierRoute>
               }
             />
           </Routes>
