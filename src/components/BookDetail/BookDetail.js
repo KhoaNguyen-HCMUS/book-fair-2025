@@ -228,7 +228,8 @@ function BookDetail() {
     if (!isConfirmed) return;
 
     try {
-      const URL = `${process.env.REACT_APP_DOMAIN}${process.env.REACT_APP_API_DELETE_BOOK}${book.id_product}`;
+      const userID = localStorage.getItem('userID');
+      const URL = `${process.env.REACT_APP_DOMAIN}${process.env.REACT_APP_API_DELETE_BOOK}${book.id_product}&id_member=${userID}`;
       const response = await fetch(URL, {
         method: 'DELETE',
         headers: {
