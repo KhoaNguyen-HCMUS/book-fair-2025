@@ -51,6 +51,7 @@ function BookDetail() {
     if (isNaN(price)) return 0;
 
     if (classify === 'Sách Ký Gửi' && (discount === '0' || discount === '100')) {
+      if (userRole === 'CTV') return 0;
       return parseInt(salePrice);
     }
 
@@ -70,20 +71,17 @@ function BookDetail() {
     if (isNaN(price) || isNaN(original)) return 0;
 
     if (classify === 'Sách Ký Gửi' && (discount === '0' || discount === '100')) {
+      if (userRole === 'CTV') return 0;
       return price * 0.9;
     }
     return price - original * 0.05;
   };
 
   const handleSave = async () => {
-    console.log(editedBook);
-    console.log('-----------');
-    console.log(book);
     if (editedBook.discount > 100) {
       toast.error('Chiết khấu không được lớn hơn 100%');
       return;
     }
-
     let confirmMessage = '';
     const priceChanged =
       editedBook.bc_cost !== book.bc_cost ||
@@ -130,6 +128,14 @@ function BookDetail() {
 
     // Set discount to 100 for donated books
     editedBook.discount = book.classify === 'Sách Quyên Góp' ? 100 : parseInt(editedBook.discount);
+
+    if (editedBook.classify === 'Sách Ký Gửi' && editedBook.discount === 100) {
+      editedBook.bc_cost = 0;
+      console.log('discount:', editedBook.discount);
+      console.log('Giá bìa:', editedBook.bc_cost);
+      editedBook.cash_back = 0;
+    }
+
     try {
       const URL = process.env.REACT_APP_DOMAIN + process.env.REACT_APP_API_UPDATE_OBJECT;
       const response = await fetch(URL, {
@@ -489,7 +495,7 @@ function BookDetail() {
         </div>
         <div className='detail-item'>
           <span className='label'>Số lượng tồn kho:</span>
-          {isEditing ? (
+          {isEditing && book.classify !== 'Sách Ký Gửi' ? (
             <input
               type='number'
               name='stock'
