@@ -29,6 +29,10 @@ export const FormConsignor = () => {
     });
   };
 
+  const removeNonNumeric = (value) => {
+    return value.replace(/[^0-9]/g, '');
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -53,7 +57,7 @@ export const FormConsignor = () => {
         body: JSON.stringify({
           typeOb: 'consignor',
           data: {
-            id_consignor: formData.phone,
+            id_consignor: removeNonNumeric(formData.phone),
             name: formData.name,
             id_bank: formData.account,
             bank_name: formData.bank,
