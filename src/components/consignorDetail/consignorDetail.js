@@ -114,7 +114,6 @@ function ConsignorDetail() {
     try {
       const URL =
         `${process.env.REACT_APP_DOMAIN}${process.env.REACT_APP_API_DELETE_CONSIGNOR}` + consignor.id_consignor;
-      console.log(URL);
       const response = await fetch(URL, {
         method: 'DELETE',
         headers: {
