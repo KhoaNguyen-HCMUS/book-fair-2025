@@ -182,13 +182,10 @@ function ConsignorDetail() {
         <div className='detail-item'>
           <span className='label'>Địa chỉ:</span>
           {isEditing ? (
-            <input
-              type='text'
-              name='address'
-              value={editedConsignor.address}
-              onChange={handleChange}
-              className='edit-input'
-            />
+            <select name='address' value={editedConsignor.address} onChange={handleChange} className='edit-input'>
+              <option value='Bến Tre'>Bến Tre</option>
+              <option value='TP.HCM'>TP.HCM</option>
+            </select>
           ) : (
             <span className='value'>{consignor.address}</span>
           )}
