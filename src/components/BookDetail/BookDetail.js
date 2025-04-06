@@ -129,10 +129,12 @@ function BookDetail() {
     // Set discount to 100 for donated books
     editedBook.discount = book.classify === 'Sách Quyên Góp' ? 100 : parseInt(editedBook.discount);
 
-    if (editedBook.classify === 'Sách Ký Gửi' && editedBook.discount === 100 && userRole === 'CTV') {
+    if (editedBook.classify === 'Sách Ký Gửi' && editedBook.discount === 100) {
       editedBook.bc_cost = 0;
-      editedBook.cash_back = 0;
-      editedBook.price = 0;
+      if (userRole === 'CTV') {
+        editedBook.cash_back = 0;
+        editedBook.price = 0;
+      }
     }
 
     try {
