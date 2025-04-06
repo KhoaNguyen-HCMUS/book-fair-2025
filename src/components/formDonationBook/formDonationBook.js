@@ -264,7 +264,7 @@ export const FormDonationBook = () => {
       <div className='button-group'>
         <button type='submit'>Thêm Sách</button>
         <button type='button' onClick={handleReset}>
-          Reset
+          Làm mới
         </button>
       </div>
     </form>
