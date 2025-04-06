@@ -44,7 +44,6 @@ function ListConsignors() {
         toast.error('Lỗi khi tải danh sách người ký gửi');
       }
     } catch (error) {
-      console.error('Error:', error);
       toast.error('Lỗi khi tải danh sách người ký gửi');
     } finally {
       setLoading(false);

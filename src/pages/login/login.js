@@ -45,7 +45,6 @@ function Login({ setAuth }) {
 
       return await response.json();
     } catch (error) {
-      console.error('Error in apiRequest:', error.message);
       throw error;
     }
   };
@@ -60,7 +59,6 @@ function Login({ setAuth }) {
       });
       return data;
     } catch (error) {
-      console.error('Error in checkLogin:', error);
       throw error;
     }
   };
@@ -105,7 +103,6 @@ function Login({ setAuth }) {
       }
     } catch (error) {
       toast.error('Lỗi kết nối đến máy chủ. Vui lòng thử lại sau.');
-      console.error(error);
     } finally {
       setLoading(false);
     }

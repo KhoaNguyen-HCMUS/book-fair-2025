@@ -45,7 +45,6 @@ function ListMembers() {
         toast.error('Error fetching members');
       }
     } catch (error) {
-      console.error('Error:', error);
       toast.error('Error fetching members');
     } finally {
       setLoading(false);
