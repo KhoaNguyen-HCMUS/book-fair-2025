@@ -78,6 +78,7 @@ function BookDetail() {
   };
 
   const handleSave = async () => {
+    const userID = localStorage.getItem('userID');
     if (editedBook.discount > 100) {
       toast.error('Chiết khấu không được lớn hơn 100%');
       return;
@@ -147,6 +148,8 @@ function BookDetail() {
         body: JSON.stringify({
           typeOb: 'product',
           id: editedBook.id_product,
+          id_member: userID,
+
           data: {
             id_member: editedBook.id_member,
             id_consignor: editedBook.id_consignor,

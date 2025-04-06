@@ -80,6 +80,7 @@ function ConsignorDetail() {
         body: JSON.stringify({
           typeOb: 'consignor',
           id: consignor.id_consignor,
+          id_member: userID,
           data: {
             name: editedConsignor.name,
             address: editedConsignor.address,
