@@ -70,7 +70,6 @@ function MemberDetail() {
         toast.error('Lỗi khi cập nhật: ' + result.message);
       }
     } catch (error) {
-      console.error('Error:', error);
       toast.error('Lỗi khi cập nhật');
     }
   };
@@ -108,7 +107,6 @@ function MemberDetail() {
         toast.error('Lỗi khi cập nhật mật khẩu: ' + result.message);
       }
     } catch (error) {
-      console.error('Error:', error);
       toast.error('Lỗi khi cập nhật mật khẩu');
     }
   };
@@ -121,7 +119,6 @@ function MemberDetail() {
 
     try {
       const URL = `${process.env.REACT_APP_DOMAIN}${process.env.REACT_APP_API_DELETE_MEMBER}` + member.id_member;
-      console.log(URL);
       const response = await fetch(URL, {
         method: 'DELETE',
         headers: {
@@ -137,7 +134,6 @@ function MemberDetail() {
         toast.error('Lỗi khi xóa thành viên: ' + result.message);
       }
     } catch (error) {
-      console.error('Error:', error);
       toast.error('Lỗi khi xóa thành viên');
     }
   };

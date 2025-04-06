@@ -102,7 +102,6 @@ export const FormDonationBook = () => {
         }
       }
     } catch (error) {
-      console.error('Error:', error);
       toast.error('Lỗi khi thêm sách');
     }
   };
@@ -149,7 +148,6 @@ export const FormDonationBook = () => {
         }));
       }
     } catch (error) {
-      console.error('Error:', error);
       toast.error('Lỗi khi lấy thông tin người Quyên Góp');
       setFormData((prev) => ({
         ...prev,

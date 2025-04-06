@@ -124,7 +124,6 @@ export const FormPublisherBook = () => {
         }
       }
     } catch (error) {
-      console.error('Error:', error);
       toast.error('Lỗi khi thêm sách');
     }
   };
@@ -231,7 +230,6 @@ export const FormPublisherBook = () => {
         }));
       }
     } catch (error) {
-      console.error('Error:', error);
       toast.error('Lỗi khi lấy thông tin Nhà Xuất Bản');
       setFormData((prev) => ({
         ...prev,

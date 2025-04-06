@@ -167,7 +167,6 @@ export const FormConsignmentBook = () => {
         }
       }
     } catch (error) {
-      console.error('Error:', error);
       toast.error('Lỗi khi thêm sách');
     }
   };
@@ -231,7 +230,6 @@ export const FormConsignmentBook = () => {
         }));
       }
     } catch (error) {
-      console.error('Error:', error);
       toast.error('Lỗi khi lấy thông tin người ký gửi');
       setFormData((prev) => ({
         ...prev,

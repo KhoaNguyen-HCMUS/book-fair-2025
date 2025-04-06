@@ -79,7 +79,6 @@ function CreateAccount() {
         }
       }
     } catch (error) {
-      console.error('Error creating account:', error);
       toast.error('Có lỗi khi kết nối đến máy chủ!');
     }
   };

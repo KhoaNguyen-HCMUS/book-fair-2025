@@ -40,7 +40,6 @@ function BookDetail() {
       const result = await response.json();
       return result.data.name;
     } catch (error) {
-      console.error('Error:', error);
       return 'Error';
     }
   };
@@ -180,7 +179,6 @@ function BookDetail() {
       }
     } catch (error) {
       toast.error('Lỗi khi cập nhật');
-      console.error('Error:', error);
     }
   };
 
@@ -249,7 +247,6 @@ function BookDetail() {
         toast.error('Lỗi khi xóa sách: ' + result.message);
       }
     } catch (error) {
-      console.error('Error:', error);
       toast.error('Lỗi khi xóa sách');
     }
   };
@@ -300,7 +297,6 @@ function BookDetail() {
         toast.error('Lỗi khi xác thực: ' + result.message);
       }
     } catch (error) {
-      console.error('Error:', error);
       toast.error('Lỗi khi xác thực sách');
     }
   };

@@ -43,7 +43,6 @@ export const FormConsignor = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Consignor Data:', formData);
 
     const URL = process.env.REACT_APP_DOMAIN + process.env.REACT_APP_API_CREATE_OBJECT;
     const userID = localStorage.getItem('userID');
@@ -83,7 +82,6 @@ export const FormConsignor = () => {
       }
     } catch (error) {
       toast.error('Có lỗi khi thêm người ký gửi');
-      console.error('Error:', error);
     }
   };
 

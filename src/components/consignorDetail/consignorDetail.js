@@ -30,7 +30,6 @@ function ConsignorDetail() {
       const result = await response.json();
       return result.data.name;
     } catch (error) {
-      console.error('Error:', error);
       return 'Error';
     }
   };
@@ -101,7 +100,6 @@ function ConsignorDetail() {
         toast.error('Lỗi khi cập nhật: ' + result.message);
       }
     } catch (error) {
-      console.error('Error:', error);
       toast.error('Lỗi khi cập nhật thông tin');
     }
   };
@@ -119,7 +117,6 @@ function ConsignorDetail() {
         '&id_member=' +
         userID;
 
-      console.log(URL);
       const response = await fetch(URL, {
         method: 'DELETE',
         headers: {
@@ -136,7 +133,6 @@ function ConsignorDetail() {
         toast.error('Lỗi khi xóa: ' + result.message);
       }
     } catch (error) {
-      console.error('Error:', error);
       toast.error('Lỗi khi xóa người ký gửi');
     }
   };
