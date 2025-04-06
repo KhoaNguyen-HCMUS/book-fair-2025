@@ -65,7 +65,7 @@ class Nav extends React.Component {
             </div>
           )}
 
-          {(userRole === 'Admin' || userRole === 'Cashier' || userRole === 'BTC') && (
+          {(userRole === 'Admin' || userRole === 'Cashier' ) && (
             <div className='dropdown'>
               <button className='dropbtn'>
                 Thu Ngân
