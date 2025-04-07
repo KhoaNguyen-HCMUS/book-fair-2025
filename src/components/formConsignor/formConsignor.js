@@ -10,9 +10,9 @@ export const FormConsignor = () => {
     phone: '',
     email: '',
     address: '',
-    bank: '',
-    account: '',
-    accountName: '',
+    bank: 'N/A',
+    account: 'N/A',
+    accountName: 'N/A',
     amount: 0,
   });
 
@@ -22,9 +22,9 @@ export const FormConsignor = () => {
       phone: '',
       email: '',
       address: '',
-      bank: '',
-      account: '',
-      accountName: '',
+      bank: 'N/A',
+      account: 'N/A',
+      accountName: 'N/A',
       amount: 0,
     });
   };
@@ -44,6 +44,12 @@ export const FormConsignor = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (formData.bank === 'N/A' || formData.account === 'N/A' || formData.accountName === 'N/A') {
+      const confirm = window.confirm('Bạn có chắc chắn muốn thêm người ký gửi mà không có thông tin ngân hàng?');
+      if (!confirm) {
+        return;
+      }
+    }
     const URL = process.env.REACT_APP_DOMAIN + process.env.REACT_APP_API_CREATE_OBJECT;
     const userID = localStorage.getItem('userID');
 
