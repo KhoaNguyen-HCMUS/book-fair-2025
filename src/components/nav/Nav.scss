@@ -153,6 +153,12 @@
     }
   }
   @media screen and (max-width: 724px) {
+    padding: 0 0px;
+    .nav-left {
+      .logo {
+        margin-right: 0px;
+      }
+    }
     .home-btn {
       font-size: 13px;
       a {
