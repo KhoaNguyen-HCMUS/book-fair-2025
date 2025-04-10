@@ -1,4 +1,4 @@
-.list-consignors {
+.my-consignors {
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px 20px;
@@ -105,11 +105,11 @@
     }
     th:nth-child(3),
     td:nth-child(3) {
-      width: 15%;
+      width: 20%;
     }
     th:nth-child(4),
     td:nth-child(4) {
-      width: 20%;
+      width: 10%;
     }
     th:nth-child(5),
     td:nth-child(5) {
@@ -121,7 +121,35 @@
     }
     th:nth-child(7),
     td:nth-child(7) {
-      width: 7%;
+      width: 10%;
+    }
+    th:nth-child(8),
+    td:nth-child(8) {
+      width: 5%;
+    }
+
+    @media (max-width: 768px) {
+      th:nth-child(1), /* STT */
+    th:nth-child(5), /* Thể loại */
+    th:nth-child(6) /* Phân loại */,
+    th:nth-child(7),
+    td:nth-child(1),
+    td:nth-child(5),
+    td:nth-child(6), 
+    td:nth-child(7) {
+        display: none;
+      }
+
+      td:nth-child(3) {
+        white-space: normal; // Allow book name to wrap
+        word-wrap: break-word;
+      }
+
+      // Column widths for larger screens
+      th:nth-child(2),
+      td:nth-child(2) {
+        width: 15%; // Make ID column wider on mobile
+      }
     }
   }
 

@@ -146,14 +146,9 @@
         display: none;
       }
 
-      td:nth-child(2) {
+      td:nth-child(3) {
         white-space: normal; // Allow book name to wrap
         word-wrap: break-word;
-      }
-
-      th:nth-child(1),
-      td:nth-child(1) {
-        width: 15%; // Make ID column wider on mobile
       }
     }
   }

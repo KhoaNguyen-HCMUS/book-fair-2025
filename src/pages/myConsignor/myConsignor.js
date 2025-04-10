@@ -104,7 +104,7 @@ function MyConsignor({ userId }) {
   }
 
   return (
-    <div className='list-consignors'>
+    <div className='my-consignors'>
       <form onSubmit={handleSearchSubmit} className='search-container'>
         <FaSearch className='search-icon' />
         <input
@@ -149,7 +149,7 @@ function MyConsignor({ userId }) {
               <td>{consignor.bank_name}</td>
               <td>{consignor.id_bank}</td>
               <td>{consignor.holder_name}</td>
-              <td>{consignor.cash_back.toLocaleString('vi-VN')} VNĐ</td>
+              <td>{consignor.cash_back.toLocaleString('vi-VN')} </td>
             </tr>
           ))}
         </tbody>
