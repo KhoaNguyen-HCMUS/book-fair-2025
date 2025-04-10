@@ -110,7 +110,7 @@
     }
     th:nth-child(2),
     td:nth-child(2) {
-      width: 7%;
+      width: 10%;
     }
     th:nth-child(3),
     td:nth-child(3) {
@@ -137,13 +137,23 @@
       width: 5%;
     }
     @media (max-width: 768px) {
-      th:nth-child(1),  /* STT */
-  th:nth-child(4),  /* Thể loại */
-  th:nth-child(5),  /* Phân loại */
-  td:nth-child(1),
-  td:nth-child(4),
-  td:nth-child(5) {
+      th:nth-child(1), /* STT */
+    th:nth-child(4), /* Thể loại */
+    th:nth-child(5), /* Phân loại */
+    td:nth-child(1),
+    td:nth-child(4),
+    td:nth-child(5) {
         display: none;
+      }
+
+      td:nth-child(2) {
+        white-space: normal; // Allow book name to wrap
+        word-wrap: break-word;
+      }
+
+      th:nth-child(1),
+      td:nth-child(1) {
+        width: 15%; // Make ID column wider on mobile
       }
     }
   }
