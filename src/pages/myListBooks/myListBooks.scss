@@ -90,15 +90,15 @@
           padding: 10px;
           border-bottom: 1px solid #ddd;
           text-align: left;
-            &.validated {
-                color: #28a745; // Green color for validated
-                font-weight: 750;
-              }
+          &.validated {
+            color: #28a745; // Green color for validated
+            font-weight: 750;
+          }
 
-              &.not-validated {
-                color: #dc3545; // Red color for not validated
-                font-weight: 750;
-              }
+          &.not-validated {
+            color: #dc3545; // Red color for not validated
+            font-weight: 750;
+          }
         }
       }
     }
@@ -106,11 +106,11 @@
     // Column widths
     th:nth-child(1),
     td:nth-child(1) {
-      width: 5%;
+      width: 3%;
     }
     th:nth-child(2),
     td:nth-child(2) {
-      width: 10%;
+      width: 7%;
     }
     th:nth-child(3),
     td:nth-child(3) {
@@ -131,6 +131,20 @@
     th:nth-child(7),
     td:nth-child(7) {
       width: 7%;
+    }
+    th:nth-child(8),
+    td:nth-child(8) {
+      width: 5%;
+    }
+    @media (max-width: 768px) {
+      th:nth-child(1),  /* STT */
+  th:nth-child(4),  /* Thể loại */
+  th:nth-child(5),  /* Phân loại */
+  td:nth-child(1),
+  td:nth-child(4),
+  td:nth-child(5) {
+        display: none;
+      }
     }
   }
 

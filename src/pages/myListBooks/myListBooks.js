@@ -132,10 +132,10 @@ function MyListBooks({ userId, typeUser }) {
               <td>{book.name}</td>
               <td>{book.genre}</td>
               <td>{book.classify}</td>
-              <td>{book.price.toLocaleString('vi-VN')} VNĐ</td>
+              <td>{book.price.toLocaleString('vi-VN')}</td>
               <td>{book.quantity - book.sold}</td>
               <td className={book.validate === 1 ? 'validated' : 'not-validated'}>
-                {book.validate === 1 ? 'Đã xác thực' : 'Chưa xác thực'}
+                {book.validate === 1 ? '✅' : '❌'}
               </td>
             </tr>
           ))}
