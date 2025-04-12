@@ -2,26 +2,32 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import './receiptDetail.scss';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 function ReceiptDetail() {
-  const { receiptId } = useParams(); // Lấy ID hóa đơn từ URL
+  const { receiptId } = useParams(); // Lấy ID đơn hàng từ URL
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [receiptDetails, setReceiptDetails] = useState({});
+  const navigate = useNavigate();
+  const userRole = localStorage.getItem('userRole');
 
   useEffect(() => {
     const fetchReceiptDetails = async () => {
       try {
         const URL = `${process.env.REACT_APP_DOMAIN_BACKUP}${process.env.REACT_APP_API_GET_RECEIPT_BY_ID}${receiptId}`;
+        console.log('URL:', URL); // Kiểm tra URL
         const response = await fetch(URL);
         const result = await response.json();
 
         if (result.success) {
-          setBooks(result.data);
+          setReceiptDetails(result.receipt);
+          setBooks(result.orders);
         } else {
-          toast.error('Lỗi khi tải chi tiết hóa đơn');
+          toast.error('Lỗi khi tải chi tiết đơn hàng');
         }
       } catch (error) {
-        toast.error('Lỗi khi tải chi tiết hóa đơn');
+        toast.error('Lỗi khi tải chi tiết đơn hàng');
         console.error(error);
       } finally {
         setLoading(false);
@@ -31,34 +37,87 @@ function ReceiptDetail() {
     fetchReceiptDetails();
   }, [receiptId]);
 
+  const handleDelete = async () => {
+    if (!window.confirm('Bạn có chắc chắn muốn xóa đơn hàng này?')) {
+      return;
+    }
+    try {
+      const URL = `${process.env.REACT_APP_DOMAIN_BACKUP}${process.env.REACT_APP_API_DELETE_RECEIPT}${receiptId}`;
+      const response = await fetch(URL, {
+        method: 'DELETE',
+      });
+      const result = await response.json();
+
+      if (result.success) {
+        toast.success('Xóa đơn hàng thành công');
+        navigate(-1); // Go back to previous page
+      } else {
+        toast.error('Lỗi khi xóa đơn hàng');
+      }
+    } catch (error) {
+      toast.error('Lỗi khi xóa đơn hàng');
+    }
+  };
   return (
     <div className='receipt-detail'>
-      <h1>Chi tiết hóa đơn #{receiptId}</h1>
+      <div className='top-button-container'>
+        <button className='back-button' onClick={() => navigate(-1)}>
+          ← Quay lại
+        </button>
+        {(userRole === 'BTC' || userRole === 'Admin') && (
+          <button className='delete-button' onClick={handleDelete}>
+            Xóa
+          </button>
+        )}
+      </div>
+      <h3>Chi tiết đơn hàng #{receiptId}</h3>
+
       {loading ? (
         <p>Đang tải...</p>
       ) : (
-        <table className='book-table'>
-          <thead>
-            <tr>
-              <th>STT</th>
-              <th>Tên sách</th>
-              <th>Số lượng</th>
-              <th>Giá</th>
-              <th>Tổng</th>
-            </tr>
-          </thead>
-          <tbody>
-            {books.map((book, index) => (
-              <tr key={book.id_product}>
-                <td>{index + 1}</td>
-                <td>{book.name}</td>
-                <td>{book.quantity}</td>
-                <td>{parseFloat(book.price).toLocaleString('vi-VN')} ₫</td>
-                <td>{(book.quantity * book.price).toLocaleString('vi-VN')} ₫</td>
+        <div className='receipt-info'>
+          <p>
+            <strong>Tên Thu Ngân:</strong> {receiptDetails.name_cashier}
+          </p>
+          <p>
+            <strong>Thời gian: </strong>
+            {receiptDetails.createAt}
+          </p>
+          <p>
+            <strong>Thanh toán: </strong>
+            {receiptDetails.payment_method === 'cash' ? 'Tiền mặt' : 'Chuyển khoản'}
+          </p>
+          <p>
+            <strong>Tổng tiền: </strong> {Math.floor(receiptDetails.total_amount).toLocaleString('vi-VN')}
+          </p>
+          <table className='book-table'>
+            <thead>
+              <tr>
+                <th>STT</th>
+                <th>Tên sách</th>
+                <th>Số lượng</th>
+                <th>Giá</th>
+                <th>Tổng</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {books.map((book, index) => (
+                <tr
+                  key={book.id_product}
+                  onClick={() => navigate(`/bookDetail/${book.id_product}`, { state: { book } })}
+                  style={{ cursor: 'pointer' }}
+                  className='book-row'
+                >
+                  <td>{index + 1}</td>
+                  <td>{book.name}</td>
+                  <td>{book.quantity}</td>
+                  <td>{parseFloat(book.price).toLocaleString('vi-VN')} ₫</td>
+                  <td>{(book.quantity * book.price).toLocaleString('vi-VN')} ₫</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
     </div>
   );

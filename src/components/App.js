@@ -286,7 +286,7 @@ function App() {
               }
             />
             <Route
-              path='/receiptDetail/:id'
+              path='/receiptDetail/:receiptId'
               element={
                 <CashierRoute>
                   <ReceiptDetail />

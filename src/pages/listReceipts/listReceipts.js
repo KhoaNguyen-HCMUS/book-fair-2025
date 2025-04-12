@@ -76,7 +76,7 @@ function ListReceipts() {
   };
 
   return (
-    <div className='myReceipts'>
+    <div className='list-receipts'>
       <form onSubmit={handleSearchSubmit} className='search-container'>
         <FaSearch className='search-icon' />
         <input
