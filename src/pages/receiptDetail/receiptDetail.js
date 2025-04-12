@@ -42,7 +42,8 @@ function ReceiptDetail() {
       return;
     }
     try {
-      const URL = `${process.env.REACT_APP_DOMAIN_BACKUP}${process.env.REACT_APP_API_DELETE_RECEIPT}${receiptId}`;
+      const userID = localStorage.getItem('userID');
+      const URL = `${process.env.REACT_APP_DOMAIN_BACKUP}${process.env.REACT_APP_API_DELETE_RECEIPT}${receiptId}&id_member=${userID}`;
       const response = await fetch(URL, {
         method: 'DELETE',
       });
