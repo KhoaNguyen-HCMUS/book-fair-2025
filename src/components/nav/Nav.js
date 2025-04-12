@@ -72,9 +72,9 @@ class Nav extends React.Component {
                 <i className='fa fa-caret-down'></i>
               </button>
               <div className='dropdown-content'>
-                <NavLink to='/addOrder'>Tạo Đơn Hàng</NavLink>
+                <NavLink to='/addReceipt'>Tạo Đơn Hàng</NavLink>
 
-                <NavLink to='/myOrders'>Đơn Hàng của tôi</NavLink>
+                <NavLink to='/myReceipts'>Đơn Hàng của tôi</NavLink>
               </div>
             </div>
           )}

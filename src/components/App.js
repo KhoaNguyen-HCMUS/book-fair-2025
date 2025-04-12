@@ -19,8 +19,8 @@ import ListConsignors from '../pages/listConsignors/listConsignors.js';
 import ConsignorDetail from './consignorDetail/consignorDetail.js';
 import ListMembers from '../pages/listMembers/listMembers.js';
 import MemberDetail from './memberDetail/memberDetail.js';
-import AddOrder from '../pages/addOrder/addOrder.js';
-import MyOrders from '../pages/myOrders/myOrders.js';
+import AddReceipt from '../pages/addReceipt/addReceipt.js';
+import MyReceipts from '../pages/myReceipts/myReceipts.js';
 
 const SESSION_TIMEOUT = 3 * 60 * 60 * 1000; // 3 hours in milliseconds
 
@@ -260,18 +260,18 @@ function App() {
             />
 
             <Route
-              path='/addOrder'
+              path='/addReceipt'
               element={
                 <CashierRoute>
-                  <AddOrder />
+                  <AddReceipt />
                 </CashierRoute>
               }
             />
             <Route
-              path='/myOrders'
+              path='/myReceipts'
               element={
                 <CashierRoute>
-                  <MyOrders />
+                  <MyReceipts />
                 </CashierRoute>
               }
             />

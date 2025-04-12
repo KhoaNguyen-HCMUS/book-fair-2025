@@ -1,4 +1,4 @@
-.addOrder {
+.addReceipt {
   display: flex;
   flex-direction: column;
   padding: 20px;
@@ -180,7 +180,7 @@
     display: flex;
     flex-direction: column;
 
-    .order-summary {
+    .Receipt-summary {
       display: flex;
       flex-direction: column;
       height: 100%;
@@ -239,13 +239,13 @@
         }
       }
 
-      .order-items {
+      .Receipt-items {
         flex: 1;
         overflow-y: auto;
         padding: 0 15px;
       }
 
-      .order-item {
+      .Receipt-item {
         display: flex;
         align-items: center;
         padding: 12px 0;
@@ -321,7 +321,7 @@
         }
       }
 
-      .order-summary-footer {
+      .Receipt-summary-footer {
         padding: 15px;
         border-top: 1px solid #eee;
 
@@ -399,8 +399,6 @@
                 background-color: #e53935;
               }
             }
-
-            
           }
         }
       }

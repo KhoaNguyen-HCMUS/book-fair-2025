@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 
-import './addOrder.scss';
+import './addReceipt.scss';
 
-function AddOrder() {
-  const [orderItems, setOrderItems] = useState([]);
+function AddReceipt() {
+  const [ReceiptItems, setReceiptItems] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
   const [loading, setLoading] = useState(true);
 
@@ -40,20 +40,20 @@ function AddOrder() {
     fetchBooks();
   }, []);
 
-  // Update total price whenever orderItems change
+  // Update total price whenever ReceiptItems change
   useEffect(() => {
-    const newTotalPrice = orderItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+    const newTotalPrice = ReceiptItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
     setTotalPrice(newTotalPrice);
-  }, [orderItems]);
+  }, [ReceiptItems]);
 
   const generateBillId = () => {
     const timestamp = new Date().getTime();
     const randomNum = Math.floor(Math.random() * 1000); // Random number between 0 and 999
     return `${userId}-${timestamp}-${randomNum}`;
   };
-  // Add a book to the order
+  // Add a book to the Receipt
   const handleAddBook = (book) => {
-    setOrderItems((prevItems) => {
+    setReceiptItems((prevItems) => {
       const existingItem = prevItems.find((item) => item.id_product === book.id_product);
       if (existingItem) {
         if (existingItem.quantity < book.stock) {
@@ -70,9 +70,9 @@ function AddOrder() {
     });
   };
 
-  // Increase quantity of a given order item
+  // Increase quantity of a given Receipt item
   const handleIncreaseQuantity = (id_product) => {
-    setOrderItems((prevItems) =>
+    setReceiptItems((prevItems) =>
       prevItems.map((item) => {
         if (item.id_product === id_product) {
           if (item.quantity < item.stock) {
@@ -86,15 +86,15 @@ function AddOrder() {
     );
   };
 
-  // Decrease quantity of a given order item
+  // Decrease quantity of a given Receipt item
   const handleDecreaseQuantity = (id_product) => {
-    setOrderItems((prevItems) =>
+    setReceiptItems((prevItems) =>
       prevItems.reduce((acc, item) => {
         if (item.id_product === id_product) {
           if (item.quantity > 1) {
             acc.push({ ...item, quantity: item.quantity - 1 });
           }
-          // if quantity is 1, skipping the item removes it from orderItems
+          // if quantity is 1, skipping the item removes it from ReceiptItems
         } else {
           acc.push(item);
         }
@@ -103,9 +103,9 @@ function AddOrder() {
     );
   };
 
-  // Remove the order item completely
+  // Remove the Receipt item completely
   const handleRemoveBook = (id_product) => {
-    setOrderItems((prevItems) => prevItems.filter((item) => item.id_product !== id_product));
+    setReceiptItems((prevItems) => prevItems.filter((item) => item.id_product !== id_product));
   };
 
   const handleApplyVoucher = () => {
@@ -125,26 +125,23 @@ function AddOrder() {
     setDiscountAmount(voucherAmount); // Lưu số tiền giảm giá
   };
 
-  // Submit order
-  const handleSubmitOrder = async () => {
-    if (orderItems.length === 0) {
-      toast.error('Please add at least one book to the order!');
+  // Submit Receipt
+  const handleSubmitReceipt = async () => {
+    if (ReceiptItems.length === 0) {
+      toast.error('Please add at least one book to the Receipt!');
       return;
     }
-    console.log('Submitting order...'); // Log the submission process
-    const idReceipt = generateBillId();
+    console.log('Submitting Receipt...'); // Log the submission process
 
     const dataToSend = {
-      typeOb: 'order',
+      typeOb: 'receipt',
       data: {
         receipt: {
-          id_receipt: idReceipt,
           id_member: userId,
           method_payment: paymentMethod,
           voucher: voucherCode,
         },
-        order: orderItems.map((book) => ({
-          id_receipt: idReceipt,
+        order: ReceiptItems.map((book) => ({
           id_product: book.id_product,
           quantity: book.quantity,
           price: book.price,
@@ -168,18 +165,18 @@ function AddOrder() {
       });
       const result = await response.json();
       if (result.success) {
-        toast.success('Order submitted successfully!');
-        setOrderItems([]); // Clear order items after successful submission
+        toast.success('Receipt submitted successfully!');
+        setReceiptItems([]); // Clear Receipt items after successful submission
         setVoucherCode(''); // Clear voucher code
         setDiscountAmount(0); // Reset discount amount
         setPaymentMethod('cash'); // Reset payment method
         fetchBooks(); // Refresh book list
       } else {
-        toast.error('Error submitting order!');
+        toast.error('Error submitting Receipt!');
         console.error('Error:', result.message); // Log the error message for debugging
       }
     } catch (error) {
-      toast.error('Error submitting order!');
+      toast.error('Error submitting Receipt!');
       console.error('Error:', error); // Log the error for debugging
     }
   };
@@ -212,7 +209,7 @@ function AddOrder() {
   };
 
   return (
-    <div className='addOrder'>
+    <div className='addReceipt'>
       <div className='container-wrapper'>
         {/* Left Container: Book Grid */}
         <div className='left-container'>
@@ -255,7 +252,7 @@ function AddOrder() {
                         })}
                       </td>
                       <td>
-                        <button onClick={() => handleAddBook(book)}>Add to Order</button>
+                        <button onClick={() => handleAddBook(book)}>Add to Receipt</button>
                       </td>
                     </tr>
                   ))}
@@ -279,9 +276,9 @@ function AddOrder() {
           </div>
         </div>
 
-        {/* Right Container: Order Summary */}
+        {/* Right Container: Receipt Summary */}
         <div className='right-container'>
-          <div className='order-summary'>
+          <div className='Receipt-summary'>
             <h4>Đơn hàng</h4>
 
             <div className='input-group'>
@@ -295,9 +292,9 @@ function AddOrder() {
               <button onClick={handleApplyVoucher}>Áp dụng</button>
             </div>
 
-            <div className='order-items'>
-              {orderItems.map((item) => (
-                <div key={item.id_product} className='order-item'>
+            <div className='Receipt-items'>
+              {ReceiptItems.map((item) => (
+                <div key={item.id_product} className='Receipt-item'>
                   <div className='item-info'>
                     <div className='item-name'>{item.name}</div>
                     <div className='item-price'>
@@ -320,10 +317,10 @@ function AddOrder() {
                 </div>
               ))}
 
-              {orderItems.length === 0 && <h2>Chưa có sách nào được thêm vào đơn hàng</h2>}
+              {ReceiptItems.length === 0 && <h2>Chưa có sách nào được thêm vào đơn hàng</h2>}
             </div>
 
-            <div className='order-summary-footer'>
+            <div className='Receipt-summary-footer'>
               <div className='total-row'>
                 <span>Tạm tính:</span>
                 <span>
@@ -366,10 +363,10 @@ function AddOrder() {
               </div>
 
               <div className='action-buttons'>
-                <button className='btn-success' onClick={handleSubmitOrder}>
+                <button className='btn-success' onClick={handleSubmitReceipt}>
                   Thanh toán
                 </button>
-                <button className='btn-danger' onClick={() => setOrderItems([])}>
+                <button className='btn-danger' onClick={() => setReceiptItems([])}>
                   Xóa đơn hàng
                 </button>
               </div>
@@ -381,4 +378,4 @@ function AddOrder() {
   );
 }
 
-export default AddOrder;
+export default AddReceipt;
