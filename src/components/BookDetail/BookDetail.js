@@ -495,7 +495,7 @@ function BookDetail() {
           <span className='value'>{formatCurrency(book.cash_back) || 0} VNĐ</span>
         </div>
         <div className='detail-item'>
-          <span className='label'>Số lượng tồn kho:</span>
+          <span className='label'>Số lượng:</span>
           {isEditing && book.classify !== 'Sách Ký Gửi' ? (
             <input
               type='number'
