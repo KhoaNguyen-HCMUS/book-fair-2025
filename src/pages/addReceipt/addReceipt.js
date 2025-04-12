@@ -131,7 +131,6 @@ function AddReceipt() {
       toast.error('Please add at least one book to the Receipt!');
       return;
     }
-    console.log('Submitting Receipt...'); // Log the submission process
 
     const dataToSend = {
       typeOb: 'receipt',
@@ -150,11 +149,9 @@ function AddReceipt() {
         })),
       },
     };
-    console.log('Data to send:', dataToSend); // Log the data to be sent
     try {
       const URL = process.env.REACT_APP_DOMAIN_BACKUP + process.env.REACT_APP_API_CREATE_OBJECT;
 
-      console.log('URL:', URL); // Log the URL to check if it's correct
 
       const response = await fetch(URL, {
         method: 'POST',
@@ -173,11 +170,9 @@ function AddReceipt() {
         fetchBooks(); // Refresh book list
       } else {
         toast.error('Error submitting Receipt!');
-        console.error('Error:', result.message); // Log the error message for debugging
       }
     } catch (error) {
       toast.error('Error submitting Receipt!');
-      console.error('Error:', error); // Log the error for debugging
     }
   };
 

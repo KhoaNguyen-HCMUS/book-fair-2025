@@ -34,7 +34,6 @@ function ListReceipts() {
       const response = await fetch(URL);
       const result = await response.json();
 
-      console.log(result.data);
       if (result.success) {
         setReceipts(result.data);
       } else {

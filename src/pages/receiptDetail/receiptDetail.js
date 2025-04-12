@@ -16,7 +16,6 @@ function ReceiptDetail() {
     const fetchReceiptDetails = async () => {
       try {
         const URL = `${process.env.REACT_APP_DOMAIN_BACKUP}${process.env.REACT_APP_API_GET_RECEIPT_BY_ID}${receiptId}`;
-        console.log('URL:', URL); // Kiểm tra URL
         const response = await fetch(URL);
         const result = await response.json();
 
@@ -28,7 +27,6 @@ function ReceiptDetail() {
         }
       } catch (error) {
         toast.error('Lỗi khi tải chi tiết đơn hàng');
-        console.error(error);
       } finally {
         setLoading(false);
       }
