@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import { FaSearch } from 'react-icons/fa';
 
 import './myReceipts.scss';
 
@@ -27,12 +28,6 @@ function MyReceipts() {
     fetchReceipts();
   }, []);
 
-  const handleRowClick = (Receipt) => {
-    navigate(`/receiptDetail/${Receipt.id_receipt}`, {
-      state: { Receipt },
-    });
-  };
-
   const fetchReceipts = async () => {
     try {
       const params = `receipt&&id=${userID}&typeUser=member`;
@@ -53,18 +48,61 @@ function MyReceipts() {
     }
   };
 
+  const handlePaginationClick = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const handleRowClick = (Receipt) => {
+    navigate(`/receiptDetail/${Receipt.id_receipt}`, {
+      state: { Receipt },
+    });
+  };
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    const searchTerm = searchInput.trim().toLowerCase();
+    const filtered = Receipts.filter((Receipt) => {
+      const name = Receipt.name_cashier ? Receipt.name_cashier.toLowerCase() : '';
+      const id = Receipt.id_receipt ? Receipt.id_receipt.toString() : '';
+      return name.includes(searchTerm) || id.includes(searchTerm);
+    });
+    setFilteredReceipts(filtered);
+    setCurrentPage(1); // Reset to the first page of filtered results
+  };
+
+  const handleClearSearch = () => {
+    setSearchInput('');
+    setFilteredReceipts([]);
+    setCurrentPage(1); // Reset to the first page of all results
+  };
+
   return (
     <div className='myReceipts'>
-      <h1>my Receipts</h1>
+      <form onSubmit={handleSearchSubmit} className='search-container'>
+        <FaSearch className='search-icon' />
+        <input
+          type='text'
+          placeholder='Tìm kiếm theo tên hoặc ID người ký gửi... (Nhấn Enter để tìm)'
+          value={searchInput}
+          onChange={(e) => setSearchInput(e.target.value)}
+          className='search-input'
+        />
+        {searchInput && (
+          <button type='button' className='clear-button' onClick={handleClearSearch}>
+            X
+          </button>
+        )}
+      </form>
 
       <table className='Receipt-table'>
         <thead>
           <tr>
-            <th>Receipt ID</th>
-            <th>Name cashier</th>
-            <th>Time</th>
-            <th>Method</th>
-            <th>Total</th>
+            <th>ID đơn hàng</th>
+            <th>Tên thu ngân</th>
+            <th>Thời gian</th>
+            <th>Thanh toán</th>
+            <th>Tổng hóa đơn</th>
+            <th>Giảm giá</th>
           </tr>
         </thead>
         <tbody>
@@ -78,14 +116,43 @@ function MyReceipts() {
                 <td>{Receipt.id_receipt}</td>
                 <td>{Receipt.name_cashier}</td>
 
-                <td>{Receipt.createAt}</td>
+                <td>{Receipt.createAt.replace('T', ' ').slice(0, 19)}</td>
                 <td>{Receipt.payment_method}</td>
-                <td>{Receipt.total_amount}</td>
+                <td>{Math.floor(Receipt.total_amount).toLocaleString('vi-VN')}</td>
+                <td>{Receipt.voucher}</td>
               </tr>
             ))
           )}
         </tbody>
       </table>
+      <div className='pagination-container'>
+        <button
+          className='pagination-button first-page'
+          onClick={() => handlePaginationClick(1)}
+          disabled={currentPage === 1}
+        >
+          Trang đầu
+        </button>
+        <button
+          className='pagination-button'
+          onClick={() => handlePaginationClick(currentPage - 1)}
+          disabled={currentPage === 1}
+        >
+          Trước
+        </button>
+
+        <span className='page-info'>
+          Trang {currentPage} / {totalPages}
+        </span>
+
+        <button
+          className='pagination-button'
+          onClick={() => handlePaginationClick(currentPage + 1)}
+          disabled={currentPage === totalPages}
+        >
+          Sau
+        </button>
+      </div>
     </div>
   );
 }
