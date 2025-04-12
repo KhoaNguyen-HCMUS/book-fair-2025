@@ -49,6 +49,7 @@ class Nav extends React.Component {
                 <NavLink to='/bookStore'>Kho Sách</NavLink>
                 <NavLink to='/listConsignors'>DS Người Ký Gửi</NavLink>
                 <NavLink to='/listMembers'>DS Thành Viên</NavLink>
+                <NavLink to='/listReceipts'>DS Đơn Hàng</NavLink>
               </div>
             </div>
           )}
