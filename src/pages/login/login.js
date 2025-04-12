@@ -98,6 +98,7 @@ function Login({ setAuth }) {
         setAuth(true);
         // setToggle(true);
         navigate('/');
+        window.location.reload();
       } else {
         toast.error('Sai tên đăng nhập hoặc mật khẩu. Nếu bạn quên mật khẩu, vui lòng liên hệ quản trị viên.');
       }
