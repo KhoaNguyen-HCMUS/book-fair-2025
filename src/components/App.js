@@ -20,7 +20,7 @@ import ConsignorDetail from './consignorDetail/consignorDetail.js';
 import ListMembers from '../pages/listMembers/listMembers.js';
 import MemberDetail from './memberDetail/memberDetail.js';
 import AddOrder from '../pages/addOrder/addOrder.js';
-import HistoryOrders from '../pages/historyOrders/historyOrders.js';
+import MyOrders from '../pages/myOrders/myOrders.js';
 
 const SESSION_TIMEOUT = 3 * 60 * 60 * 1000; // 3 hours in milliseconds
 
@@ -268,10 +268,10 @@ function App() {
               }
             />
             <Route
-              path='/historyOrders'
+              path='/myOrders'
               element={
                 <CashierRoute>
-                  <HistoryOrders />
+                  <MyOrders />
                 </CashierRoute>
               }
             />

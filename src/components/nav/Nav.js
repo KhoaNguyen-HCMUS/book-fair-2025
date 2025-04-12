@@ -74,7 +74,7 @@ class Nav extends React.Component {
               <div className='dropdown-content'>
                 <NavLink to='/addOrder'>Tạo Đơn Hàng</NavLink>
 
-                <NavLink to='/historyOrders'>Lịch Sử Đơn Hàng</NavLink>
+                <NavLink to='/myOrders'>Đơn Hàng của tôi</NavLink>
               </div>
             </div>
           )}
