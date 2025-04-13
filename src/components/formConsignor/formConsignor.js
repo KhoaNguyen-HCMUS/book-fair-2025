@@ -61,6 +61,7 @@ export const FormConsignor = () => {
         },
         body: JSON.stringify({
           typeOb: 'consignor',
+          id_member: localStorage.getItem('userID'), // Assuming you store userID in localStorage
           data: {
             id_consignor: removeNonNumeric(formData.phone),
             name: formData.name,

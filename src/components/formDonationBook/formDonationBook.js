@@ -65,6 +65,8 @@ export const FormDonationBook = () => {
     try {
       const bookData = {
         typeOb: 'product',
+        id_member: localStorage.getItem('userID'), // Assuming you store userID in localStorage
+
         data: {
           id_product: formData.id,
           id_member: localStorage.getItem('userID'), // Assuming you store userID in localStorage
