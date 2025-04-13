@@ -41,6 +41,9 @@ This project is a web application for managing a book fair, built with React, Re
 - **State Management**: Reudx.
 - **API Communication**: Fetch API
 
+### Note
+This is my first attempt at building a complete web application system. As such, the codebase may not be fully clean or optimized. I appreciate your understanding and welcome any constructive feedback for improvement.
+
 
 
 
