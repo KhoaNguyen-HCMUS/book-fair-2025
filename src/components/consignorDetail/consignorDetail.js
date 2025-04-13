@@ -68,6 +68,16 @@ function ConsignorDetail() {
     setEditedConsignor(consignor);
   };
 
+  const normalizeAccountName = (name) => {
+    if (!name) return '';
+    return name
+      .trim()
+      .replace(/\s+/g, ' ')
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .toUpperCase();
+  };
+
   const handleSave = async () => {
     try {
       const URL = `${process.env.REACT_APP_DOMAIN}${process.env.REACT_APP_API_UPDATE_OBJECT}`;
@@ -85,7 +95,7 @@ function ConsignorDetail() {
             address: editedConsignor.address,
             bank_name: editedConsignor.bank_name,
             id_bank: editedConsignor.id_bank,
-            holder_name: editedConsignor.holder_name,
+            holder_name: normalizeAccountName(editedConsignor.holder_name),
           },
         }),
       });

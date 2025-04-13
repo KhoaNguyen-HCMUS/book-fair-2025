@@ -67,7 +67,7 @@ export const FormConsignor = () => {
             name: formData.name,
             id_bank: formData.account,
             bank_name: formData.bank,
-            holder_name: formData.accountName,
+            holder_name: normalizeAccountName(formData.accountName),
             cash_back: formData.amount,
             id_member: userID,
             address: formData.address,
@@ -90,6 +90,16 @@ export const FormConsignor = () => {
     } catch (error) {
       toast.error('Có lỗi khi thêm người ký gửi');
     }
+  };
+
+  const normalizeAccountName = (name) => {
+    if (!name) return '';
+    return name
+      .trim() 
+      .replace(/\s+/g, ' ') 
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '') 
+      .toUpperCase();
   };
 
   return (
