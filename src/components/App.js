@@ -24,8 +24,6 @@ import MyReceipts from '../pages/myReceipts/myReceipts.js';
 import ReceiptDetail from './receiptDetail/receiptDetail.js';
 import ListReceipts from '../pages/listReceipts/listReceipts.js';
 
-const SESSION_TIMEOUT = 3 * 60 * 60 * 1000; // 3 hours in milliseconds
-
 function App() {
   const [isAuth, setIsAuth] = useState(false);
   const [username, setUsername] = useState('');
@@ -97,55 +95,15 @@ function App() {
 
     return children;
   };
-  useEffect(() => {
-    if (isAuth) {
-      const loginTime = localStorage.getItem('loginTime');
-
-      const intervalId = setInterval(() => {
-        const currentTime = new Date().getTime();
-        const timeSinceLogin = currentTime - parseInt(loginTime);
-
-        if (timeSinceLogin > SESSION_TIMEOUT) {
-          handleLogout();
-        }
-      }, 60000); // Check every minute
-
-      return () => clearInterval(intervalId);
-    }
-  }, [isAuth]);
-
-  useEffect(() => {
-    if (isAuth) {
-      const resetTimer = () => {
-        localStorage.setItem('loginTime', new Date().getTime().toString());
-      };
-
-      window.addEventListener('mousemove', resetTimer);
-      window.addEventListener('keypress', resetTimer);
-      window.addEventListener('click', resetTimer);
-      window.addEventListener('scroll', resetTimer);
-
-      return () => {
-        window.removeEventListener('mousemove', resetTimer);
-        window.removeEventListener('keypress', resetTimer);
-        window.removeEventListener('click', resetTimer);
-        window.removeEventListener('scroll', resetTimer);
-      };
-    }
-  }, [isAuth]);
 
   const handleLogout = () => {
     localStorage.removeItem('isAuthenticated');
-    localStorage.removeItem('loginTime');
     setIsAuth(false);
   };
 
   useEffect(() => {
     const auth = localStorage.getItem('isAuthenticated') === 'true';
     if (auth) {
-      if (!localStorage.getItem('loginTime')) {
-        localStorage.setItem('loginTime', new Date().getTime().toString());
-      }
       // Set all user data when checking authentication
       setUsername(localStorage.getItem('username') || '');
       setUserole(localStorage.getItem('userRole') || '');
