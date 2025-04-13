@@ -21,7 +21,7 @@ import ListMembers from '../pages/listMembers/listMembers.js';
 import MemberDetail from './memberDetail/memberDetail.js';
 import AddReceipt from '../pages/addReceipt/addReceipt.js';
 import MyReceipts from '../pages/myReceipts/myReceipts.js';
-import ReceiptDetail from '../pages/receiptDetail/receiptDetail.js';
+import ReceiptDetail from './receiptDetail/receiptDetail.js';
 import ListReceipts from '../pages/listReceipts/listReceipts.js';
 
 const SESSION_TIMEOUT = 3 * 60 * 60 * 1000; // 3 hours in milliseconds

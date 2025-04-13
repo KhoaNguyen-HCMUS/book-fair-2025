@@ -125,6 +125,13 @@ function AddReceipt() {
     setDiscountAmount(voucherAmount); // Lưu số tiền giảm giá
   };
 
+  const handleVoucherInputChange = (e) => {
+    const input = e.target.value.replace(/\./g, ''); // Loại bỏ dấu chấm nếu có
+    if (!isNaN(input)) {
+      setVoucherCode(input);
+    }
+  };
+
   // Submit Receipt
   const handleSubmitReceipt = async () => {
     if (ReceiptItems.length === 0) {
@@ -151,7 +158,6 @@ function AddReceipt() {
     };
     try {
       const URL = process.env.REACT_APP_DOMAIN_BACKUP + process.env.REACT_APP_API_CREATE_OBJECT;
-
 
       const response = await fetch(URL, {
         method: 'POST',
@@ -281,8 +287,8 @@ function AddReceipt() {
                 type='text'
                 id='voucher'
                 placeholder='Nhập mã giảm giá'
-                value={voucherCode}
-                onChange={(e) => setVoucherCode(e.target.value)}
+                value={voucherCode ? Number(voucherCode).toLocaleString('vi-VN') : ''} // Định dạng khi hiển thị
+                onChange={handleVoucherInputChange}
               />
               <button onClick={handleApplyVoucher}>Áp dụng</button>
             </div>
