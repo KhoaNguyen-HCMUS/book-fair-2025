@@ -115,7 +115,7 @@ function ListReceipts() {
                 <td>{Receipt.name_cashier}</td>
 
                 <td>{Receipt.createAt.replace('T', ' ').slice(0, 19)}</td>
-                <td>{Receipt.payment_method}</td>
+                <td>{Receipt.payment_method === 'bank' ? 'Chuyển khoản' : 'Tiền mặt'}</td>
                 <td>{Math.floor(Receipt.total_amount).toLocaleString('vi-VN')}</td>
                 <td>{Receipt.voucher}</td>
               </tr>
