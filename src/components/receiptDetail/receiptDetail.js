@@ -93,6 +93,7 @@ function ReceiptDetail() {
             <thead>
               <tr>
                 <th>STT</th>
+                <th>Mã sách</th>
                 <th>Tên sách</th>
                 <th>Số lượng</th>
                 <th>Giá</th>
@@ -108,6 +109,7 @@ function ReceiptDetail() {
                   className='book-row'
                 >
                   <td>{index + 1}</td>
+                  <td>{book.id_product}</td>
                   <td>{book.name}</td>
                   <td>{book.quantity}</td>
                   <td>{parseFloat(book.price).toLocaleString('vi-VN')} ₫</td>

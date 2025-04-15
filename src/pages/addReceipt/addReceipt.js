@@ -19,6 +19,7 @@ function AddReceipt() {
   const [discountAmount, setDiscountAmount] = useState(0);
   const [voucherCode, setVoucherCode] = useState('');
   const [paymentMethod, setPaymentMethod] = useState('cash');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Fetch books from the API
   const fetchBooks = async () => {
@@ -134,10 +135,12 @@ function AddReceipt() {
 
   // Submit Receipt
   const handleSubmitReceipt = async () => {
+    if (isSubmitting) return;
     if (ReceiptItems.length === 0) {
       toast.error('Please add at least one book to the Receipt!');
       return;
     }
+    setIsSubmitting(true);
 
     const dataToSend = {
       typeOb: 'receipt',
@@ -179,6 +182,8 @@ function AddReceipt() {
       }
     } catch (error) {
       toast.error('Error submitting Receipt!');
+    } finally {
+      setIsSubmitting(false); // Reset submitting state
     }
   };
 
@@ -364,10 +369,10 @@ function AddReceipt() {
               </div>
 
               <div className='action-buttons'>
-                <button className='btn-success' onClick={handleSubmitReceipt}>
-                  Thanh toán
+                <button className='btn-success' onClick={handleSubmitReceipt} disabled={isSubmitting}>
+                  {isSubmitting ? 'Đang xử lý...' : 'Thanh toán'}
                 </button>
-                <button className='btn-danger' onClick={() => setReceiptItems([])}>
+                <button className='btn-danger' onClick={() => setReceiptItems([])} disabled={isSubmitting}>
                   Xóa đơn hàng
                 </button>
               </div>

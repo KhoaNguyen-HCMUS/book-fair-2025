@@ -389,6 +389,11 @@
               &:hover {
                 background-color: #43a047;
               }
+
+              &:disabled {
+                background-color: #ccc; // Màu xám khi bị vô hiệu hóa
+                cursor: not-allowed;
+              }
             }
 
             &.btn-danger {
@@ -397,6 +402,10 @@
 
               &:hover {
                 background-color: #e53935;
+              }
+              &:disabled {
+                background-color: #ccc; // Màu xám khi bị vô hiệu hóa
+                cursor: not-allowed;
               }
             }
           }
