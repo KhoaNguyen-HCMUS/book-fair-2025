@@ -1,5 +1,5 @@
 import React from 'react';
-import { useRef } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
@@ -56,9 +56,11 @@ const Home = () => {
     slidesToScroll: 1,
     arrows: true, // Disable default arrows
   };
-
   return (
     <div className='home-container'>
+      <div className='iframe-container'>
+        <iframe src='https://docs.google.com/spreadsheets/d/e/2PACX-1vRvtSLcMtb3ERriz9uh3AxKuf2uwxP5QW79EXxezZwFBqOraziQ2faf18T_T77ooRhggdscwKDgkSFx/pubhtml?gid=742653863&amp;single=true&amp;widget=true&amp;headers=false'></iframe>
+      </div>
       <h1 className='home-title'>Quy trình nhận và nhập sách!</h1>
       <Slider ref={sliderRef} {...settings}>
         {slideImages.map((img, index) => (
