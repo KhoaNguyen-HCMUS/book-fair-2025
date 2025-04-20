@@ -37,12 +37,6 @@ $text-color: #333;
       border: none;
       border-radius: 12px;
       box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.05);
-      transition: transform 0.3s ease, height 0.3s ease;
-
-      // Hover effect for iframe
-      &:hover {
-        transform: scale(1.005);
-      }
     }
 
     // Responsive styles for iframe
