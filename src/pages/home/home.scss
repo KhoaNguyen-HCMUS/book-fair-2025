@@ -27,27 +27,18 @@ $text-color: #333;
     margin: 2rem auto;
     padding: 1rem;
     background-color: white;
-    border-radius: 16px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
     overflow: hidden;
 
     iframe {
       width: 100%;
       height: 100%;
       border: none;
-      border-radius: 12px;
-      box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.05);
     }
 
     // Responsive styles for iframe
     @media screen and (max-width: 768px) {
-      height: 400px;
+      height: 500px;
       padding: 0.5rem;
-
-      iframe {
-        transform: scale(0.9); /* Scale down iframe */
-        transform-origin: top left; /* Keep content aligned to the top-left corner */
-      }
     }
 
     @media screen and (max-width: 480px) {
@@ -55,7 +46,6 @@ $text-color: #333;
 
       iframe {
         transform: scale(0.8); /* Scale down further for smaller screens */
-        transform-origin: top left; /* Keep content aligned to the top-left corner */
       }
     }
   }
