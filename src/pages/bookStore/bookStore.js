@@ -12,7 +12,7 @@ const categories = {
     'Khoa học tự nhiên & Công nghệ',
     'Sách giáo dục & trường học',
     'Văn học Việt Nam',
-    'Văn học Nước ngoài ',
+    'Văn học Nước ngoài',
     'Văn học Nước ngoài biên phiên dịch',
     'Truyện tranh',
     'Khác',
