@@ -21,6 +21,8 @@ function ListMembers() {
     indexOfLastMember
   );
 
+  const [isSortedAscending, setIsSortedAscending] = useState(true);
+
   const totalPages = Math.ceil((filteredMembers.length > 0 ? filteredMembers : members).length / itemsPerPage);
 
   useEffect(() => {
@@ -31,6 +33,17 @@ function ListMembers() {
     navigate(`/memberDetail/${member.id_member}`, {
       state: { member },
     });
+  };
+
+  const handleSortByBooks = () => {
+    const sortedMembers = [...(filteredMembers.length > 0 ? filteredMembers : members)].sort(
+      (a, b) =>
+        isSortedAscending
+          ? (a.count_books || 0) - (b.count_books || 0) // Sắp xếp tăng dần
+          : (b.count_books || 0) - (a.count_books || 0) // Sắp xếp giảm dần
+    );
+    setFilteredMembers(sortedMembers);
+    setIsSortedAscending(!isSortedAscending); // Đổi trạng thái sắp xếp
   };
 
   const fetchMembers = async () => {
@@ -95,7 +108,9 @@ function ListMembers() {
           X
         </button>
       </form>
-
+      <button type='button' className='sort-button' onClick={handleSortByBooks}>
+        {isSortedAscending ? 'Sắp xếp giảm dần' : 'Sắp xếp tăng dần'}
+      </button>
       <table className='members-table'>
         <thead>
           <tr>
