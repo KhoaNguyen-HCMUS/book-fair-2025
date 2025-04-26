@@ -50,10 +50,7 @@ class Nav extends React.Component {
                 <NavLink to='/listConsignors'>DS Người Ký Gửi</NavLink>
                 <NavLink to='/listMembers'>DS Thành Viên</NavLink>
                 <NavLink to='/listReceipts'>DS Đơn Hàng</NavLink>
-<<<<<<< HEAD
                 <NavLink to='/statisticsPage'>Thống Kê</NavLink>
-=======
->>>>>>> origin/master
               </div>
             </div>
           )}
