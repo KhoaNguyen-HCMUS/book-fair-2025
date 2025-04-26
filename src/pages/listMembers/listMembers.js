@@ -29,6 +29,11 @@ function ListMembers() {
     fetchMembers();
   }, []);
 
+  const calcPercent = (current, target) => {
+    if (target === 0) return 0;
+    return ((current / target) * 100).toFixed(1);
+  };
+
   const handleRowClick = (member) => {
     navigate(`/memberDetail/${member.id_member}`, {
       state: { member },
@@ -119,6 +124,7 @@ function ListMembers() {
             <th>Họ tên</th>
             <th>Vai trò</th>
             <th>Số sách</th>
+            <th>% Hoàn Thành</th>
           </tr>
         </thead>
         <tbody>
@@ -129,6 +135,7 @@ function ListMembers() {
               <td>{member.name}</td>
               <td>{member.role}</td>
               <td> {member.count_books || 0}</td>
+              <td>{calcPercent(member.count_books, 50)}%</td>
             </tr>
           ))}
         </tbody>
