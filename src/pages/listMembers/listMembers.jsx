@@ -153,7 +153,6 @@ export default function ListMembers() {
           </button>
         )}
       </form>
-
       <div className='filter-container'>
         {Object.entries(FILTER_CATEGORIES).map(([key, { title, options }]) => (
           <div key={key} className='filter-group'>
@@ -173,36 +172,31 @@ export default function ListMembers() {
           </div>
         ))}
       </div>
-
-      {currentMembers.length ? (
-        <table className='members-table'>
-          <thead>
-            <tr>
-              <th>STT</th>
-              <th>ID</th>
-              <th>Họ tên</th>
-              <th>Vai trò</th>
-              <th>Số sách</th>
-              <th>% Hoàn Thành</th>
+      <table className='members-table'>
+        <thead>
+          <tr>
+            <th>STT</th>
+            <th>ID</th>
+            <th>Họ tên</th>
+            <th>Vai trò</th>
+            <th>Số sách</th>
+            <th>% Hoàn Thành</th>
+          </tr>
+        </thead>
+        <tbody>
+          {currentMembers.map((m, idx) => (
+            <tr key={m.idMember} onClick={() => handleRowClick(m)} className='member-row'>
+              <td>{startIdx + idx + 1}</td>
+              <td>{m.idMember}</td>
+              <td>{m.name}</td>
+              <td>{m.role}</td>
+              <td>{m.countBooks}</td>
+              <td>{((m.countBooks / 50) * 100).toFixed(1)}%</td>
             </tr>
-          </thead>
-          <tbody>
-            {currentMembers.map((m, idx) => (
-              <tr key={m.idMember} onClick={() => handleRowClick(m)} className='member-row'>
-                <td>{startIdx + idx + 1}</td>
-                <td>{m.idMember}</td>
-                <td>{m.name}</td>
-                <td>{m.role}</td>
-                <td>{m.countBooks}</td>
-                <td>{((m.countBooks / 50) * 100).toFixed(1)}%</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      ) : (
-        <div className='no-data'>Không có thành viên để hiển thị</div>
-      )}
-
+          ))}
+        </tbody>
+      </table>
+      :
       <div className='pagination-container'>
         <button disabled={currentPage === 1} onClick={() => setCurrentPage(1)} className='pagination-button'>
           Trang đầu
