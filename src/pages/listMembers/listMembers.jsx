@@ -137,6 +137,7 @@ export default function ListMembers() {
 
   return (
     <div className='list-members'>
+      <div className='title'> Danh sách thành viên</div>
       <form onSubmit={handleSearchSubmit} className='search-container'>
         <FaSearch className='search-icon' />
         <input
