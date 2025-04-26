@@ -23,10 +23,8 @@ import AddReceipt from '../pages/addReceipt/addReceipt.js';
 import MyReceipts from '../pages/myReceipts/myReceipts.js';
 import ReceiptDetail from './receiptDetail/receiptDetail.js';
 import ListReceipts from '../pages/listReceipts/listReceipts.js';
-<<<<<<< HEAD
 import StatisticsPage from '../pages/statisticsPage/statisticsPage.js';
-=======
->>>>>>> origin/master
+
 
 function App() {
   const [isAuth, setIsAuth] = useState(false);
@@ -197,7 +195,6 @@ function App() {
               }
             />
             <Route
-<<<<<<< HEAD
               path='/statisticsPage'
               element={
                 <OrganizerRoute>
@@ -207,8 +204,6 @@ function App() {
             />
 
             <Route
-=======
->>>>>>> origin/master
               path='/listReceipts'
               element={
                 <OrganizerRoute>
