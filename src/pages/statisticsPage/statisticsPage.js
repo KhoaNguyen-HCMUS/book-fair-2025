@@ -111,7 +111,6 @@ const StatisticsPage = () => {
                   <th>Thể loại</th>
                   <th>Sách Ký Gửi</th>
                   <th>Sách Quyên Góp</th>
-                  <th>Sách Nhà Xuất Bản</th>
                 </tr>
               </thead>
               <tbody>
@@ -120,7 +119,6 @@ const StatisticsPage = () => {
                     <td>{genre}</td>
                     <td>{booksByGenreAndClassify[genre]?.consign || 0}</td>
                     <td>{booksByGenreAndClassify[genre]?.donate || 0}</td>
-                    <td>{booksByGenreAndClassify[genre]?.publisher || 0}</td>
                   </tr>
                 ))}
               </tbody>
