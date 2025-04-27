@@ -29,14 +29,7 @@ export default function ListMembers() {
         const result = await res.json();
         if (result.success) {
           // Map snake_case to camelCase
-          setMembers(
-            result.data.map((m) => ({
-              idMember: m.id_member,
-              name: m.name,
-              // m.role is kept for reference but we will use isCtv logic
-              countBooks: m.count_books || 0,
-            }))
-          );
+          setMembers(result.data);
         } else {
           toast.error('Error fetching members');
         }
@@ -62,13 +55,13 @@ export default function ListMembers() {
     // Search filter
     if (searchInput.trim()) {
       const term = searchInput.toLowerCase();
-      list = list.filter((m) => m.name.toLowerCase().includes(term) || m.idMember.toLowerCase().includes(term));
+      list = list.filter((m) => m.name.toLowerCase().includes(term) || m.id_member.toLowerCase().includes(term));
     }
 
     // Role filter using isCtv
     if (selectedFilters.role?.length) {
       list = list.filter((m) => {
-        const isCtv = m.idMember.slice(-3).toUpperCase() === 'CTV';
+        const isCtv = m.id_member.slice(-3).toUpperCase() === 'CTV';
         const memberRole = isCtv ? 'CTV' : 'BTC';
         return selectedFilters.role.includes(memberRole);
       });
@@ -76,7 +69,7 @@ export default function ListMembers() {
 
     // Performance filter
     if (selectedFilters.performance?.includes('Đạt KPI')) {
-      const kpiList = list.filter((m) => m.countBooks >= 50);
+      const kpiList = list.filter((m) => m.count_books >= 50);
       if (kpiList.length === 0) {
         toast.error('Không có thành viên nào đạt KPI trong nhóm đã chọn');
         setSelectedFilters((prev) => {
@@ -92,7 +85,7 @@ export default function ListMembers() {
     // Sorting (mutually exclusive)
     if (selectedFilters.sort?.length) {
       const asc = selectedFilters.sort.includes('Tăng dần');
-      list = [...list].sort((a, b) => (asc ? a.countBooks - b.countBooks : b.countBooks - a.countBooks));
+      list = [...list].sort((a, b) => (asc ? a.count_books - b.count_books : b.count_books - a.count_books));
     }
 
     return list;
@@ -130,7 +123,7 @@ export default function ListMembers() {
   const handleClearSearch = () => setSearchInput('');
 
   const handleRowClick = (member) => {
-    navigate(`/memberDetail/${member.idMember}`, { state: { member } });
+    navigate(`/memberDetail/${member.id_member}`, { state: { member } });
   };
 
   if (loading) return <div className='spinner'>Đang tải dữ liệu...</div>;
@@ -185,13 +178,13 @@ export default function ListMembers() {
         </thead>
         <tbody>
           {currentMembers.map((m, idx) => (
-            <tr key={m.idMember} onClick={() => handleRowClick(m)} className='member-row'>
+            <tr key={m.id_member} onClick={() => handleRowClick(m)} className='member-row'>
               <td>{startIdx + idx + 1}</td>
-              <td>{m.idMember}</td>
+              <td>{m.id_member}</td>
               <td>{m.name}</td>
               <td>{m.role}</td>
-              <td>{m.countBooks}</td>
-              <td>{((m.countBooks / 50) * 100).toFixed(1)}%</td>
+              <td>{m.count_books}</td>
+              <td>{((m.count_books / 50) * 100).toFixed(1)}%</td>
             </tr>
           ))}
         </tbody>
