@@ -2,6 +2,46 @@
 
 This project is a web application for managing a book fair, built with React, Redux, and other modern web technologies. The application provides features for managing books, receipts, consignors, and members, tailored for different user roles such as Admin, Organizer, Collaborator, and Cashier.
 
+## Screenshots
+### Login page
+![Login Page](./public/README/login.png)
+
+### Add consignor and book
+<table style="border: none; border-collapse: collapse;">
+  <tr style="border: none;">
+    <td width="50%" style="border: none; padding: 0;">
+      <img src="./public/README/add-consignor.png" alt="Add consignor" />
+    </td>
+    <td width="50%" style="border: none; padding: 0;">
+      <img src="./public/README/add-book.png" alt="Add book" />
+    </td>
+  </tr>
+</table>
+
+### Cashier
+<table style="border: none; border-collapse: collapse;">
+  <tr style="border: none;">
+    <td width="50%" style="border: none; padding: 0;">
+      <img src="./public/README/cashier.png" alt="Cashier" />
+    </td>
+    <td width="50%" style="border: none; padding: 0;">
+      <img src="./public/README/list-receipts.png" alt="List Receipts" />
+    </td>
+  </tr>
+</table>
+
+### System manager
+<table style="border: none; border-collapse: collapse;">
+  <tr style="border: none;">
+    <td width="50%" style="border: none; padding: 0;">
+      <img src="./public/README/bookstore.png" alt="Book Store" />
+    </td>
+    <td width="50%" style="border: none; padding: 0;">
+      <img src="./public/README/list-members.png" alt="List Members" />
+    </td>
+  </tr>
+</table>
+
 ## Features
 
 ### General Features
