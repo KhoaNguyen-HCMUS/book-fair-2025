@@ -67,7 +67,9 @@ export const FormPublisherBook = () => {
       }));
     }
   };
-
+  const removeNonNumeric = (value) => {
+    return value.replace(/[^0-9]/g, '');
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.id_publisher || !formData.publisher) {
@@ -86,7 +88,7 @@ export const FormPublisherBook = () => {
         data: {
           id_product: formData.id,
           id_member: localStorage.getItem('userID'),
-          id_consignor: formData.id_publisher,
+          id_consignor: removeNonNumeric(formData.id_publisher),
           name: formData.name,
           age: formData.age,
           genre: formData.category || 'Không xác định', // Add default value
