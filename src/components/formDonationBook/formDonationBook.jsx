@@ -56,6 +56,10 @@ export const FormDonationBook = () => {
     }));
   };
 
+  const removeNonNumeric = (value) => {
+    return value.replace(/[^0-9]/g, '');
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.idConsignor || !formData.nameConsignor) {
@@ -68,9 +72,9 @@ export const FormDonationBook = () => {
         id_member: localStorage.getItem('userID'), // Assuming you store userID in localStorage
 
         data: {
-          id_product: formData.id,
+          id_product: removeNonNumeric(formData.id),
           id_member: localStorage.getItem('userID'), // Assuming you store userID in localStorage
-          id_consignor: formData.idConsignor,
+          id_consignor: removeNonNumeric(formData.idConsignor),
           name: formData.name,
           age: formData.age,
           genre: formData.category,
