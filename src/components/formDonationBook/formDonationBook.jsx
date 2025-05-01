@@ -6,6 +6,7 @@ import { renderInput, renderSelect, formatCurrency, parseCurrency } from '../for
 import './formDonationBook.scss';
 
 export const FormDonationBook = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     id: '',
     idConsignor: '',
@@ -66,6 +67,8 @@ export const FormDonationBook = () => {
       toast.error('Vui lòng nhập SĐT người quyên góp và tìm kiếm trước khi thêm sách');
       return;
     }
+
+    setIsLoading(true);
     try {
       const bookData = {
         typeOb: 'product',
@@ -109,6 +112,8 @@ export const FormDonationBook = () => {
       }
     } catch {
       toast.error('Lỗi khi thêm sách');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -266,8 +271,10 @@ export const FormDonationBook = () => {
       </div>
 
       <div className='button-group'>
-        <button type='submit'>Thêm Sách</button>
-        <button type='button' onClick={handleReset}>
+        <button type='submit' disabled={isLoading} className={isLoading ? 'loading' : ''}>
+          {isLoading ? 'Đang xử lý...' : 'Thêm Sách'}
+        </button>
+        <button type='button' onClick={handleReset} disabled={isLoading}>
           Làm mới
         </button>
       </div>

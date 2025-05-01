@@ -5,6 +5,8 @@ import { renderInput, renderSelect } from '../formComponents/formComponents.jsx'
 import './formConsignor.scss';
 
 export const FormConsignor = () => {
+  const [isLoading, setIsLoading] = useState(false);
+
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
@@ -53,6 +55,7 @@ export const FormConsignor = () => {
     const URL = import.meta.env.VITE_DOMAIN + import.meta.env.VITE_API_CREATE_OBJECT;
     const userID = localStorage.getItem('userID');
 
+    setIsLoading(true);
     try {
       const response = await fetch(URL, {
         method: 'POST',
@@ -89,6 +92,8 @@ export const FormConsignor = () => {
       }
     } catch {
       toast.error('Có lỗi khi thêm người ký gửi');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -159,9 +164,11 @@ export const FormConsignor = () => {
       </div>
 
       <div className='button-group'>
-        <button type='submit'>Thêm Người Ký Gửi</button>
-        <button type='button' onClick={handleReset} className='reset-button'>
-          Làm Mới
+        <button type='submit' disabled={isLoading} className={isLoading ? 'loading' : ''}>
+          {isLoading ? 'Đang xử lý...' : 'Thêm Người Ký Gửi'}
+        </button>
+        <button type='button' onClick={handleReset} disabled={isLoading}>
+          Làm mới
         </button>
       </div>
     </form>

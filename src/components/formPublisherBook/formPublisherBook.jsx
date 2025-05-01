@@ -4,6 +4,7 @@ import { toast } from 'react-toastify';
 import { renderInput, renderSelect, formatCurrency, parseCurrency } from '../formComponents/formComponents.jsx';
 import './formPublisherBook.scss';
 export const FormPublisherBook = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     id: '',
     id_publisher: '',
@@ -80,6 +81,7 @@ export const FormPublisherBook = () => {
       toast.error('Số lượng sách phải lớn hơn 0');
       return;
     }
+    setIsLoading(true);
     try {
       const bookData = {
         typeOb: 'product',
@@ -129,6 +131,8 @@ export const FormPublisherBook = () => {
       }
     } catch {
       toast.error('Lỗi khi thêm sách');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -337,8 +341,10 @@ export const FormPublisherBook = () => {
       </div>
 
       <div className='button-group'>
-        <button type='submit'>Thêm Sách</button>
-        <button type='button' onClick={handleReset}>
+        <button type='submit' disabled={isLoading} className={isLoading ? 'loading' : ''}>
+          {isLoading ? 'Đang xử lý...' : 'Thêm Sách'}
+        </button>
+        <button type='button' onClick={handleReset} disabled={isLoading}>
           Làm mới
         </button>
       </div>

@@ -6,6 +6,8 @@ import { renderInput, renderSelect, formatCurrency, parseCurrency } from '../for
 import './formConsignmentBook.scss';
 
 export const FormConsignmentBook = () => {
+  const [isLoading, setIsLoading] = useState(false);
+
   const CalculatePrice = (originalPrice, typePrice) => {
     const price = parseFloat(parseCurrency(originalPrice));
     if (isNaN(price)) return '';
@@ -124,6 +126,7 @@ export const FormConsignmentBook = () => {
       toast.error('Vui lòng nhập số điện thoại người ký gửi và bấm tìm');
       return;
     }
+    setIsLoading(true);
     try {
       const bookData = {
         typeOb: 'product',
@@ -173,6 +176,8 @@ export const FormConsignmentBook = () => {
       }
     } catch {
       toast.error('Lỗi khi thêm sách');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -357,8 +362,10 @@ export const FormConsignmentBook = () => {
       </div>
 
       <div className='button-group'>
-        <button type='submit'>Thêm Sách</button>
-        <button type='button' onClick={handleReset}>
+        <button type='submit' disabled={isLoading} className={isLoading ? 'loading' : ''}>
+          {isLoading ? 'Đang xử lý...' : 'Thêm Sách'}
+        </button>
+        <button type='button' onClick={handleReset} disabled={isLoading}>
           Làm mới
         </button>
       </div>
