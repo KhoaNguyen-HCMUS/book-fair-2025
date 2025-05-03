@@ -253,7 +253,7 @@ function AddReceipt() {
                         })}
                       </td>
                       <td>
-                        <button onClick={() => handleAddBook(book)}>Add to Receipt</button>
+                        <button onClick={() => handleAddBook(book)}>Thêm</button>
                       </td>
                     </tr>
                   ))}
@@ -297,7 +297,9 @@ function AddReceipt() {
               {ReceiptItems.map((item) => (
                 <div key={item.id_product} className='Receipt-item'>
                   <div className='item-info'>
+                    <div className='item-id'>ID: {item.id_product}</div>
                     <div className='item-name'>{item.name}</div>
+
                     <div className='item-price'>
                       {item.price.toLocaleString('vi-VN', {
                         style: 'currency',
@@ -313,7 +315,7 @@ function AddReceipt() {
                   </div>
 
                   <button className='remove-button' onClick={() => handleRemoveBook(item.id_product)}>
-                    ×
+                    X
                   </button>
                 </div>
               ))}
