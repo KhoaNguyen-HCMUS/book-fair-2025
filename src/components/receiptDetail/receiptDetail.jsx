@@ -92,10 +92,14 @@ function ReceiptDetail() {
             <strong>Tổng tiền: </strong> {Math.floor(receiptDetails.total_amount).toLocaleString('vi-VN')}
           </p>
           <p>
-            <strong> Tiền giảm: </strong> {receiptDetails.voucher ? receiptDetails.voucher : 0} ₫
+            <strong> Tiền giảm: </strong>{' '}
+            {receiptDetails.voucher ? Math.floor(receiptDetails.voucher).toLocaleString('vi-VN') : 0}
           </p>
           <p>
-          <strong>Thành tiền: </strong> {receiptDetails.total_amount - (receiptDetails.voucher ? receiptDetails.voucher : 0)} ₫
+            <strong>Thành tiền: </strong>{' '}
+            {receiptDetails.voucher
+              ? Math.floor(receiptDetails.total_amount - receiptDetails.voucher).toLocaleString('vi-VN')
+              : Math.floor(receiptDetails.total_amount).toLocaleString('vi-VN')}{' '}
           </p>
           <table className='book-table'>
             <thead>
