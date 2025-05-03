@@ -82,7 +82,7 @@ function ReceiptDetail() {
           </p>
           <p>
             <strong>Thời gian: </strong>
-            {receiptDetails.createAt}
+            {receiptDetails.createAt.replace('T', ' ').slice(0, 19)}
           </p>
           <p>
             <strong>Thanh toán: </strong>
@@ -93,6 +93,9 @@ function ReceiptDetail() {
           </p>
           <p>
             <strong> Tiền giảm: </strong> {receiptDetails.voucher ? receiptDetails.voucher : 0} ₫
+          </p>
+          <p>
+          <strong>Thành tiền: </strong> {receiptDetails.total_amount - (receiptDetails.voucher ? receiptDetails.voucher : 0)} ₫
           </p>
           <table className='book-table'>
             <thead>
