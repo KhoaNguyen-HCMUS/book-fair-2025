@@ -77,30 +77,15 @@ function ReceiptDetail() {
         <p>Đang tải...</p>
       ) : (
         <div className='receipt-info'>
-          <p>
-            <strong>Tên Thu Ngân:</strong> {receiptDetails.name_cashier}
-          </p>
-          <p>
-            <strong>Thời gian: </strong>
-            {receiptDetails.createAt.replace('T', ' ').slice(0, 19)}
-          </p>
-          <p>
-            <strong>Thanh toán: </strong>
-            {receiptDetails.payment_method === 'cash' ? 'Tiền mặt' : 'Chuyển khoản'}
-          </p>
-          <p>
-            <strong>Tổng tiền: </strong> {Math.floor(receiptDetails.total_amount).toLocaleString('vi-VN')}
-          </p>
-          <p>
-            <strong> Tiền giảm: </strong>{' '}
-            {receiptDetails.voucher ? Math.floor(receiptDetails.voucher).toLocaleString('vi-VN') : 0}
-          </p>
-          <p className='total-amount'>
-            <strong>Thành tiền: </strong>
-            {receiptDetails.voucher
-              ? Math.floor(receiptDetails.total_amount - receiptDetails.voucher).toLocaleString('vi-VN')
-              : Math.floor(receiptDetails.total_amount).toLocaleString('vi-VN')}{' '}
-          </p>
+          <div className='info-row'>
+            <span className='label'>Tên Thu Ngân:</span>
+            <span className='value'>{receiptDetails.name_cashier}</span>
+          </div>
+          <div className='info-row'>
+            <span className='label'>Thời gian:</span>
+            <span className='value'>{receiptDetails.createAt.replace('T', ' ').slice(0, 19)}</span>
+          </div>
+
           <table className='book-table'>
             <thead>
               <tr>
@@ -108,8 +93,8 @@ function ReceiptDetail() {
                 <th>Mã sách</th>
                 <th>Tên sách</th>
                 <th>Số lượng</th>
-                <th>Giá</th>
-                <th>Tổng</th>
+                <th>Đơn giá</th>
+                <th>Thành tiền</th>
               </tr>
             </thead>
             <tbody>
@@ -130,6 +115,31 @@ function ReceiptDetail() {
               ))}
             </tbody>
           </table>
+          <div className='payment-info'>
+            <div className='info-row'>
+              <span className='label'>Tổng tiền:</span>
+              <span className='value'>{Math.floor(receiptDetails.total_amount).toLocaleString('vi-VN')} ₫</span>
+            </div>
+            <div className='info-row'>
+              <span className='label'>Tiền giảm:</span>
+              <span className='value'>
+                {receiptDetails.voucher ? Math.floor(receiptDetails.voucher).toLocaleString('vi-VN') : 0} ₫
+              </span>
+            </div>
+            <div className='info-row total-amount'>
+              <span className='label'>Thành tiền:</span>
+              <span className='value'>
+                {receiptDetails.voucher
+                  ? Math.floor(receiptDetails.total_amount - receiptDetails.voucher).toLocaleString('vi-VN')
+                  : Math.floor(receiptDetails.total_amount).toLocaleString('vi-VN')}{' '}
+                ₫
+              </span>
+            </div>
+            <div className='info-row'>
+              <span className='label'>Thanh toán:</span>
+              <span className='value'>{receiptDetails.payment_method === 'cash' ? 'Tiền mặt' : 'Chuyển khoản'}</span>
+            </div>  
+          </div>
         </div>
       )}
     </div>
