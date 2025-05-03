@@ -143,6 +143,7 @@ function AddReceipt() {
           id_member: userId,
           method_payment: paymentMethod,
           voucher: voucherCode,
+          total_amount: totalPrice - discountAmount,
         },
         order: ReceiptItems.map((book) => ({
           id_product: book.id_product,
