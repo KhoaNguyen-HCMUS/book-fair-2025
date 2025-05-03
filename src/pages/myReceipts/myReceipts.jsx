@@ -36,7 +36,12 @@ function MyReceipts() {
       const result = await response.json();
 
       if (result.success) {
-        setReceipts(result.data);
+        const sortedReceipts = result.data.sort((a, b) => {
+          const numA = parseInt(a.id_receipt.split('_').pop());
+          const numB = parseInt(b.id_receipt.split('_').pop());
+          return numB - numA;
+        });
+        setReceipts(sortedReceipts);
       } else {
         toast.error('Lỗi khi tải danh sách đơn hàng');
       }
