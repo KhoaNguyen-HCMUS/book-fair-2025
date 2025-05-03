@@ -91,6 +91,9 @@ function ReceiptDetail() {
           <p>
             <strong>Tổng tiền: </strong> {Math.floor(receiptDetails.total_amount).toLocaleString('vi-VN')}
           </p>
+          <p>
+            <strong> Tiền giảm: </strong> {receiptDetails.voucher ? receiptDetails.voucher : 0} ₫
+          </p>
           <table className='book-table'>
             <thead>
               <tr>
