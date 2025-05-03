@@ -107,6 +107,7 @@ function MyReceipts() {
             <th>Thanh toán</th>
             <th>Tổng hóa đơn</th>
             <th>Giảm giá</th>
+            <th>Thành tiền</th>
           </tr>
         </thead>
         <tbody>
@@ -121,9 +122,10 @@ function MyReceipts() {
                 <td>{Receipt.name_cashier}</td>
 
                 <td>{Receipt.createAt.replace('T', ' ').slice(0, 19)}</td>
-                <td>{Receipt.payment_method}</td>
+                <td>{Receipt.payment_method === 'bank' ? 'Chuyển khoản' : 'Tiền mặt'}</td>
                 <td>{Math.floor(Receipt.total_amount).toLocaleString('vi-VN')}</td>
-                <td>{Receipt.voucher}</td>
+                <td>{Math.floor(Receipt.voucher).toLocaleString('vi-VN')}</td>
+                <td>{Math.floor(Receipt.total_amount - Receipt.voucher).toLocaleString('vi-VN')}</td>
               </tr>
             ))
           )}
