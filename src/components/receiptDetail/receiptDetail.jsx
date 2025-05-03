@@ -95,8 +95,8 @@ function ReceiptDetail() {
             <strong> Tiền giảm: </strong>{' '}
             {receiptDetails.voucher ? Math.floor(receiptDetails.voucher).toLocaleString('vi-VN') : 0}
           </p>
-          <p>
-            <strong>Thành tiền: </strong>{' '}
+          <p className='total-amount'>
+            <strong>Thành tiền: </strong>
             {receiptDetails.voucher
               ? Math.floor(receiptDetails.total_amount - receiptDetails.voucher).toLocaleString('vi-VN')
               : Math.floor(receiptDetails.total_amount).toLocaleString('vi-VN')}{' '}
