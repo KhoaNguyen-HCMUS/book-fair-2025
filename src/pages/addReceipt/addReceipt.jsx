@@ -127,6 +127,13 @@ function AddReceipt() {
     }
   };
 
+  const handleResetReceipt = () => {
+    setReceiptItems([]); // Clear Receipt items after successful submission
+    setVoucherCode(''); // Clear voucher code
+    setDiscountAmount(0); // Reset discount amount
+    setPaymentMethod('cash'); // Reset payment method
+    fetchBooks(); // Refresh book list
+  };
   // Submit Receipt
   const handleSubmitReceipt = async () => {
     if (isSubmitting) return;
@@ -166,17 +173,22 @@ function AddReceipt() {
       });
       const result = await response.json();
       if (result.success) {
-        toast.success('Receipt submitted successfully!');
-        setReceiptItems([]); // Clear Receipt items after successful submission
-        setVoucherCode(''); // Clear voucher code
-        setDiscountAmount(0); // Reset discount amount
-        setPaymentMethod('cash'); // Reset payment method
-        fetchBooks(); // Refresh book list
+        toast.success('Đơn hàng đã được tạo thành công!');
+        handleResetReceipt();
       } else {
-        toast.error('Error submitting Receipt!');
+        if (result.message === 'Book unavailable') {
+          toast.error('Sách không còn trong kho, vui lòng kiểm tra lại!');
+          handleResetReceipt();
+        } else if (result.message === 'Invalid voucher') {
+          toast.error('Mã giảm giá không hợp lệ!');
+        } else {
+          toast.error('Xảy ra lỗi');
+        }
+        console.error('Xảy ra lỗi:', result.message);
       }
-    } catch {
-      toast.error('Error submitting Receipt!');
+    } catch (error) {
+      toast.error('Lỗi kết nối đến máy chủ');
+      console.error('Error submitting Receipt:', error);
     } finally {
       setIsSubmitting(false); // Reset submitting state
     }
@@ -369,7 +381,7 @@ function AddReceipt() {
                 <button className='btn-success' onClick={handleSubmitReceipt} disabled={isSubmitting}>
                   {isSubmitting ? 'Đang xử lý...' : 'Thanh toán'}
                 </button>
-                <button className='btn-danger' onClick={() => setReceiptItems([])} disabled={isSubmitting}>
+                <button className='btn-danger' onClick={handleResetReceipt} disabled={isSubmitting}>
                   Xóa đơn hàng
                 </button>
               </div>
