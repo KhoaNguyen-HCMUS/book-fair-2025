@@ -164,15 +164,7 @@ function AddReceipt() {
   };
 
   const handlePrintReceipt = async (result) => {
-    const receiptData = {
-      ...result.receipt[0],
-      total_amount: result.receipt[0].total_amount,
-      voucher: result.receipt[0].voucher || 0,
-    };
-
-    // Use ReceiptItems directly since it already has all book details
-
-    await generateInvoicePDF(receiptData, result.orders);
+    await generateInvoicePDF(result.receipt, result.orders);
   };
 
   const sendingReceipt = async () => {
