@@ -48,8 +48,6 @@ const calculateTotalQuantity = (items) => {
 };
 
 export const generateInvoicePDF = async (receiptData, items) => {
-  console.log('Receipt Data:', receiptData);
-  console.log('Items:', items);
   const getBase64FromUrl = async (url) => {
     try {
       const response = await fetch(url);

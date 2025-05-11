@@ -201,7 +201,6 @@ function AddReceipt() {
       const result = await response.json();
       if (result.success) {
         toast.success('Đơn hàng đã được tạo thành công!');
-        console.log('Result from add receipt page:', result);
         handleResetReceipt();
         handlePrintReceipt(result);
       } else {

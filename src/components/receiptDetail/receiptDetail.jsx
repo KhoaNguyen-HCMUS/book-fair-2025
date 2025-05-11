@@ -23,7 +23,6 @@ function ReceiptDetail() {
         if (result.success) {
           setReceiptDetails(result.receipt);
           setBooks(result.orders);
-          console.log('Result from get detail:', result);
         } else {
           toast.error('Lỗi khi tải chi tiết đơn hàng');
         }
