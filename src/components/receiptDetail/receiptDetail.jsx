@@ -73,7 +73,7 @@ function ReceiptDetail() {
           ← Quay lại
         </button>
         <button className='print-button' onClick={() => handlePrintReceipt()}>
-          In hóa đơn
+          🖨 In hóa đơn
         </button>
         {(userRole === 'BTC' || userRole === 'Admin') && (
           <button className='delete-button' onClick={handleDelete}>
