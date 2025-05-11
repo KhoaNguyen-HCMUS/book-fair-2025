@@ -20,7 +20,20 @@ function AddReceipt() {
   const [paymentMethod, setPaymentMethod] = useState('cash');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Fetch books from the API
+  const [showQRModal, setShowQRModal] = useState(false);
+  const [paymentConfirmed, setPaymentConfirmed] = useState(false);
+
+  const BANK_ID = '970415'; // HD Bank
+  const ACCOUNT_NO = '100873414404';
+
+  const generateQRCode = () => {
+    const transferContent = `Payment ${userId}`;
+    const amountToPay = totalPrice - discountAmount;
+    return `https://api.vietqr.io/image/${BANK_ID}-${ACCOUNT_NO}-ttfzC3g.jpg?&amount=${amountToPay}&addInfo=${encodeURIComponent(
+      transferContent
+    )}`;
+  };
+
   const fetchBooks = async () => {
     try {
       const URL = import.meta.env.VITE_DOMAIN_BACKUP + import.meta.env.VITE_API_GET_LIST_BOOKS;
@@ -132,10 +145,18 @@ function AddReceipt() {
   };
   const handleSubmitReceipt = async () => {
     if (isSubmitting) return;
+
     if (ReceiptItems.length === 0) {
-      toast.error('Please add at least one book to the Receipt!');
+      toast.error('Vui lòng thêm sách vào đơn hàng!');
       return;
     }
+
+    // If payment method is bank transfer and payment isn't confirmed yet
+    if (paymentMethod === 'bank' && !paymentConfirmed) {
+      setShowQRModal(true);
+      return;
+    }
+
     setIsSubmitting(true);
 
     const dataToSend = {
@@ -284,7 +305,6 @@ function AddReceipt() {
           </div>
         </div>
 
-        {/* Right Container: Receipt Summary */}
         <div className='right-container'>
           <div className='Receipt-summary'>
             <h4>Đơn hàng</h4>
@@ -384,6 +404,42 @@ function AddReceipt() {
           </div>
         </div>
       </div>
+
+      {/* QR Code Modal */}
+      {showQRModal && (
+        <div className='modal-overlay'>
+          <div className='modal-content'>
+            <img src={generateQRCode()} alt='QR Code for payment' />
+            <p>
+              Số tiền:{' '}
+              {(totalPrice - discountAmount).toLocaleString('vi-VN', {
+                style: 'currency',
+                currency: 'VND',
+              })}
+            </p>
+            <div className='btn-group'>
+              <button
+                className='btn-secondary'
+                onClick={() => {
+                  setShowQRModal(false);
+                }}
+              >
+                Trở về
+              </button>
+              <button
+                className='btn-success'
+                onClick={() => {
+                  setPaymentConfirmed(true);
+                  setShowQRModal(false);
+                  handleSubmitReceipt();
+                }}
+              >
+                Đã chuyển khoản
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
