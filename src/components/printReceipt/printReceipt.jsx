@@ -17,7 +17,39 @@ const defaultFonts = {
 // Set fonts
 pdfMake.fonts = defaultFonts;
 
-export const generateInvoicePDF = async (result, cartItems) => {
+const formatReceiptNumber = (receiptId) => {
+  const number = receiptId.split('_')[1];
+  return number.padStart(6, '0');
+};
+
+const formatDateTime = () => {
+  const currentDate = new Date();
+  const formattedDate = `${currentDate.getDate()}/${currentDate.getMonth() + 1}/${currentDate.getFullYear()}`;
+  const formattedTime = `${String(currentDate.getHours()).padStart(2, '0')}:${String(currentDate.getMinutes()).padStart(
+    2,
+    '0'
+  )}:${String(currentDate.getSeconds()).padStart(2, '0')}`;
+  return { formattedDate, formattedTime };
+};
+
+const generateTableRows = (items) => {
+  return items.map((item, index) => [
+    { text: `${index + 1}`, alignment: 'center' },
+    { text: item.id_product, alignment: 'center' },
+    item.name,
+    { text: item.quantity, alignment: 'center' },
+    { text: `${parseFloat(item.price).toLocaleString('vi-VN')}`, alignment: 'right' },
+    { text: `${(item.quantity * parseFloat(item.price)).toLocaleString('vi-VN')}`, alignment: 'right' },
+  ]);
+};
+
+const calculateTotalQuantity = (items) => {
+  return items.reduce((sum, item) => sum + parseInt(item.quantity), 0);
+};
+
+export const generateInvoicePDF = async (receiptData, items) => {
+  console.log('Receipt Data:', receiptData);
+  console.log('Items:', items);
   const getBase64FromUrl = async (url) => {
     try {
       const response = await fetch(url);
@@ -35,50 +67,9 @@ export const generateInvoicePDF = async (result, cartItems) => {
   };
 
   const logoBase64 = await getBase64FromUrl('/logo.png');
-
-  const formatReceiptNumber = (receiptId) => {
-    // Extract number after underscore
-    const number = receiptId.split('_')[1];
-
-    // Pad with zeros if needed
-    return number.padStart(6, '0');
-  };
-
-  const receiptDetails = {
-    ...result.receipt[0],
-    total_amount: result.receipt[0].total_amount,
-    voucher: result.receipt[0].voucher || 0,
-  };
-
-  // Map orders with book names from cart items
-  const books = result.orders.map((order) => {
-    const bookDetails = cartItems.find((item) => item.id_product === order.id_product);
-    return {
-      ...order,
-      name: bookDetails.name,
-    };
-  });
-
-  // Tạo bảng cho các mặt hàng
-  const itemRows = books.map((book, index) => [
-    { text: `${index + 1}`, alignment: 'center' }, // STT
-    { text: book.id_product, alignment: 'center' }, // Mã sách
-    book.name, // Mặt hàng
-    { text: book.quantity, alignment: 'center' }, // SL
-    { text: `${parseFloat(book.price).toLocaleString('vi-VN')}`, alignment: 'right' }, // ĐVT
-    { text: `${(book.quantity * parseFloat(book.price)).toLocaleString('vi-VN')}`, alignment: 'right' }, // Thành tiền
-  ]);
-
-  // Tính tổng số lượng sản phẩm
-  const totalQuantity = books.reduce((sum, book) => sum + parseInt(book.quantity), 0);
-
-  // Tính ngày giờ hiện tại
-  const currentDate = new Date();
-  const formattedDate = `${currentDate.getDate()}/${currentDate.getMonth() + 1}/${currentDate.getFullYear()}`;
-  const formattedTime = `${String(currentDate.getHours()).padStart(2, '0')}:${String(currentDate.getMinutes()).padStart(
-    2,
-    '0'
-  )}:${String(currentDate.getSeconds()).padStart(2, '0')}`;
+  const { formattedDate, formattedTime } = formatDateTime();
+  const totalQuantity = calculateTotalQuantity(items);
+  const itemRows = generateTableRows(items);
 
   const docDefinition = {
     pageSize: { width: 300, height: 'auto' },
@@ -102,13 +93,13 @@ export const generateInvoicePDF = async (result, cartItems) => {
       {
         columns: [
           { text: `Ngày: ${formattedDate}`, width: '*', alignment: 'left' },
-          { text: `Số phiếu: ${formatReceiptNumber(result.receipt[0].id_receipt)}`, width: '*', alignment: 'right' },
+          { text: `Số phiếu: ${formatReceiptNumber(receiptData.id_receipt)}`, width: '*', alignment: 'right' },
         ],
         margin: [0, 5],
       },
       {
         columns: [
-          { text: `Thu ngân: ${receiptDetails.name_cashier || 'Cashier'}`, width: '*', alignment: 'left' },
+          { text: `Thu ngân: ${receiptData.name_cashier}`, width: '*', alignment: 'left' },
           { text: `In lúc: ${formattedTime}`, width: '*', alignment: 'right' },
         ],
         margin: [0, 2],
@@ -152,9 +143,7 @@ export const generateInvoicePDF = async (result, cartItems) => {
                 text: [
                   { text: 'Tổng tiền: ', style: 'totalLabel' },
                   {
-                    text: `${Math.floor(receiptDetails.total_amount + (receiptDetails.voucher || 0)).toLocaleString(
-                      'vi-VN'
-                    )}`,
+                    text: `${Math.floor(receiptData.total_amount).toLocaleString('vi-VN')}`,
 
                     style: 'totalAmount',
                   },
@@ -180,7 +169,7 @@ export const generateInvoicePDF = async (result, cartItems) => {
                 text: [
                   { text: 'Giảm giá: ', style: 'voucher' },
                   {
-                    text: `${Math.floor(receiptDetails.voucher).toLocaleString('vi-VN')}`,
+                    text: `${Math.floor(receiptData.voucher).toLocaleString('vi-VN')}`,
                     style: 'voucher',
                   },
                 ],
@@ -205,7 +194,9 @@ export const generateInvoicePDF = async (result, cartItems) => {
                 text: [
                   { text: 'Thành tiền: ', style: 'totalLabel' },
                   {
-                    text: `${Math.floor(receiptDetails.total_amount).toLocaleString('vi-VN')}`,
+                    text: `${Math.floor(receiptData.total_amount - (receiptData.voucher || 0)).toLocaleString(
+                      'vi-VN'
+                    )}`,
                     style: 'totalReceipt',
                   },
                 ],
@@ -222,7 +213,7 @@ export const generateInvoicePDF = async (result, cartItems) => {
 
       // Tiền bằng chữ
       {
-        text: `(${numberToWordsVietnamese(Math.floor(receiptDetails.total_amount))})`,
+        text: `(${numberToWordsVietnamese(Math.floor(receiptData.total_amount - (receiptData.voucher || 0)))})`,
         style: 'amountInWords',
         alignment: 'center',
         italics: true,
@@ -284,7 +275,7 @@ export const generateInvoicePDF = async (result, cartItems) => {
     },
   };
 
-  pdfMake.createPdf(docDefinition).download(`HoaDon-${result.receipt[0].id_receipt}.pdf`);
+  pdfMake.createPdf(docDefinition).download(`HoaDon-${receiptData.id_receipt}.pdf`);
 };
 
 // Hàm chuyển số thành chữ tiếng Việt

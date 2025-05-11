@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import './receiptDetail.scss';
 import { useNavigate } from 'react-router-dom';
+import { generateInvoicePDF } from '../printReceipt/printReceipt';
 
 function ReceiptDetail() {
   const { receiptId } = useParams(); // Lấy ID đơn hàng từ URL
@@ -22,6 +23,7 @@ function ReceiptDetail() {
         if (result.success) {
           setReceiptDetails(result.receipt);
           setBooks(result.orders);
+          console.log('Result from get detail:', result);
         } else {
           toast.error('Lỗi khi tải chi tiết đơn hàng');
         }
@@ -59,11 +61,19 @@ function ReceiptDetail() {
       toast.error('Lỗi khi xóa đơn hàng');
     }
   };
+
+  const handlePrintReceipt = () => {
+    generateInvoicePDF(receiptDetails, books);
+  };
+
   return (
     <div className='receipt-detail'>
       <div className='top-button-container'>
         <button className='back-button' onClick={() => navigate(-1)}>
           ← Quay lại
+        </button>
+        <button className='print-button' onClick={() => handlePrintReceipt()}>
+          In hóa đơn
         </button>
         {(userRole === 'BTC' || userRole === 'Admin') && (
           <button className='delete-button' onClick={handleDelete}>
@@ -138,7 +148,7 @@ function ReceiptDetail() {
             <div className='info-row'>
               <span className='label'>Thanh toán:</span>
               <span className='value'>{receiptDetails.payment_method === 'cash' ? 'Tiền mặt' : 'Chuyển khoản'}</span>
-            </div>  
+            </div>
           </div>
         </div>
       )}

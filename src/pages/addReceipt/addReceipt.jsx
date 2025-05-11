@@ -163,6 +163,18 @@ function AddReceipt() {
     await sendingReceipt();
   };
 
+  const handlePrintReceipt = async (result) => {
+    const receiptData = {
+      ...result.receipt[0],
+      total_amount: result.receipt[0].total_amount,
+      voucher: result.receipt[0].voucher || 0,
+    };
+
+    // Use ReceiptItems directly since it already has all book details
+
+    await generateInvoicePDF(receiptData, result.orders);
+  };
+
   const sendingReceipt = async () => {
     setIsSubmitting(true);
 
@@ -197,9 +209,9 @@ function AddReceipt() {
       const result = await response.json();
       if (result.success) {
         toast.success('Đơn hàng đã được tạo thành công!');
-
+        console.log('Result from add receipt page:', result);
         handleResetReceipt();
-        generateInvoicePDF(result, ReceiptItems);
+        handlePrintReceipt(result);
       } else {
         handleSubmissionError(result);
       }
