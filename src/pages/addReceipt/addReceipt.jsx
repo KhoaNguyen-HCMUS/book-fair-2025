@@ -141,8 +141,11 @@ function AddReceipt() {
     setVoucherCode(''); // Clear voucher code
     setDiscountAmount(0); // Reset discount amount
     setPaymentMethod('cash'); // Reset payment method
+    setShowQRModal(false);
+    setPaymentConfirmed(false);
     fetchBooks(); // Refresh book list
   };
+
   const handleSubmitReceipt = async () => {
     if (isSubmitting) return;
 
@@ -151,12 +154,15 @@ function AddReceipt() {
       return;
     }
 
-    // If payment method is bank transfer and payment isn't confirmed yet
-    if (paymentMethod === 'bank' && !paymentConfirmed) {
+    if (paymentMethod === 'bank' && !showQRModal && !paymentConfirmed) {
       setShowQRModal(true);
       return;
     }
 
+    await sendingReceipt();
+  };
+
+  const sendingReceipt = async () => {
     setIsSubmitting(true);
 
     const dataToSend = {
@@ -192,22 +198,38 @@ function AddReceipt() {
         toast.success('Đơn hàng đã được tạo thành công!');
         handleResetReceipt();
       } else {
-        if (result.message === 'Book unavailable') {
-          toast.error('Sách không còn trong kho, vui lòng kiểm tra lại!');
-          handleResetReceipt();
-        } else if (result.message === 'Invalid voucher') {
-          toast.error('Mã giảm giá không hợp lệ!');
-        } else {
-          toast.error('Xảy ra lỗi');
-        }
-        console.error('Xảy ra lỗi:', result.message);
+        handleSubmissionError(result);
       }
     } catch (error) {
       toast.error('Lỗi kết nối đến máy chủ');
       console.error('Error submitting Receipt:', error);
     } finally {
       setIsSubmitting(false); // Reset submitting state
+      handleResetReceipt();
     }
+  };
+
+  const handleConfirmPayment = async () => {
+    setPaymentConfirmed(true);
+    setShowQRModal(false);
+    await sendingReceipt();
+  };
+
+  const handleCloseQRModal = () => {
+    setShowQRModal(false);
+    setPaymentConfirmed(false);
+  };
+
+  const handleSubmissionError = (result) => {
+    if (result.message === 'Book unavailable') {
+      toast.error('Sách không còn trong kho, vui lòng kiểm tra lại!');
+      handleResetReceipt();
+    } else if (result.message === 'Invalid voucher') {
+      toast.error('Mã giảm giá không hợp lệ!');
+    } else {
+      toast.error('Xảy ra lỗi');
+    }
+    console.error('Xảy ra lỗi:', result.message);
   };
 
   // Filter books based on search term and stock availability
@@ -418,22 +440,10 @@ function AddReceipt() {
               })}
             </p>
             <div className='btn-group'>
-              <button
-                className='btn-secondary'
-                onClick={() => {
-                  setShowQRModal(false);
-                }}
-              >
+              <button className='btn-secondary' onClick={handleCloseQRModal}>
                 Trở về
               </button>
-              <button
-                className='btn-success'
-                onClick={() => {
-                  setPaymentConfirmed(true);
-                  setShowQRModal(false);
-                  handleSubmitReceipt();
-                }}
-              >
+              <button className='btn-success' onClick={handleConfirmPayment}>
                 Đã chuyển khoản
               </button>
             </div>
