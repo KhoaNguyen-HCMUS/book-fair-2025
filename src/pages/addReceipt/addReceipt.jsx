@@ -40,13 +40,11 @@ function AddReceipt() {
     fetchBooks();
   }, []);
 
-  // Update total price whenever ReceiptItems change
   useEffect(() => {
     const newTotalPrice = ReceiptItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
     setTotalPrice(newTotalPrice);
   }, [ReceiptItems]);
 
-  // Add a book to the Receipt
   const handleAddBook = (book) => {
     setReceiptItems((prevItems) => {
       const existingItem = prevItems.find((item) => item.id_product === book.id_product);
@@ -65,7 +63,6 @@ function AddReceipt() {
     });
   };
 
-  // Increase quantity of a given Receipt item
   const handleIncreaseQuantity = (id_product) => {
     setReceiptItems((prevItems) =>
       prevItems.map((item) => {
@@ -81,7 +78,6 @@ function AddReceipt() {
     );
   };
 
-  // Decrease quantity of a given Receipt item
   const handleDecreaseQuantity = (id_product) => {
     setReceiptItems((prevItems) =>
       prevItems.reduce((acc, item) => {
@@ -117,11 +113,11 @@ function AddReceipt() {
       return;
     }
 
-    setDiscountAmount(voucherAmount); // Lưu số tiền giảm giá
+    setDiscountAmount(voucherAmount);
   };
 
   const handleVoucherInputChange = (e) => {
-    const input = e.target.value.replace(/\./g, ''); // Loại bỏ dấu chấm nếu có
+    const input = e.target.value.replace(/\./g, '');
     if (!isNaN(input)) {
       setVoucherCode(input);
     }
@@ -134,7 +130,6 @@ function AddReceipt() {
     setPaymentMethod('cash'); // Reset payment method
     fetchBooks(); // Refresh book list
   };
-  // Submit Receipt
   const handleSubmitReceipt = async () => {
     if (isSubmitting) return;
     if (ReceiptItems.length === 0) {
