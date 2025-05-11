@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
+import { generateInvoicePDF } from '../../components/printReceipt/printReceipt.jsx';
 
 import './addReceipt.scss';
 
@@ -196,7 +197,9 @@ function AddReceipt() {
       const result = await response.json();
       if (result.success) {
         toast.success('Đơn hàng đã được tạo thành công!');
+
         handleResetReceipt();
+        generateInvoicePDF(result, ReceiptItems);
       } else {
         handleSubmissionError(result);
       }
@@ -205,7 +208,6 @@ function AddReceipt() {
       console.error('Error submitting Receipt:', error);
     } finally {
       setIsSubmitting(false); // Reset submitting state
-      handleResetReceipt();
     }
   };
 
