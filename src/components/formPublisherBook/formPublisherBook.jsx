@@ -216,20 +216,11 @@ export const FormPublisherBook = () => {
       const response = await fetch(URL);
       const data = await response.json();
 
-      if (data.success && data.data) {
-        if (data.data.id_member !== localStorage.getItem('userID')) {
-          toast.error('Người ký gửi không thuộc quyền sở hữu của bạn');
-          setFormData((prev) => ({
-            ...prev,
-            publisher: '',
-            id_publisher: '',
-          }));
-        } else {
-          setFormData((prev) => ({
-            ...prev,
-            publisher: data.data.name,
-          }));
-        }
+      if (data.success)  {
+        setFormData((prev) => ({
+          ...prev,
+          publisher: data.data.name,
+        }));
       } else {
         toast.error('Không tìm thấy thông tin Nhà Xuất Bản');
         setFormData((prev) => ({
