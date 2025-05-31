@@ -1,0 +1,122 @@
+.address-selector {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  font-size: 14px;
+
+  &__label {
+    font-weight: 500;
+    margin-bottom: 6px;
+    color: #555;
+    font-size: 14px;
+    text-align: left;
+  }
+
+  &__select {
+    width: 100%;
+
+    .address-selector__control {
+      cursor: pointer;
+      min-height: 40px;
+      border: 1px solid #ced4da;
+      border-radius: 4px;
+      box-shadow: none;
+      font-size: 14px;
+      background-color: #fff;
+      text-align: left;
+
+      &:hover {
+        border-color: #28a745;
+      }
+
+      &--is-focused {
+        border: 2px solid rgb(121, 241, 151);
+        box-shadow: 0 0 0 0.2rem rgba(0, 255, 13, 0.25);
+      }
+    }
+
+    .address-selector__placeholder {
+      color: #6c757d;
+      text-align: left;
+    }
+
+    .address-selector__single-value {
+      color: #212529;
+      text-align: left;
+    }
+
+    .address-selector__menu {
+      z-index: 9999;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .address-selector__option {
+      cursor: pointer;
+      font-size: 14px;
+      padding: 8px 12px;
+      color: #333;
+      text-align: left;
+
+      &--is-focused:not(.address-selector__option--is-selected) {
+        background-color: #f8f9fa;
+      }
+
+      &--is-selected {
+        background-color: #28a745;
+        color: white;
+
+        &.address-selector__option--is-focused {
+          background-color: #218838;
+        }
+      }
+
+      &:hover:not(.address-selector__option--is-selected) {
+        background-color: #e9ecef;
+      }
+
+      &:hover.address-selector__option--is-selected {
+        background-color: #218838;
+      }
+    }
+
+    .address-selector__clear-indicator {
+      cursor: pointer;
+      color: #6c757d;
+
+      &:hover {
+        color: #dc3545;
+      }
+    }
+
+    .address-selector__dropdown-indicator {
+      cursor: pointer;
+      color: #6c757d;
+
+      &:hover {
+        color: #28a745;
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .address-selector {
+    &__label {
+      font-size: 13px;
+    }
+
+    &__select {
+      .address-selector__control {
+        min-height: 38px;
+        font-size: 13px;
+      }
+
+      .address-selector__option {
+        font-size: 13px;
+        padding: 6px 10px;
+      }
+    }
+  }
+}
