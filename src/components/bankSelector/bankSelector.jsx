@@ -3,6 +3,7 @@ import './bankSelector.scss';
 
 const BankSelector = ({ value, onChange, placeholder = 'N/A', label = 'Chọn ngân hàng:' }) => {
   const bankNames = [
+    'N/A',
     'Ngân hàng TMCP Việt Nam Thịnh Vượng - VPBank',
     'Ngân hàng TMCP Ngoại thương Việt Nam - Vietcombank',
     'Ngân hàng TMCP Kỹ Thương Việt Nam - Techcombank',
