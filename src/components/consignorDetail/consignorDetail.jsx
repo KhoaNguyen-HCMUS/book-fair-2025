@@ -3,6 +3,8 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import './consignorDetail.scss';
 import { toast } from 'react-toastify';
 import MyListBooks from '../../pages/myListBooks/myListBooks';
+import AddressSelector from '../addressSelector/addressSelector.jsx';
+import BankSelector from '../bankSelector/bankSelector.jsx';
 
 function ConsignorDetail() {
   const { state } = useLocation();
@@ -61,6 +63,20 @@ function ConsignorDetail() {
 
   const handleEdit = () => {
     setIsEditing(true);
+  };
+
+  const handleAddressChange = (addressValue) => {
+    setEditedConsignor((prev) => ({
+      ...prev,
+      address: addressValue || 'N/A',
+    }));
+  };
+
+  const handleBankChange = (bankValue) => {
+    setEditedConsignor((prev) => ({
+      ...prev,
+      bank_name: bankValue || 'N/A',
+    }));
   };
 
   const handleCancel = () => {
@@ -194,10 +210,12 @@ function ConsignorDetail() {
         <div className='detail-item'>
           <span className='label'>Địa chỉ:</span>
           {isEditing ? (
-            <select name='address' value={editedConsignor.address} onChange={handleChange} className='edit-input'>
-              <option value='Bến Tre'>Bến Tre</option>
-              <option value='TP.HCM'>TP.HCM</option>
-            </select>
+            <AddressSelector
+              value={editedConsignor.address}
+              onChange={handleAddressChange}
+              placeholder='Chọn địa chỉ:'
+              label=''
+            />
           ) : (
             <span className='value'>{consignor.address}</span>
           )}
@@ -206,11 +224,11 @@ function ConsignorDetail() {
         <div className='detail-item'>
           <span className='label'>Ngân hàng:</span>
           {isEditing ? (
-            <input
-              type='text'
-              name='bank_name'
+            <BankSelector
               value={editedConsignor.bank_name}
-              onChange={handleChange}
+              onChange={handleBankChange}
+              placeholder='Chọn ngân hàng'
+              label=''
               className='edit-input'
             />
           ) : (
