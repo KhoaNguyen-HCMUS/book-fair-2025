@@ -115,7 +115,6 @@ function BookStore() {
   const fetchBooks = async () => {
     try {
       const URL = import.meta.env.VITE_DOMAIN + import.meta.env.VITE_API_GET_LIST_BOOKS;
-      console.log('Fetching books from:', URL);
       const response = await fetch(URL);
 
       const result = await response.json();
