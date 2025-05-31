@@ -14,7 +14,6 @@ const BankSelector = ({ value, onChange, placeholder = 'N/A', label = 'Chọn ng
     'Ngân hàng TMCP phát triển TP. Hồ Chí Minh - HDBank',
     'Ngân hàng TMCP Tiên Phong - TPBank',
     'Ngân hàng thương mại cổ phần Sài Gòn Thương Tín - Sacombank',
-    'Ngân hàng TMCP Công Thương Việt Nam - VietinBank',
     'Ngân hàng TMCP Sài Gòn Hà Nội - SHB',
     'Ngân hàng TMCP Phương Đông - OCB',
     'Ngân hàng Thương mại Cổ phần Kiên Long - KienlongBank',
