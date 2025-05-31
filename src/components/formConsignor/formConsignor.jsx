@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
+import BankSelector from '../bankSelector/bankSelector.jsx';
+import AddressSelector from '../addressSelector/addressSelector.jsx';
 
-import { renderInput, renderSelect } from '../formComponents/formComponents.jsx';
+import { renderInput } from '../formComponents/formComponents.jsx';
 import './formConsignor.scss';
 
 export const FormConsignor = () => {
@@ -43,8 +45,27 @@ export const FormConsignor = () => {
     }));
   };
 
+  const handleBankChange = (bankValue) => {
+    setFormData((prev) => ({
+      ...prev,
+      bank: bankValue,
+    }));
+  };
+
+  const handleAddressChange = (addressValue) => {
+    setFormData((prev) => ({
+      ...prev,
+      address: addressValue,
+    }));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!formData.address || formData.address.trim() === '') {
+      toast.error('Vui lòng chọn địa chỉ');
+      return;
+    }
 
     if (formData.bank === 'N/A' || formData.account === 'N/A' || formData.accountName === 'N/A') {
       const confirm = window.confirm('Bạn có chắc chắn muốn thêm người ký gửi mà không có thông tin ngân hàng?');
@@ -128,21 +149,14 @@ export const FormConsignor = () => {
           removeSpace: true,
         })}
 
-        {renderSelect({
-          label: 'Địa chỉ:',
-          name: 'address',
-          value: formData.address,
-          onChange: handleChange,
-          options: ['Bến Tre', 'TP.HCM'],
-        })}
+        <AddressSelector
+          label='Địa chỉ:'
+          value={formData.address}
+          onChange={handleAddressChange}
+          placeholder='Chọn địa chỉ'
+        />
 
-        {renderInput({
-          label: 'Ngân hàng:',
-          name: 'bank',
-          type: 'text',
-          value: formData.bank,
-          onChange: handleChange,
-        })}
+        <BankSelector label='Ngân hàng:' value={formData.bank} onChange={handleBankChange} placeholder='N/A' />
 
         {renderInput({
           label: 'Số tài khoản:',
