@@ -20,6 +20,7 @@ const BankSelector = ({ value, onChange, placeholder = 'N/A', label = 'Chọn ng
     'Ngân hàng Thương mại Cổ phần Kiên Long - KienlongBank',
     'Ngân hàng Thương Mại Cổ Phần Sài Gòn - SCB',
     'Ngân hàng thương mại cổ phần Nam Á - Nam A Bank',
+    'Ngân hàng Thương mại Cổ phần Lộc Phát Việt Nam - LPBank',
   ];
 
   const bankOptions = bankNames.map((name) => ({
