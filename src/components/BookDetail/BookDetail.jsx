@@ -100,8 +100,9 @@ function BookDetail() {
       } else {
         // Existing price calculation logic for other book types
 
-        const newPrice = calculatePrice(editedBook.bc_cost, editedBook.discount, editedBook.classify, editedBook.price);
-        const newRefund = calculateRefund(newPrice, editedBook.bc_cost, editedBook.classify, editedBook.discount);
+        const newPrice =
+          calculatePrice(editedBook.bc_cost, editedBook.discount, editedBook.classify, editedBook.price) || 0;
+        const newRefund = calculateRefund(newPrice, editedBook.bc_cost, editedBook.classify, editedBook.discount) || 0;
 
         confirmMessage = `
     Thông tin sau khi tính toán:

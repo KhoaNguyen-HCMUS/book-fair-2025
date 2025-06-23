@@ -18,6 +18,7 @@ function ConsignorDetail() {
   const userRole = localStorage.getItem('userRole');
   const canEdit = consignor?.id_member === userID || userRole === 'BTC' || userRole === 'Admin';
 
+
   const removeVietnameseDiacritics = (str) => {
     return str
       .normalize('NFD')
