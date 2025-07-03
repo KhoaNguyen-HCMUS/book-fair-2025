@@ -5,6 +5,8 @@ import { useNavigate } from 'react-router-dom'; // Add this import
 import { FaSearch } from 'react-icons/fa';
 import './listReceipts.scss';
 
+import ReceiptStatistics from '../../components/receiptStats/receipStats';
+
 function ListReceipts() {
   const navigate = useNavigate();
   const [Receipts, setReceipts] = useState([]);
@@ -80,6 +82,8 @@ function ListReceipts() {
 
   return (
     <div className='list-receipts'>
+      <ReceiptStatistics receipts={Receipts} />
+
       <form onSubmit={handleSearchSubmit} className='search-container'>
         <FaSearch className='search-icon' />
         <input

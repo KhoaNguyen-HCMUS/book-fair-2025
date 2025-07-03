@@ -1,44 +1,158 @@
-.stats-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: #f8f9fa;
-  padding: 1rem 1.5rem;
-  border-radius: 8px;
-  border: 1px solid #dee2e6;
+.statistics-container {
+  margin-bottom: 1.5rem;
 
-  .stat-item {
+  .stats-row {
     display: flex;
-    flex-direction: column;
-    text-align: center;
+    justify-content: space-between;
+    align-items: center;
+    background: #f8f9fa;
+    padding: 1rem 1.5rem;
+    border-radius: 8px;
+    border: 1px solid #dee2e6;
+    margin-bottom: 1rem;
 
-    &.total {
+    .stat-item {
+      display: flex;
+      flex-direction: column;
+      text-align: center;
+
+      &.total {
+        .stat-label {
+          color: #155724;
+          font-weight: 600;
+        }
+        .stat-value {
+          color: #155724;
+          font-weight: 700;
+          font-size: 1.1rem;
+        }
+      }
+
       .stat-label {
-        color: #155724;
-        font-weight: 600;
+        font-size: 0.85rem;
+        color: #6c757d;
+        margin-bottom: 0.25rem;
+        font-weight: 500;
       }
+
       .stat-value {
-        color: #155724;
-        font-weight: 700;
-        font-size: 1.1rem;
-      }
-    }
+        font-size: 1rem;
+        color: #495057;
+        font-weight: 600;
 
-    .stat-label {
-      font-size: 0.85rem;
-      color: #6c757d;
-      margin-bottom: 0.25rem;
-      font-weight: 500;
-    }
-
-    .stat-value {
-      font-size: 1rem;
-      color: #495057;
-      font-weight: 600;
-
-      &.discount {
-        color: #dc3545;
+        &.discount {
+          color: #dc3545;
+        }
       }
     }
   }
+
+  .cashier-stats {
+    background: white;
+    border-radius: 8px;
+    border: 1px solid #dee2e6;
+    padding: 1rem;
+
+    .cashier-title {
+      margin: 0 0 1rem 0;
+      color: #495057;
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+
+    .cashier-table {
+      overflow-x: auto;
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.9rem;
+
+        thead {
+          background: #f1f3f4;
+
+          th {
+            padding: 0.75rem 0.5rem;
+            font-weight: 600;
+            color: #495057;
+            border-bottom: 2px solid #dee2e6;
+            white-space: nowrap;
+
+      
+            &:first-child {
+              text-align: left;
+            }
+
+            &:nth-child(2) {
+              text-align: center;
+            }
+
+            &:nth-child(3),
+            &:nth-child(4),
+            &:nth-child(5),
+            &:nth-child(6) {
+              text-align: right; 
+            }
+          }
+        }
+
+        tbody {
+          tr {
+            border-bottom: 1px solid #f1f3f4;
+            transition: background-color 0.2s;
+
+            &:hover {
+              background-color: #f8f9fa;
+            }
+
+            td {
+              padding: 0.75rem 0.5rem;
+              vertical-align: middle;
+              white-space: nowrap;
+
+              &.cashier-name {
+                text-align: left;
+                font-weight: 600;
+                color: #495057;
+                min-width: 150px;
+              }
+
+              &.receipt-count {
+                text-align: center;
+                font-weight: 600;
+                color: #007bff;
+              }
+
+              &.bank-amount {
+                text-align: right;
+                color: #1976d2;
+                font-weight: 600;
+              }
+
+              &.cash-amount {
+                text-align: right;
+                color: #f57c00;
+                font-weight: 600;
+              }
+
+              &.discount-amount {
+                text-align: right;
+                color: #dc3545;
+                font-weight: 600;
+              }
+
+              &.total-revenue {
+                text-align: right;
+                color: #28a745;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  
+
+  
 }
