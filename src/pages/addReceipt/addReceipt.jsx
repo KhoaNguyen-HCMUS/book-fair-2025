@@ -27,6 +27,13 @@ function AddReceipt() {
   const BANK_ID = '970415'; // HD Bank
   const ACCOUNT_NO = '100873414404';
 
+  const voucherOptions = [
+    { value: '0', label: 'Không', discount: 0 },
+    { value: '10000', label: '10,000', discount: 10000 },
+    { value: '20000', label: '20,000', discount: 20000 },
+    { value: '30000', label: '30,000', discount: 30000 },
+  ];
+
   const generateQRCode = () => {
     const transferContent = `Payment ${userId}`;
     const amountToPay = totalPrice - discountAmount;
@@ -113,27 +120,18 @@ function AddReceipt() {
     setReceiptItems((prevItems) => prevItems.filter((item) => item.id_product !== id_product));
   };
 
-  const handleApplyVoucher = () => {
-    const sanitizedVoucherCode = voucherCode.replace(/\s/g, ''); // Loại bỏ khoảng trắng
-    const voucherAmount = parseInt(sanitizedVoucherCode, 10); // Chuyển thành số nguyên
+  const handleVoucherChange = (e) => {
+    const selectedVoucher = e.target.value;
+    const voucherOption = voucherOptions.find((option) => option.value === selectedVoucher);
 
-    if (isNaN(voucherAmount) || voucherAmount < 0) {
-      toast.error('Vui lòng nhập mã giảm giá hợp lệ!');
-      return;
-    }
+    if (voucherOption) {
+      if (voucherOption.discount > totalPrice) {
+        toast.error('Mã giảm giá không được lớn hơn tổng hóa đơn!');
+        return;
+      }
 
-    if (voucherAmount > totalPrice) {
-      toast.error('Mã giảm giá không được lớn hơn tổng hóa đơn!');
-      return;
-    }
-
-    setDiscountAmount(voucherAmount);
-  };
-
-  const handleVoucherInputChange = (e) => {
-    const input = e.target.value.replace(/\./g, '');
-    if (!isNaN(input)) {
-      setVoucherCode(input);
+      setVoucherCode(selectedVoucher);
+      setDiscountAmount(voucherOption.discount);
     }
   };
 
@@ -264,6 +262,10 @@ function AddReceipt() {
     }
   };
 
+  const getAvailableVouchers = () => {
+    return voucherOptions.filter((voucher) => voucher.discount <= totalPrice);
+  };
+
   return (
     <div className='addReceipt'>
       <div className='container-wrapper'>
@@ -336,15 +338,15 @@ function AddReceipt() {
           <div className='Receipt-summary'>
             <h4>Đơn hàng</h4>
 
-            <div className='input-group'>
-              <input
-                type='text'
-                id='voucher'
-                placeholder='Nhập mã giảm giá'
-                value={voucherCode ? Number(voucherCode).toLocaleString('vi-VN') : ''} // Định dạng khi hiển thị
-                onChange={handleVoucherInputChange}
-              />
-              <button onClick={handleApplyVoucher}>Áp dụng</button>
+            <div className='voucher-group'>
+              <label htmlFor='voucher-select'>Mã giảm giá:</label>
+              <select id='voucher-select' value={voucherCode} onChange={handleVoucherChange} className='voucher-select'>
+                {getAvailableVouchers().map((voucher) => (
+                  <option key={voucher.value} value={voucher.value}>
+                    {voucher.label}
+                  </option>
+                ))}
+              </select>
             </div>
 
             <div className='Receipt-items'>
