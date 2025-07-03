@@ -1,0 +1,44 @@
+.stats-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f8f9fa;
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  border: 1px solid #dee2e6;
+
+  .stat-item {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+
+    &.total {
+      .stat-label {
+        color: #155724;
+        font-weight: 600;
+      }
+      .stat-value {
+        color: #155724;
+        font-weight: 700;
+        font-size: 1.1rem;
+      }
+    }
+
+    .stat-label {
+      font-size: 0.85rem;
+      color: #6c757d;
+      margin-bottom: 0.25rem;
+      font-weight: 500;
+    }
+
+    .stat-value {
+      font-size: 1rem;
+      color: #495057;
+      font-weight: 600;
+
+      &.discount {
+        color: #dc3545;
+      }
+    }
+  }
+}

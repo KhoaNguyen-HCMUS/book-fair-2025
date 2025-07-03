@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { FaSearch } from 'react-icons/fa';
+import ReceiptStatistics from '../../components/receiptStats/receipStats';
 
 import './myReceipts.scss';
 
@@ -82,6 +83,7 @@ function MyReceipts() {
 
   return (
     <div className='myReceipts'>
+      <ReceiptStatistics receipts={Receipts} />
       <form onSubmit={handleSearchSubmit} className='search-container'>
         <FaSearch className='search-icon' />
         <input
