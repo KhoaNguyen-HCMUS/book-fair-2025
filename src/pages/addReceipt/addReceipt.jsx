@@ -269,16 +269,17 @@ function AddReceipt() {
   const inputRef = React.useRef();
 
   const handleInput = (e) => {
-    const value = e.target.value.trim();
-    setSearchTerm(value);
+    let value = e.target.value;
     setCurrentPage(1);
 
-    if (/^\d{5,13}$/.test(value)) {
-      const book = books.find((b) => b.id_product.toString() === value);
+    const trimmed = value.trim();
+    setSearchTerm(value);
+
+    if (/^\d{5,13}$/.test(trimmed)) {
+      const book = books.find((b) => b.id_product.toString() === trimmed);
       if (book) {
         handleAddBook(book);
         setSearchTerm('');
-        // toast.success(`Đã thêm: ${book.name}`);
         if (inputRef.current) inputRef.current.value = '';
       }
     }
