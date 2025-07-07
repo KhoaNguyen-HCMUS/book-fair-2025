@@ -75,7 +75,7 @@ function AddReceipt() {
             item.id_product === book.id_product ? { ...item, quantity: item.quantity + 1 } : item
           );
         } else {
-          toast.error('Cannot add more than available stock!');
+          toast.error('Sách đã hết');
           return prevItems;
         }
       } else {
@@ -91,7 +91,7 @@ function AddReceipt() {
           if (item.quantity < item.stock) {
             return { ...item, quantity: item.quantity + 1 };
           } else {
-            toast.error('Cannot add more than available stock!');
+            toast.error('Sách đã hết!');
           }
         }
         return item;
@@ -266,6 +266,40 @@ function AddReceipt() {
     return voucherOptions.filter((voucher) => voucher.discount <= totalPrice);
   };
 
+  const inputRef = React.useRef();
+
+  const handleInput = (e) => {
+    const value = e.target.value.trim();
+    setSearchTerm(value);
+    setCurrentPage(1);
+
+    if (/^\d{5,13}$/.test(value)) {
+      const book = books.find((b) => b.id_product.toString() === value);
+      if (book) {
+        handleAddBook(book);
+        setSearchTerm('');
+        // toast.success(`Đã thêm: ${book.name}`);
+        if (inputRef.current) inputRef.current.value = '';
+      }
+    }
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      const value = searchTerm.trim();
+      if (/^\d{5,13}$/.test(value)) {
+        const book = books.find((b) => b.id_product.toString() === value);
+        if (book) {
+          handleAddBook(book);
+          setSearchTerm('');
+          // toast.success(`Đã thêm: ${book.name}`);
+          if (inputRef.current) inputRef.current.value = '';
+        }
+      }
+    }
+  };
+
   return (
     <div className='addReceipt'>
       <div className='container-wrapper'>
@@ -273,15 +307,24 @@ function AddReceipt() {
         <div className='left-container'>
           <div className='search-bar'>
             <input
+              ref={inputRef}
               type='text'
-              placeholder='Search by ID or Name'
+              placeholder='Quét mã hoặc nhập tên sách'
               value={searchTerm}
-              onChange={(e) => {
-                setSearchTerm(e.target.value);
-                setCurrentPage(1); // Reset pagination on search
-              }}
+              onInput={handleInput}
+              onKeyDown={handleKeyDown}
+              autoComplete='off'
             />
-            {searchTerm && <button onClick={() => setSearchTerm('')}>X</button>}
+            {searchTerm && (
+              <button
+                onClick={() => {
+                  setSearchTerm('');
+                  setCurrentPage(1);
+                }}
+              >
+                X
+              </button>
+            )}
           </div>
           <div className='book-list'>
             {loading ? (
