@@ -72,6 +72,11 @@ function AddReceipt() {
   }, [ReceiptItems]);
 
   const handleAddBook = (book) => {
+    if (!book || book.stock <= 0) {
+      toast.error('Sách không còn trong kho');
+      return;
+    }
+
     setReceiptItems((prevItems) => {
       const existingItem = prevItems.find((item) => item.id_product === book.id_product);
       if (existingItem) {
