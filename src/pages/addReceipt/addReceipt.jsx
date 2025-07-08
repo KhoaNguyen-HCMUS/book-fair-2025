@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { generateInvoicePDF } from '../../components/printReceipt/printReceipt.jsx';
+import QRModal from '../../components/qrModal/qrModal.jsx';
 
 import './addReceipt.scss';
 
@@ -23,6 +24,10 @@ function AddReceipt() {
 
   const [showQRModal, setShowQRModal] = useState(false);
   const [paymentConfirmed, setPaymentConfirmed] = useState(false);
+
+  const [showQRInvoice, setShowQRInvoice] = useState(false);
+  const [qrCodeLink, setQRCodeLink] = useState('');
+  const [receiptId, setReceiptId] = useState('');
 
   const BANK_ID = '970415'; // HD Bank
   const ACCOUNT_NO = '100873414404';
@@ -200,6 +205,9 @@ function AddReceipt() {
       if (result.success) {
         toast.success('Đơn hàng đã được tạo thành công!');
         handleResetReceipt();
+        setReceiptId(result.receipt.id_receipt);
+        setQRCodeLink(`https://hoadon-hoisachmohoimo.vercel.app/hoa-don/${result.receipt.id_receipt}`);
+        setShowQRInvoice(true);
         handlePrintReceipt(result);
       } else {
         handleSubmissionError(result);
@@ -500,6 +508,16 @@ function AddReceipt() {
             </div>
           </div>
         </div>
+      )}
+
+      {/* QR Invoice Modal */}
+      {showQRInvoice && (
+        <QRModal
+          isOpen={showQRInvoice}
+          onClose={() => setShowQRInvoice(false)}
+          qrCodeLink={qrCodeLink}
+          receiptId={receiptId}
+        />
       )}
     </div>
   );
