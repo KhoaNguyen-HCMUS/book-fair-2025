@@ -22,6 +22,7 @@ import MyReceipts from './pages/myReceipts/myReceipts.jsx';
 import ReceiptDetail from './components/receiptDetail/receiptDetail.jsx';
 import ListReceipts from './pages/listReceipts/listReceipts.jsx';
 import StatisticsPage from './pages/statisticsPage/statisticsPage.jsx';
+import ListRegister from './pages/listRegister/listRegister.jsx';
 
 function App() {
   const [isAuth, setIsAuth] = useState(false);
@@ -186,6 +187,15 @@ function App() {
               element={
                 <OrganizerRoute>
                   <ListMembers />
+                </OrganizerRoute>
+              }
+            />
+
+            <Route
+              path='/listRegister'
+              element={
+                <OrganizerRoute>
+                  <ListRegister />
                 </OrganizerRoute>
               }
             />

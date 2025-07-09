@@ -51,6 +51,7 @@ class Nav extends React.Component {
                 <NavLink to='/listConsignors'>DS Người Ký Gửi</NavLink>
                 <NavLink to='/listMembers'>DS Thành Viên</NavLink>
                 <NavLink to='/listReceipts'>DS Đơn Hàng</NavLink>
+                <NavLink to='/listRegister'>DS Người Tham Gia</NavLink>
                 <NavLink to='/statisticsPage'>Thống Kê</NavLink>
               </div>
             </div>
