@@ -1,33 +1,27 @@
-import { Html5QrcodeScanner } from 'html5-qrcode';
 import { useEffect } from 'react';
+import { Html5QrcodeScanner } from 'html5-qrcode';
 
-export default function BarcodeScanner({ onScanSuccess, onScanError }) {
+export default function BarcodeScanner({ onScanSuccess }) {
   useEffect(() => {
-    const scanner = new Html5QrcodeScanner('barcode-scanner', {
+    const scanner = new Html5QrcodeScanner('scanner', {
       fps: 10,
       qrbox: { width: 300, height: 200 },
     });
 
-    scanner.render(
-      (decodedText) => {
-        console.log('✅ Barcode found:', decodedText);
-        if (onScanSuccess) {
-          onScanSuccess(decodedText);
-        }
-      },
-      (errorMessage) => {
-        console.warn('⚠️ Lỗi quét:', errorMessage);
-        if (onScanError) {
-          onScanError(errorMessage);
-        }
+    scanner.render((text) => {
+      console.log('✅ Found:', text);
+      if (onScanSuccess) {
+        onScanSuccess(text);
       }
-    );
+      scanner.clear();
+    });
 
-    return () =>
-      scanner.clear().catch((error) => {
-        console.error('❌ Lỗi khi clear scanner:', error);
-      });
-  }, [onScanSuccess, onScanError]);
+    return () => scanner.clear();
+  }, [onScanSuccess]);
 
-  return <div id='barcode-scanner' style={{ width: '100%' }} />;
+  return (
+    <div>
+      <div id='scanner' style={{ width: '100%', maxWidth: '400px', height: '300px', margin: 'auto' }} />
+    </div>
+  );
 }
