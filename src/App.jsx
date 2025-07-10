@@ -23,6 +23,7 @@ import ReceiptDetail from './components/receiptDetail/receiptDetail.jsx';
 import ListReceipts from './pages/listReceipts/listReceipts.jsx';
 import StatisticsPage from './pages/statisticsPage/statisticsPage.jsx';
 import ListRegister from './pages/listRegister/listRegister.jsx';
+import CheckIn from './pages/checkIn/checkIn.jsx';
 
 function App() {
   const [isAuth, setIsAuth] = useState(false);
@@ -165,6 +166,16 @@ function App() {
                 </OrganizerRoute>
               }
             />
+
+            <Route
+              path='/check-in'
+              element={
+                <OrganizerRoute>
+                  <CheckIn />
+                </OrganizerRoute>
+              }
+            />
+
             <Route
               path='/myConsignor'
               element={
