@@ -24,7 +24,7 @@ function ListReceipts() {
   );
 
   const totalPages = Math.ceil((filteredReceipts.length > 0 ? filteredReceipts : Receipts).length / itemsPerPage);
-  const [receiptStats, setReceiptStats] = useState(null);
+  const [totalReceiptStats, setTotalReceiptStats] = useState(null);
 
   useEffect(() => {
     fetchReceipts();
@@ -38,7 +38,7 @@ function ListReceipts() {
       const result = await response.json();
       console.log(result.data);
       if (result.success) {
-        setReceiptStats(result.data);
+        setTotalReceiptStats(result.data);
       } else {
         toast.error('Lỗi khi tải thống kê đơn hàng');
       }
@@ -100,7 +100,7 @@ function ListReceipts() {
 
   return (
     <div className='list-receipts'>
-      <TotalReceiptStats data={receiptStats} />
+      <TotalReceiptStats data={totalReceiptStats} />
       <form onSubmit={handleSearchSubmit} className='search-container'>
         <FaSearch className='search-icon' />
         <input
