@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom'; // Add this import
 import { FaSearch } from 'react-icons/fa';
 import './listReceipts.scss';
 
-import ReceiptStatistics from '../../components/receiptStats/receipStats';
+import TotalReceiptStats from '../../components/totalReceiptStats/totalReceiptStats';
 
 function ListReceipts() {
   const navigate = useNavigate();
@@ -24,10 +24,28 @@ function ListReceipts() {
   );
 
   const totalPages = Math.ceil((filteredReceipts.length > 0 ? filteredReceipts : Receipts).length / itemsPerPage);
+  const [receiptStats, setReceiptStats] = useState(null);
 
   useEffect(() => {
     fetchReceipts();
+    fetchReceiptStats();
   }, []);
+
+  const fetchReceiptStats = async () => {
+    try {
+      const URL = `${import.meta.env.VITE_DOMAIN_BACKUP}${import.meta.env.VITE_API_GET_LIST_RECEIPTS_STATS}`;
+      const response = await fetch(URL);
+      const result = await response.json();
+      console.log(result.data);
+      if (result.success) {
+        setReceiptStats(result.data);
+      } else {
+        toast.error('Lỗi khi tải thống kê đơn hàng');
+      }
+    } catch {
+      toast.error('Lỗi khi tải thống kê đơn hàng');
+    }
+  };
 
   const fetchReceipts = async () => {
     try {
@@ -82,8 +100,7 @@ function ListReceipts() {
 
   return (
     <div className='list-receipts'>
-      <ReceiptStatistics receipts={Receipts} />
-
+      <TotalReceiptStats data={receiptStats} />
       <form onSubmit={handleSearchSubmit} className='search-container'>
         <FaSearch className='search-icon' />
         <input

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { FaSearch } from 'react-icons/fa';
-import ReceiptStatistics from '../../components/receiptStats/receipStats';
+import ReceiptStatistics from '../../components/receiptStats/receiptStats';
 
 import './myReceipts.scss';
 
@@ -24,10 +24,30 @@ function MyReceipts() {
   );
 
   const totalPages = Math.ceil((filteredReceipts.length > 0 ? filteredReceipts : Receipts).length / itemsPerPage);
+  const [receiptStats, setReceiptStats] = useState(null);
 
   useEffect(() => {
     fetchReceipts();
+    fetchReceiptStats();
   }, []);
+
+  const fetchReceiptStats = async () => {
+    try {
+      const URL = `${import.meta.env.VITE_DOMAIN_BACKUP}${
+        import.meta.env.VITE_API_GET_RECEIPTS_STATS_BY_CASHIER
+      }${userID}`;
+      const response = await fetch(URL);
+      const result = await response.json();
+      if (result.success) {
+        setReceiptStats(result.data);
+        console.log(result.data);
+      } else {
+        toast.error('Lỗi khi tải thống kê đơn hàng');
+      }
+    } catch {
+      toast.error('Lỗi khi tải thống kê đơn hàng');
+    }
+  };
 
   const fetchReceipts = async () => {
     try {
@@ -83,7 +103,7 @@ function MyReceipts() {
 
   return (
     <div className='myReceipts'>
-      <ReceiptStatistics receipts={Receipts} />
+      {receiptStats && <ReceiptStatistics data={receiptStats} />}
       <form onSubmit={handleSearchSubmit} className='search-container'>
         <FaSearch className='search-icon' />
         <input

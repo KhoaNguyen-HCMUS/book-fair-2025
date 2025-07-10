@@ -1,158 +1,225 @@
 .statistics-container {
-  margin-bottom: 1.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 
-  .stats-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: #f8f9fa;
-    padding: 1rem 1.5rem;
-    border-radius: 8px;
-    border: 1px solid #dee2e6;
-    margin-bottom: 1rem;
+  .title {
+    text-align: center;
+    color: #2c3e50;
+    font-size: 2.5rem;
+    font-weight: 600;
+    margin-bottom: 30px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
-    .stat-item {
-      display: flex;
-      flex-direction: column;
-      text-align: center;
-
-      &.total {
-        .stat-label {
-          color: #155724;
-          font-weight: 600;
-        }
-        .stat-value {
-          color: #155724;
-          font-weight: 700;
-          font-size: 1.1rem;
-        }
-      }
-
-      .stat-label {
-        font-size: 0.85rem;
-        color: #6c757d;
-        margin-bottom: 0.25rem;
-        font-weight: 500;
-      }
-
-      .stat-value {
-        font-size: 1rem;
-        color: #495057;
-        font-weight: 600;
-
-        &.discount {
-          color: #dc3545;
-        }
-      }
+    @media (max-width: 768px) {
+      font-size: 2rem;
     }
   }
 
-  .cashier-stats {
-    background: white;
-    border-radius: 8px;
-    border: 1px solid #dee2e6;
-    padding: 1rem;
-
-    .cashier-title {
-      margin: 0 0 1rem 0;
-      color: #495057;
+  .totals {
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    p {
+      color: black;
       font-size: 1.1rem;
-      font-weight: 600;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      strong {
+        font-weight: 600;
+        min-width: 200px;
+      }
+
+      @media (max-width: 768px) {
+        flex-direction: column;
+        align-items: flex-start;
+
+        strong {
+          min-width: auto;
+          margin-bottom: 5px;
+        }
+      }
+    }
+  }
+
+  .stats-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+
+    thead {
+      th {
+        color: black;
+        font-weight: 600;
+        padding: 15px 12px;
+        text-align: left;
+        font-size: 0.95rem;
+        letter-spacing: 0.5px;
+        position: sticky;
+        top: 0;
+
+        @media (max-width: 768px) {
+          padding: 10px 8px;
+          font-size: 0.85rem;
+        }
+      }
     }
 
-    .cashier-table {
-      overflow-x: auto;
+    tbody {
+      tr {
+        transition: all 0.3s ease;
+        border-bottom: 1px solid #e9ecef;
 
-      table {
-        width: 100%;
-        border-collapse: collapse;
-        font-size: 0.9rem;
-
-        thead {
-          background: #f1f3f4;
-
-          th {
-            padding: 0.75rem 0.5rem;
-            font-weight: 600;
-            color: #495057;
-            border-bottom: 2px solid #dee2e6;
-            white-space: nowrap;
-
-      
-            &:first-child {
-              text-align: left;
-            }
-
-            &:nth-child(2) {
-              text-align: center;
-            }
-
-            &:nth-child(3),
-            &:nth-child(4),
-            &:nth-child(5),
-            &:nth-child(6) {
-              text-align: right; 
-            }
-          }
+        &:hover {
+          background-color: #f8f9fa;
+          transform: translateY(-1px);
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
 
-        tbody {
-          tr {
-            border-bottom: 1px solid #f1f3f4;
-            transition: background-color 0.2s;
+        &:nth-child(even) {
+          background-color: #f8f9fa;
+        }
 
-            &:hover {
-              background-color: #f8f9fa;
-            }
+        &:last-child {
+          border-bottom: none;
+        }
 
-            td {
-              padding: 0.75rem 0.5rem;
-              vertical-align: middle;
-              white-space: nowrap;
+        td {
+          padding: 12px;
+          font-size: 0.9rem;
+          color: #2c3e50;
+          vertical-align: middle;
 
-              &.cashier-name {
-                text-align: left;
-                font-weight: 600;
-                color: #495057;
-                min-width: 150px;
-              }
+          @media (max-width: 768px) {
+            padding: 8px 6px;
+            font-size: 0.8rem;
+          }
 
-              &.receipt-count {
-                text-align: center;
-                font-weight: 600;
-                color: #007bff;
-              }
+          // Định dạng đặc biệt cho các cột tiền
+          &:nth-child(3), // Tổng tiền
+          &:nth-child(5), // Voucher
+          &:nth-child(6), // Tiền mặt
+          &:nth-child(7), // Chuyển khoản
+          &:nth-child(8), // Quyên góp
+          &:nth-child(9) {
+            // Thẻ
+            font-weight: 600;
+            color: #27ae60;
+            text-align: right;
+          }
 
-              &.bank-amount {
-                text-align: right;
-                color: #1976d2;
-                font-weight: 600;
-              }
+          // Định dạng cho mã thành viên
+          &:first-child {
+            font-weight: 600;
+            color: #3498db;
+          }
 
-              &.cash-amount {
-                text-align: right;
-                color: #f57c00;
-                font-weight: 600;
-              }
+          // Định dạng cho tên
+          &:nth-child(2) {
+            font-weight: 500;
+            color: #2c3e50;
+          }
 
-              &.discount-amount {
-                text-align: right;
-                color: #dc3545;
-                font-weight: 600;
-              }
-
-              &.total-revenue {
-                text-align: right;
-                color: #28a745;
-              }
-            }
+          // Định dạng cho số hóa đơn
+          &:nth-child(4) {
+            font-weight: 600;
+            color: #e74c3c;
+            text-align: center;
           }
         }
       }
     }
   }
 
-  
+  // Responsive design
+  @media (max-width: 1024px) {
+    padding: 15px;
 
-  
+    .stats-table {
+      font-size: 0.85rem;
+    }
+  }
+
+  @media (max-width: 768px) {
+    padding: 10px;
+
+    .stats-table {
+      display: block;
+      overflow-x: auto;
+      white-space: nowrap;
+
+      thead,
+      tbody,
+      th,
+      td,
+      tr {
+        display: block;
+      }
+
+      thead tr {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+      }
+
+      tbody tr {
+        border: 1px solid #ccc;
+        margin-bottom: 10px;
+        padding: 10px;
+        border-radius: 8px;
+        background-color: white;
+        display: block;
+        position: relative;
+
+        td {
+          border: none;
+          position: relative;
+          padding-left: 50% !important;
+          text-align: right;
+          white-space: normal;
+
+          &:before {
+            content: attr(data-label);
+            position: absolute;
+            left: 6px;
+            width: 45%;
+            padding-right: 10px;
+            white-space: nowrap;
+            font-weight: bold;
+            color: #2c3e50;
+            text-align: left;
+          }
+        }
+      }
+    }
+  }
+
+  p {
+    text-align: center;
+    color: #7f8c8d;
+    font-size: 1.2rem;
+    font-style: italic;
+    padding: 40px 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.statistics-container {
+  animation: fadeIn 0.5s ease-out;
 }

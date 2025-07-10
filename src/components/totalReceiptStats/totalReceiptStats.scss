@@ -1,0 +1,104 @@
+.total-receipt-stats {
+  font-size: 14px;
+  padding: 20px;
+  background-color: #f9f9f9;
+  font-family: Arial, sans-serif;
+
+  .title {
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #333;
+  }
+
+  .stats-table {
+    text-align: left;
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+
+    thead {
+      th {
+        color: black;
+        font-weight: 500;
+        padding: 15px 12px;
+        font-size: 0.95rem;
+        letter-spacing: 0.5px;
+        position: sticky;
+        top: 0;
+
+        @media (max-width: 768px) {
+          padding: 10px 8px;
+          font-size: 0.85rem;
+        }
+      }
+    }
+
+    tbody {
+      tr {
+        transition: all 0.3s ease;
+        border-bottom: 1px solid #e9ecef;
+
+        &:hover {
+          background-color: #f8f9fa;
+          transform: translateY(-1px);
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        &:nth-child(even) {
+          background-color: #f8f9fa;
+        }
+
+        &:last-child {
+          border-bottom: none;
+        }
+
+        td {
+          padding: 12px;
+          font-size: 0.9rem;
+          color: #2c3e50;
+          vertical-align: middle;
+
+          @media (max-width: 768px) {
+            padding: 8px 6px;
+            font-size: 0.8rem;
+          }
+
+          // Định dạng đặc biệt cho các cột tiền
+          &:nth-child(3), // Tổng tiền
+          &:nth-child(5), // Voucher
+          &:nth-child(6), // Tiền mặt
+          &:nth-child(7), // Chuyển khoản
+          &:nth-child(8), // Quyên góp
+          &:nth-child(9) {
+            // Thẻ
+            font-weight: 600;
+            color: #27ae60;
+          }
+
+          // Định dạng cho mã thành viên
+          &:first-child {
+            font-weight: 600;
+            color: #3498db;
+          }
+
+          // Định dạng cho tên
+          &:nth-child(2) {
+            font-weight: 500;
+            color: #2c3e50;
+          }
+
+          // Định dạng cho số hóa đơn
+          &:nth-child(4) {
+            font-weight: 600;
+            color: #e74c3c;
+          }
+        }
+      }
+    }
+  }
+}
