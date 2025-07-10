@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import BarcodeScanner from '../../components/BarcodeScanner/BarcodeScanner';
+import BarcodeScanner from '../../components/barcodeScanner/barcodeScanner';
 import './checkIn.scss';
 
 export default function CheckIn() {
