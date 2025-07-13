@@ -84,14 +84,15 @@ const ListRegister = () => {
           <option value=''>Tất cả chương trình</option>
           <option value='1_KM'>Lễ Khai Mạc</option>
           <option value='2_LSVH'>Talkshow Lịch Sử, Văn Hóa</option>
-          <option value='3_NT'>Talkshow Nghệ Thuật</option>
-          <option value='4_DN'>Đêm Nhạc</option>
-          <option value='5_TV'>Talkshow Tiếng Việt</option>
+          <option value='3_TV'>Talkshow Tiếng Việt</option>
+          <option value='4_NT'>Talkshow Nghệ Thuật</option>
+          <option value='5_DN'>Đêm nhạc</option>
         </select>
       </div>
       <table className='register-table'>
         <thead>
           <tr>
+            <th>STT</th>
             <th>Mã người tham gia</th>
             <th>Họ và tên</th>
             <th>Email</th>
@@ -100,8 +101,9 @@ const ListRegister = () => {
           </tr>
         </thead>
         <tbody>
-          {currentData.map((attender) => (
+          {currentData.map((attender, index) => (
             <tr key={attender.attender_id}>
+              <td>{index + 1}</td>
               <td>{attender.attender_id}</td>
               <td>{attender.attender_name}</td>
               <td>{attender.email}</td>
