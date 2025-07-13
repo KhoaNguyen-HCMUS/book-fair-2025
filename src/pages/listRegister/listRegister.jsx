@@ -98,6 +98,11 @@ const ListRegister = () => {
             <th>Email</th>
             <th>Thời gian đăng ký</th>
             <th>Sự kiện</th>
+            <th>1_KM</th>
+            <th>2_LSVH</th>
+            <th>3_TV</th>
+            <th>4_NT</th>
+            <th>5_DN</th>
           </tr>
         </thead>
         <tbody>
@@ -114,6 +119,41 @@ const ListRegister = () => {
                     <li key={event.id}>{event.program_id}</li>
                   ))}
                 </ul>
+              </td>
+              <td>
+                {attender.attendance.some((event) => event.program_id === '1_KM')
+                  ? attender.attendance.find((event) => event.program_id === '1_KM').attended === 1
+                    ? '✅'
+                    : '❌'
+                  : ''}
+              </td>
+              <td>
+                {attender.attendance.some((event) => event.program_id === '2_LSVH')
+                  ? attender.attendance.find((event) => event.program_id === '2_LSVH').attended === 1
+                    ? '✅'
+                    : '❌'
+                  : ''}
+              </td>
+              <td>
+                {attender.attendance.some((event) => event.program_id === '3_TV')
+                  ? attender.attendance.find((event) => event.program_id === '3_TV').attended === 1
+                    ? '✅'
+                    : '❌'
+                  : ''}
+              </td>
+              <td>
+                {attender.attendance.some((event) => event.program_id === '4_NT')
+                  ? attender.attendance.find((event) => event.program_id === '4_NT').attended === 1
+                    ? '✅'
+                    : '❌'
+                  : ''}
+              </td>
+              <td>
+                {attender.attendance.some((event) => event.program_id === '5_DN')
+                  ? attender.attendance.find((event) => event.program_id === '5_DN').attended === 1
+                    ? '✅'
+                    : '❌'
+                  : ''}
               </td>
             </tr>
           ))}
