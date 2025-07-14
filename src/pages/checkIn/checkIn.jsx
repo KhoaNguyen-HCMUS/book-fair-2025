@@ -172,7 +172,7 @@ export default function CheckIn() {
       </div>
 
       <div className='scanner-wrapper'>
-        <BarcodeScanner onScanSuccess={handleScan} isEnabled={!!selectedProgram && !isScanning && !showModal} />
+        <BarcodeScanner onScanSuccess={handleScan} isEnabled={!!selectedProgram && !isScanning} />
       </div>
 
       {showModal && (
