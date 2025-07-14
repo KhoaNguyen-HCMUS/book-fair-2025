@@ -10,21 +10,25 @@ export default function BarcodeScanner({ onScanSuccess, isEnabled = true }) {
   const [selectedCamera, setSelectedCamera] = useState('');
 
   useEffect(() => {
+    const savedCamera = localStorage.getItem('selectedCamera');
+    if (savedCamera) {
+      setSelectedCamera(savedCamera); // Sử dụng camera đã lưu trong localStorage
+    }
+  }, []);
+
+  useEffect(() => {
     if (!isEnabled) return;
 
     const initScanner = async () => {
       try {
-        // Initialize reader
         readerRef.current = new BrowserMultiFormatReader();
 
-        // Get available cameras
         await navigator.mediaDevices.getUserMedia({ video: true });
 
         const videoInputDevices = await readerRef.current.listVideoInputDevices();
         setCameras(videoInputDevices);
 
         if (videoInputDevices.length > 0) {
-          // Prefer back camera on mobile
           const backCamera = videoInputDevices.find(
             (device) => device.label.toLowerCase().includes('back') || device.label.toLowerCase().includes('rear')
           );
@@ -46,7 +50,12 @@ export default function BarcodeScanner({ onScanSuccess, isEnabled = true }) {
   }, [isEnabled]);
 
   useEffect(() => {
-    if (!selectedCamera || !isEnabled) return;
+    if (!selectedCamera || !isEnabled) {
+      if (readerRef.current) {
+        readerRef.current.reset();
+      }
+      return;
+    }
 
     const startScanning = async () => {
       try {
@@ -57,7 +66,6 @@ export default function BarcodeScanner({ onScanSuccess, isEnabled = true }) {
           if (result) {
             console.log('✅ Barcode found:', result.getText());
             onScanSuccess?.(result.getText());
-            // Optional: pause scanning after successful scan
             readerRef.current.reset();
             startScanning();
           }
@@ -84,6 +92,7 @@ export default function BarcodeScanner({ onScanSuccess, isEnabled = true }) {
 
   const handleCameraChange = (deviceId) => {
     setSelectedCamera(deviceId);
+    localStorage.setItem('selectedCamera', deviceId); // Lưu camera đã chọn vào localStorage
   };
 
   if (!isEnabled) {
@@ -119,7 +128,6 @@ export default function BarcodeScanner({ onScanSuccess, isEnabled = true }) {
           muted
         />
 
-        {/* Scanning overlay */}
         <div className='scanning-overlay'>
           <div className='scanning-line' />
           <div className='corner-markers'>
