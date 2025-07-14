@@ -18,6 +18,8 @@ export default function BarcodeScanner({ onScanSuccess, isEnabled = true }) {
         readerRef.current = new BrowserMultiFormatReader();
 
         // Get available cameras
+        await navigator.mediaDevices.getUserMedia({ video: true });
+
         const videoInputDevices = await readerRef.current.listVideoInputDevices();
         setCameras(videoInputDevices);
 
