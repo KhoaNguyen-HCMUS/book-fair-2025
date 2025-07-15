@@ -1,27 +1,24 @@
-import { useEffect } from 'react';
-import { Html5QrcodeScanner } from 'html5-qrcode';
+import BarcodeScanner from 'react-qr-barcode-scanner';
 
-export default function BarcodeScanner({ onScanSuccess }) {
-  useEffect(() => {
-    const scanner = new Html5QrcodeScanner('scanner', {
-      fps: 10,
-      qrbox: { width: 300, height: 200 },
-    });
-
-    scanner.render((text) => {
-      console.log('✅ Found:', text);
+export default function BarcodeScannerComponent({ onScanSuccess }) {
+  const handleUpdate = (err, result) => {
+    if (result) {
       if (onScanSuccess) {
-        onScanSuccess(text);
+        onScanSuccess(result.text); // Gọi callback khi quét thành công
       }
-      scanner.clear();
-    });
-
-    return () => scanner.clear();
-  }, [onScanSuccess]);
+    } else {
+      console.log('No result found');
+    }
+  };
 
   return (
-    <div>
-      <div id='scanner' style={{ width: '100%', maxWidth: '400px', height: '300px', margin: 'auto' }} />
-    </div>
+    <>
+      <BarcodeScanner
+        width={500}
+        height={500}
+        onUpdate={handleUpdate} // Xử lý kết quả quét
+      />
+      <p>Đang quét</p>
+    </>
   );
 }

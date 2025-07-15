@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useMemo } from 'react';
-import BarcodeScanner from '../../components/barcodeScanner/barcodeScanner';
+import BarcodeScannerComponent from '../../components/barcodeScanner/barcodeScanner';
 import './checkIn.scss';
 
 const PROGRAMS = [
@@ -172,7 +172,7 @@ export default function CheckIn() {
       </div>
 
       <div className='scanner-wrapper'>
-        <BarcodeScanner onScanSuccess={handleScan} isEnabled={!!selectedProgram && !isScanning} />
+        <BarcodeScannerComponent onScanSuccess={handleScan} isEnabled={!!selectedProgram && !isScanning} />
       </div>
 
       {showModal && (
