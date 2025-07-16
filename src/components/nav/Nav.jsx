@@ -88,6 +88,7 @@ class Nav extends React.Component {
               </button>
               <div className='dropdown-content'>
                 <NavLink to='/addReceipt'>Tạo Đơn Hàng</NavLink>
+                <NavLink to='/addReceiptTest'>Tạo Đơn Hàng - Test</NavLink>
 
                 <NavLink to='/myReceipts'>Đơn Hàng của tôi</NavLink>
               </div>

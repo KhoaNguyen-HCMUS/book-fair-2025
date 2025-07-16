@@ -1,6 +1,6 @@
 import BarcodeScanner from 'react-qr-barcode-scanner';
 
-export default function BarcodeScannerComponent({ onScanSuccess }) {
+export default function BarcodeScannerComponent({ onScanSuccess, width = 500, height = 500 }) {
   const handleUpdate = (err, result) => {
     if (result) {
       if (onScanSuccess) {
@@ -14,8 +14,8 @@ export default function BarcodeScannerComponent({ onScanSuccess }) {
   return (
     <>
       <BarcodeScanner
-        width={500}
-        height={500}
+        width={width}
+        height={height}
         onUpdate={handleUpdate} // Xử lý kết quả quét
       />
       <p>Đang quét</p>

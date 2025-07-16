@@ -25,6 +25,7 @@ import StatisticsPage from './pages/statisticsPage/statisticsPage.jsx';
 import ListRegister from './pages/listRegister/listRegister.jsx';
 import CheckIn from './pages/checkIn/checkIn.jsx';
 
+import AddReceiptTest from './pages/addReceiptTest/addReceiptTest.jsx';
 function App() {
   const [isAuth, setIsAuth] = useState(false);
   const [username, setUsername] = useState('');
@@ -260,6 +261,14 @@ function App() {
               element={
                 <CashierRoute>
                   <AddReceipt />
+                </CashierRoute>
+              }
+            />
+            <Route
+              path='/addReceiptTest'
+              element={
+                <CashierRoute>
+                  <AddReceiptTest />
                 </CashierRoute>
               }
             />
