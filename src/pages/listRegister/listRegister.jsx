@@ -69,9 +69,52 @@ const ListRegister = () => {
     return <div className='loading'>Đang tải danh sách người tham gia...</div>;
   }
 
+  const calculateProgramStats = () => {
+    const stats = {
+      '1_KM': { registered: 0, checkedIn: 0 },
+      '2_LSVH': { registered: 0, checkedIn: 0 },
+      '3_TV': { registered: 0, checkedIn: 0 },
+      '4_NT': { registered: 0, checkedIn: 0 },
+      '5_DN': { registered: 0, checkedIn: 0 },
+    };
+
+    data.forEach((attender) => {
+      attender.attendance.forEach((event) => {
+        if (stats[event.program_id] !== undefined) {
+          stats[event.program_id].registered++;
+          if (event.attended === 1) {
+            stats[event.program_id].checkedIn++;
+          }
+        }
+      });
+    });
+
+    return stats;
+  };
+
+  const programStats = calculateProgramStats();
+
   return (
     <div className='list-register'>
       <h1 className='title'>Danh sách đăng ký tham gia</h1>
+      <table className='program-stats-table'>
+        <thead>
+          <tr>
+            <th>Chương trình</th>
+            <th>Số người đăng ký</th>
+            <th>Số người đã check-in</th>
+          </tr>
+        </thead>
+        <tbody>
+          {Object.entries(programStats).map(([programId, stats]) => (
+            <tr key={programId}>
+              <td>{programId}</td>
+              <td>{stats.registered}</td>
+              <td>{stats.checkedIn}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
       <div className='controls'>
         <input
           type='text'
