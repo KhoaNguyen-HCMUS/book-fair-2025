@@ -171,9 +171,9 @@ function App() {
             <Route
               path='/check-in'
               element={
-                <OrganizerRoute>
+                <ProtectedRoute>
                   <CheckIn />
-                </OrganizerRoute>
+                </ProtectedRoute>
               }
             />
 
