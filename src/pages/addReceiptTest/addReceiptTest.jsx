@@ -30,8 +30,8 @@ function AddReceiptTest() {
   const [qrCodeLink, setQRCodeLink] = useState('');
   const [receiptId, setReceiptId] = useState('');
   const [showScanner, setShowScanner] = useState(false);
-  const BANK_ID = '970415'; // HD Bank
-  const ACCOUNT_NO = '100873414404';
+  const BANK_ID = '970418'; // BIDV
+  const ACCOUNT_NO = '8680059374';
 
   const voucherOptions = [
     { value: '0', label: 'Không', discount: 0 },
