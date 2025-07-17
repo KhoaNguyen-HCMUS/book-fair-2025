@@ -20,6 +20,7 @@ const ReceiptStatistics = ({ data }) => {
             <th>Chuyển khoản</th>
             <th>Ký gửi</th>
             <th>Quyên góp</th>
+            <th>NXB</th>
             <th>Theo kg</th>
           </tr>
         </thead>
@@ -34,6 +35,7 @@ const ReceiptStatistics = ({ data }) => {
             <td>{formatCurrency(data.totalBanking)}</td>
             <td>{formatCurrency(data.totalKG)}</td>
             <td>{formatCurrency(data.totalQG)}</td>
+            <td>{formatCurrency(data.totalNXB)}</td>
             <td>{formatCurrency(data.totalTK)}</td>
           </tr>
         </tbody>

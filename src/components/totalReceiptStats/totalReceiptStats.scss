@@ -72,9 +72,8 @@
           &:nth-child(3), // Tổng tiền
           &:nth-child(5), // Voucher
           &:nth-child(6), // Tiền mặt
-          &:nth-child(7), // Chuyển khoản
-          &:nth-child(8), // Quyên góp
-          &:nth-child(9) {
+          &:nth-child(7) // Chuyển khoản
+          {
             // Thẻ
             font-weight: 600;
             color: #27ae60;
@@ -96,6 +95,13 @@
           &:nth-child(4) {
             font-weight: 600;
             color: #e74c3c;
+          }
+
+          &:nth-child(8), // Quyên góp
+          &:nth-child(9), &:nth-child(10), &:nth-child(11) {
+            // Thẻ
+            font-weight: 600;
+            color: #041b9e;
           }
         }
       }

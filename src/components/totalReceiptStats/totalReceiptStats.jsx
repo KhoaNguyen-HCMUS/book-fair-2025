@@ -17,6 +17,7 @@ const TotalReceiptStats = ({ data }) => {
         totals.totalKG += item.totalKG;
         totals.totalQG += item.totalQG;
         totals.totalTK += item.totalTK;
+        totals.totalNXB += item.totalNXB || 0;
         return totals;
       },
       {
@@ -28,6 +29,7 @@ const TotalReceiptStats = ({ data }) => {
         totalKG: 0,
         totalQG: 0,
         totalTK: 0,
+        totalNXB: 0,
       }
     );
   };
@@ -49,6 +51,7 @@ const TotalReceiptStats = ({ data }) => {
             <th>Chuyển khoản</th>
             <th>Ký gửi</th>
             <th>Quyên góp</th>
+            <th>NXB</th>
             <th>Theo kg</th>
           </tr>
         </thead>
@@ -64,6 +67,7 @@ const TotalReceiptStats = ({ data }) => {
               <td>{formatCurrency(item.totalBanking) || 0}</td>
               <td>{formatCurrency(item.totalKG) || 0}</td>
               <td>{formatCurrency(item.totalQG) || 0}</td>
+              <td>{formatCurrency(item.totalNXB) || 0}</td>
               <td>{formatCurrency(item.totalTK) || 0}</td>
             </tr>
           ))}
@@ -77,6 +81,7 @@ const TotalReceiptStats = ({ data }) => {
             <td>{formatCurrency(totals.totalBanking) || 0}</td>
             <td>{formatCurrency(totals.totalKG) || 0}</td>
             <td>{formatCurrency(totals.totalQG) || 0}</td>
+            <td>{formatCurrency(totals.totalNXB) || 0}</td>
             <td>{formatCurrency(totals.totalTK) || 0}</td>
           </tr>
         </tbody>
