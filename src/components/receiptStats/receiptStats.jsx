@@ -3,7 +3,7 @@ import './receiptStats.scss';
 
 const ReceiptStatistics = ({ data }) => {
   const formatCurrency = (amount) => {
-    return amount.toLocaleString('vi-VN') + ' VNĐ';
+    return amount.toLocaleString('vi-VN');
   };
 
   return (
