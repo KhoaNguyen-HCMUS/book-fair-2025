@@ -19,7 +19,7 @@ function AddReceipt() {
 
   const [discountAmount, setDiscountAmount] = useState(0);
   const [voucherCode, setVoucherCode] = useState('');
-  const [paymentMethod, setPaymentMethod] = useState('cash');
+  const [paymentMethod, setPaymentMethod] = useState('bank');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [showQRModal, setShowQRModal] = useState(false);
@@ -149,7 +149,7 @@ function AddReceipt() {
     setReceiptItems([]); // Clear Receipt items after successful submission
     setVoucherCode(''); // Clear voucher code
     setDiscountAmount(0); // Reset discount amount
-    setPaymentMethod('cash'); // Reset payment method
+    setPaymentMethod('bank'); // Reset payment method
     setShowQRModal(false);
     setPaymentConfirmed(false);
     fetchBooks(); // Refresh book list
