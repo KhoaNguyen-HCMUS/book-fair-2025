@@ -101,6 +101,12 @@ function MyReceipts() {
     setCurrentPage(1); // Reset to the first page of all results
   };
 
+  const standalizeTime = (time) => {
+    const date = new Date(time);
+    date.setHours(date.getHours() + 7);
+    return date.toISOString().replace('T', ' ').slice(0, 19);
+  };
+
   return (
     <div className='myReceipts'>
       {receiptStats && <ReceiptStatistics data={receiptStats} />}
@@ -143,7 +149,7 @@ function MyReceipts() {
                 <td>{Receipt.id_receipt}</td>
                 <td>{Receipt.name_cashier}</td>
 
-                <td>{Receipt.createAt.replace('T', ' ').slice(0, 19)}</td>
+                <td>{standalizeTime(Receipt.createAt)}</td>
                 <td>{Receipt.payment_method === 'bank' ? 'Chuyển khoản' : 'Tiền mặt'}</td>
                 <td>{Math.floor(Receipt.total_amount).toLocaleString('vi-VN')}</td>
                 <td>{Math.floor(Receipt.voucher).toLocaleString('vi-VN')}</td>

@@ -65,6 +65,12 @@ function ReceiptDetail() {
     generateInvoicePDF(receiptDetails, books);
   };
 
+  const standalizeTime = (time) => {
+    const date = new Date(time);
+    date.setHours(date.getHours() + 7);
+    return date.toISOString().replace('T', ' ').slice(0, 19);
+  };
+
   return (
     <div className='receipt-detail'>
       <div className='top-button-container'>
@@ -92,7 +98,7 @@ function ReceiptDetail() {
           </div>
           <div className='info-row'>
             <span className='label'>Thời gian:</span>
-            <span className='value'>{receiptDetails.createAt.replace('T', ' ').slice(0, 19)}</span>
+            <span className='value'>{standalizeTime(receiptDetails.createAt)}</span>
           </div>
 
           <table className='book-table'>
