@@ -50,7 +50,7 @@ function AddReceiptTest() {
 
   const fetchBooks = async () => {
     try {
-      const URL = import.meta.env.VITE_DOMAIN_BACKUP + import.meta.env.VITE_API_GET_LIST_BOOKS;
+      const URL = import.meta.env.VITE_DOMAIN_BACKUP + '/api/validate-products';
       const response = await fetch(URL);
       const result = await response.json();
       if (result.success) {
@@ -317,11 +317,9 @@ function AddReceiptTest() {
 
   return (
     <div className='addReceipt'>
-      
       <div className='container-wrapper'>
         {/* Left Container: Book Grid */}
         <div className='left-container'>
-          
           <div className='search-bar'>
             <input
               ref={inputRef}
@@ -343,7 +341,9 @@ function AddReceiptTest() {
               </button>
             )}
           </div>
-          <button onClick={() => setShowScanner((prev) => !prev)}>{showScanner ? 'Tắt quét mã' : 'Quét mã vạch'}</button>
+          <button onClick={() => setShowScanner((prev) => !prev)}>
+            {showScanner ? 'Tắt quét mã' : 'Quét mã vạch'}
+          </button>
           <div className='book-list'>
             {loading ? (
               <h6>Loading books...</h6>
@@ -395,8 +395,8 @@ function AddReceiptTest() {
           </div>
           {showScanner && (
             <BarcodeScannerComponent
-                width={250}
-    height={180}
+              width={250}
+              height={180}
               onScanSuccess={(scannedValue) => {
                 setSearchTerm(scannedValue);
                 // setShowScanner(false);
