@@ -148,10 +148,7 @@ function BookStore() {
       (book) =>
         removeVietnameseTones(book.name.toLowerCase()).includes(searchTermNormalized) ||
         removeVietnameseTones(book.id_product.toLowerCase()).includes(searchTermNormalized) ||
-        removeVietnameseTones(book.genre.toLowerCase()).includes(searchTermNormalized) ||
-        removeVietnameseTones(book.classify.toLowerCase()).includes(searchTermNormalized) ||
-        removeVietnameseTones(book.id_consignor.toLowerCase()).includes(searchTermNormalized) ||
-        removeVietnameseTones(book.age.toLowerCase()).includes(searchTermNormalized)
+        removeVietnameseTones(book.id_consignor.toLowerCase()).includes(searchTermNormalized)
     );
 
     setFilteredBooks(filtered);
@@ -197,7 +194,7 @@ function BookStore() {
               <FaSearch className='search-icon' />
               <input
                 type='text'
-                placeholder='Tìm kiếm theo tên sách, ID sách hoặc thể loại sách... (Nhấn Enter để tìm)'
+                placeholder='Tìm kiếm theo tên sách, ID sách (Nhấn Enter để tìm)'
                 value={searchInput}
                 onChange={(e) => setSearchInput(e.target.value)}
                 className='search-input'
