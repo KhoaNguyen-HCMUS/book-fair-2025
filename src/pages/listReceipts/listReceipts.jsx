@@ -108,8 +108,6 @@ function ListReceipts() {
 
   return (
     <div className='list-receipts'>
-      {loadingStats && <div className='loading'>Đang tải thống kê</div>}
-      {!loadingStats && <TotalReceiptStats data={totalReceiptStats} />}
       <form onSubmit={handleSearchSubmit} className='search-container'>
         <FaSearch className='search-icon' />
         <input
@@ -187,6 +185,8 @@ function ListReceipts() {
           Sau
         </button>
       </div>
+      {loadingStats && <div className='loading'>Đang tải thống kê</div>}
+      {!loadingStats && <TotalReceiptStats data={totalReceiptStats} />}
     </div>
   );
 }
