@@ -49,7 +49,7 @@ function AddReceipt() {
 
   const fetchBooks = async () => {
     try {
-      const URL = import.meta.env.VITE_DOMAIN_BACKUP + '/api/validate-products';
+      const URL = import.meta.env.VITE_DOMAIN_BACKUP + '/api/get-object-list?typeOb=product';
       const response = await fetch(URL);
       const result = await response.json();
       if (result.success) {
