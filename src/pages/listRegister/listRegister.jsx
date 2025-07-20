@@ -94,6 +94,20 @@ const ListRegister = () => {
 
   const programStats = calculateProgramStats();
 
+  const handleFilterCheckedIn = () => {
+    const filtered = data.filter((attender) => {
+      const checkedInCount = attender.attendance.filter((event) => event.attended === 1).length;
+      return checkedInCount >= 3;
+    });
+    setFilteredData(filtered);
+    setCurrentPage(1);
+  };
+  const handleResetFilter = () => {
+    setFilteredData(data);
+    setSearchTerm('');
+    setFilterProgram('');
+    setCurrentPage(1);
+  };
   return (
     <div className='list-register'>
       <h1 className='title'>Danh sách đăng ký tham gia</h1>
@@ -131,6 +145,12 @@ const ListRegister = () => {
           <option value='4_NT'>Talkshow Nghệ Thuật</option>
           <option value='5_DN'>Đêm nhạc</option>
         </select>
+        <button className='filter-button' onClick={() => handleFilterCheckedIn()}>
+          Lọc người đã check-in ≥ 3 sự kiện
+        </button>
+        <button className='reset-button' onClick={() => handleResetFilter()}>
+          Hiển thị tất cả
+        </button>
       </div>
       <table className='register-table'>
         <thead>
